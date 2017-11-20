@@ -12,6 +12,8 @@ export default class StudentView extends Component{
       <div className="mainContainer">
         <h1>Students</h1>
         <StudentList />
+        <button>Add student</button>
+        <button>Remove student</button>
       </div>
     )
 

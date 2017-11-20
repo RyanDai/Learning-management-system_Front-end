@@ -10,12 +10,32 @@ export default class StudentList extends Component{
 
   render() {
     return(
-      <ul class="list-group">
-        <li class="list-group-item">Cras justo odio</li>
-        <li class="list-group-item">Dapibus ac facilisis</li>
-        <li class="list-group-item">Morbi leo risus</li>
-        <li class="list-group-item">Porta ac consectetur ac</li>
-        <li class="list-group-item">Vestibulum at eros</li>
+      <ul className="list-group">
+        <li className="list-group-item">
+          <p className="listContext">Cras justo odio</p>
+          <button className="detailButton">Details</button>
+          <div className="clear"></div>
+        </li>
+        <li className="list-group-item">
+          <p className="listContext">Dapibus ac facilisis</p>
+          <button className="detailButton">Details</button>
+          <div className="clear"></div>
+        </li>
+        <li className="list-group-item">
+          <p className="listContext">Morbi leo risus</p>
+          <button className="detailButton">Details</button>
+          <div className="clear"></div>
+        </li>
+        <li className="list-group-item">
+          <p className="listContext">Porta ac consectetur ac</p>
+          <button className="detailButton">Details</button>
+          <div className="clear"></div>
+        </li>
+        <li className="list-group-item">
+          <p className="listContext">Vestibulum at eros</p>
+          <button className="detailButton">Details</button>
+          <div className="clear"></div>
+        </li>
       </ul>
     )
   }
