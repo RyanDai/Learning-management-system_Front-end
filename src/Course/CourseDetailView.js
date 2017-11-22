@@ -28,10 +28,10 @@ class CourseDetailView extends Component{
       }
 
     loadCourse() {
-         const { ID } = this.props.match.params;
+         const { id } = this.props.match.params;
          this.setState({isLoading: true});
         
-         axios.get(`/api/course/${ID}`)
+         axios.get(`/api/course/${id}`)
          .then(response => {
          this.setState({
          course: response.data,
@@ -40,11 +40,13 @@ class CourseDetailView extends Component{
          })
          }
 
-         renderDisplay = () => {
+         renderDisplay () {
           const { course } = this.state;
       
           return (
                 <h1>{course.Name}</h1>
+
+
           );
         }
 
