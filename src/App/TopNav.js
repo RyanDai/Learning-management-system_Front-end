@@ -14,7 +14,7 @@ export default function TopNav() {
                         <Link className="nav-link" to="/courses">Courses</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link" to="/#">Lectures</Link>
+                        <Link className="nav-link" to="/lecturers">Lectures</Link>
                     </li>
                     <li className="nav-item">
                         <Link className="nav-link" to="/#">Students</Link>
