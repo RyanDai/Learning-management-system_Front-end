@@ -1,21 +1,21 @@
 .mainContainer{
-    margin-top: 100px;
-  }
-  
-  .detailContainer{
-    margin-top: 100px;
-  }
-  
-  .detailButton{
-    position: absolute;
-    right: 10px;
-    overflow: hidden;
-  }
-  
-  .listContext{
-    float:left;
-  }
-  
-  .clear{
-    clear: both;
-  }
+  margin-top: 100px;
+}
+
+.detailContainer{
+  margin-top: 100px;
+}
+
+.detailButton{
+  position: absolute;
+  right: 10px;
+  overflow: hidden;
+}
+
+.listContext{
+  float:left;
+}
+
+.clear{
+  clear: both;
+}
