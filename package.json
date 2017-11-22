@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.16.2",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^4.0.0-beta.2",
     "classnames": "^2.2.5",
     "gravatar-url": "^2.0.0",
     "react": "^16.0.0",
