@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import ListItem from './ListItem';
 
 export default class StudentList extends Component{
   constructor(props){
     super(props);
     this.state = {
-      students:[]
+      students:[],
+      test:'0'
     }
+
   }
 
   sendRequest(){
@@ -14,41 +17,34 @@ export default class StudentList extends Component{
 
     axios.get(studentURL)
       .then((response) => {
-        this.setState();
+        this.setState({test:'1'});
+        const students = response.data.map(function(d){
+          return{
+            ID: d.ID,
+      			FirstName: d.FirstName,
+            LastName: d.LastName,
+      			Phone: d.Phone,
+            Email:d.Email,
+            Address:d.Address
+          }
+        });
+        this.setState({students});
+
       })
       .catch((error) => {
         console.log(error);
+
       });
+  }
+
+  componentWillMount(){
+    this.sendRequest();
   }
 
   render() {
     return(
       <ul className="list-group">
-        <li className="list-group-item">
-          <p className="listContext">Cras justo odio</p>
-          <button className="detailButton">Details</button>
-          <div className="clear"></div>
-        </li>
-        <li className="list-group-item">
-          <p className="listContext">Dapibus ac facilisis</p>
-          <button className="detailButton">Details</button>
-          <div className="clear"></div>
-        </li>
-        <li className="list-group-item">
-          <p className="listContext">Morbi leo risus</p>
-          <button className="detailButton">Details</button>
-          <div className="clear"></div>
-        </li>
-        <li className="list-group-item">
-          <p className="listContext">Porta ac consectetur ac</p>
-          <button className="detailButton">Details</button>
-          <div className="clear"></div>
-        </li>
-        <li className="list-group-item">
-          <p className="listContext">Vestibulum at eros</p>
-          <button className="detailButton">Details</button>
-          <div className="clear"></div>
-        </li>
+        <ListItem students={this.state.students} />
       </ul>
     )
   }
