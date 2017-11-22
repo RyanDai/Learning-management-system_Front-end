@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-class CourseCard extends Component {
-    render() { 
-        return (
-            <div className="col-sm-6 col-md-3">
-            
-            <Link to={`/Courses/CourseDetailView`}>
-            
+export default function CourseCard(props) { 
+
+    return (
+        <div className="col-sm-6 col-md-3">
+            <div className="thumbnail jr-course-card">
+
                 <div className="course-card">
-                    <h4 className="course-card-name">Course name</h4>
-                    <p className="course-card-code">Course code</p>
-                    <p className="course-card-description">Course description</p>
+                    <h4 className="course-card-name">{props.course.Name}</h4>
+                    <p className="course-card-code">{props.course.CourseCode}</p>
+                    <p className="course-card-description">{props.course.Description}</p>
                 </div>
+            <Link to={`/courses/${props.course.ID}`} className="btn btn-default">
+                Details
             </Link>
 
             </div>
-        )
-    }
-}
+        </div>
+    )
 
-export default CourseCard;
+}
