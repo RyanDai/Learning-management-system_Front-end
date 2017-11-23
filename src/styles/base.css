@@ -1,0 +1,10 @@
+body{
+    background: #B71427; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #B71427 , #FFE658); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #B71427 , #FFE658); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+/*black: #404040*/
+/*light-blue:#6DBDD6*/
+/*red:#B71427*/
+/*yellow:#FFE658*/
