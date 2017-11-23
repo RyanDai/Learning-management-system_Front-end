@@ -47,13 +47,9 @@ export default class LecturerDetailView extends Component {
                 <h1 className="name">{lecturer.FirstName} &nbsp; {lecturer.LastName}</h1>
                 <div className="row">
                     <img src ="..." />
-                    <ul>
-                        <li>Integer et malesuada turpis. Proin urna felis.</li>
-                        <li>Integer et malesuada turpis. Proin urna felis.</li>
-                        <li>Integer et malesuada turpis. Proin urna felis.</li>
-                        <li>Integer et malesuada turpis. Proin urna felis.</li>
-                        <li>Integer et malesuada turpis. Proin urna felis.</li>
-
+                    <ul className="fa-ul">
+                        <li><i class="fa-li fa fa-envelope" aria-hidden="true"></i>{lecturer.Email}</li>
+                        <li><i class="fa-li fa fa-phone" aria-hidden="true"></i>{lecturer.Phone}</li>
                     </ul>
                 </div>
                 <div className="row">
@@ -65,7 +61,6 @@ export default class LecturerDetailView extends Component {
                     <button className = "btn btn-danger" >Delete</button>
                 </div>
             </div>
-            // </div>
         )
     }
 

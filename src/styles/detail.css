@@ -7,25 +7,30 @@
     margin-right: auto;
     margin-left: auto;
     margin-top: 10%;
+    -webkit-box-shadow: 0 16px 28px 0 rgba(0, 0, 0, 0.22), 0 25px 55px 0 rgba(0, 0, 0, 0.21);
+    -moz-box-shadow: 0 16px 28px 0 rgba(0, 0, 0, 0.22), 0 25px 55px 0 rgba(0, 0, 0, 0.21);
+    box-shadow: 0 16px 28px 0 rgba(0, 0, 0, 0.22), 0 25px 55px 0 rgba(0, 0, 0, 0.21);
 }
 
 .highlight img {
     float: left;
     width: 100px;
     height: 100px;
-    margin: 10px;
+    margin: 0 auto;
 }
 
 .highlight ul {
-    list-style-image: url('http://icons.iconarchive.com/icons/yusuke-kamiyamane/fugue/16/tick-small-icon.png');
-    margin-left: 1%;
-    float: left;
-    clear: right
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 5%;
 }
 
 .highlight button {
     margin: 0 auto;
     float: right;
+    -webkit-box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.22), 0 5px 11px 0 rgba(0, 0, 0, 0.21);
+    -moz-box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.22), 0 5px 11px 0 rgba(0, 0, 0, 0.21);
+    box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.22), 0 5px 11px 0 rgba(0, 0, 0, 0.21);
 }
 
 .highlight h2,h3,h4,h5,h6 {
@@ -36,12 +41,12 @@
     text-transform: uppercase;
 }
 
-
 .name {
     padding-bottom: 2%;
     border-bottom: 2px dashed rgba(255, 255, 255, 0.41);
     text-align : center;
     text-transform: uppercase;
+    margin-bottom: 5%;
 }
 
 .highlight p {
