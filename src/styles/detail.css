@@ -1,5 +1,5 @@
 .highlight  {
-    width: 600px;
+    width: 80%;
     color: white;
     background: rgba(0, 0, 0, 0.26);
     border-radius: 10px;
@@ -7,15 +7,12 @@
     margin-right: auto;
     margin-left: auto;
     margin-top: 10%;
-    -webkit-box-shadow: 0 16px 28px 0 rgba(0, 0, 0, 0.22), 0 25px 55px 0 rgba(0, 0, 0, 0.21);
-    -moz-box-shadow: 0 16px 28px 0 rgba(0, 0, 0, 0.22), 0 25px 55px 0 rgba(0, 0, 0, 0.21);
-    box-shadow: 0 16px 28px 0 rgba(0, 0, 0, 0.22), 0 25px 55px 0 rgba(0, 0, 0, 0.21);
 }
 
 .highlight img {
     float: left;
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     margin: 0 auto;
 }
 
@@ -28,9 +25,6 @@
 .highlight button {
     margin: 0 auto;
     float: right;
-    -webkit-box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.22), 0 5px 11px 0 rgba(0, 0, 0, 0.21);
-    -moz-box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.22), 0 5px 11px 0 rgba(0, 0, 0, 0.21);
-    box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.22), 0 5px 11px 0 rgba(0, 0, 0, 0.21);
 }
 
 .highlight h2,h3,h4,h5,h6 {

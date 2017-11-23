@@ -10,6 +10,7 @@
     "gravatar-url": "^2.0.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
+    "react-gravatar": "^2.6.3",
     "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
