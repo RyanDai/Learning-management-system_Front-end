@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import LecturerList from './LecturerList';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
+import {Spinner} from '../UI/Spinner';
 
 export default class LecturersView extends Component{
     constructor(props){
@@ -33,8 +34,10 @@ export default class LecturersView extends Component{
 
     render() {
         const {isLoading, lectures} = this.state;
+        // if (isLoading)
+        //     return <span>Loading lectures</span>;
         if (isLoading)
-            return <span>Loading lectures</span>;
+            return <Spinner/>;
 
         return (
             <div>

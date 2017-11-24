@@ -3,6 +3,7 @@ import axios from 'axios';
 import Gravatar from 'react-gravatar';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import {Spinner} from '../UI/Spinner';
 
 
 export default class LecturerDetailView extends Component {
@@ -85,19 +86,19 @@ export default class LecturerDetailView extends Component {
 
     handleSubmit(event) {
         event.preventDefault(); // prevent default form submission
-        this.setState({ isSaving: true });
+        this.setState({ isLoading: true });
         const { lecturer } = this.state;
-        console.log(lecturer);
+
         if (this.isNew()) {
             axios.post('/api/lecturer', lecturer)
                 .then(response => {
-                    this.setState({ isEditing: false, isSaving:false});
+                    this.setState({ isEditing: false, isLoading:false});
                     // dialog
                 });
         } else {
             axios.put(`/api/lecturer/${lecturer.ID}`, lecturer)
                 .then(response => {
-                    this.setState({ isEditing: false, isSaving:false});
+                    this.setState({ isEditing: false, isLoading:false});
                     // dialog
                 })
                 .catch(error=>{
@@ -131,10 +132,11 @@ export default class LecturerDetailView extends Component {
 
     handleDelete=()=> {
         const { lecturer } = this.state;
-        debugger;
+        this.setState({isLoading:true});
         axios.delete(`/api/lecturer/${lecturer.ID}`)
             .then(() => {
                 this.props.history.push('/lecturers');
+                this.setState({isLoading:false})
             });
     }
 
@@ -148,6 +150,7 @@ export default class LecturerDetailView extends Component {
                     <ul className="fa-ul">
                         <li><i className="fa-li fa fa-envelope" aria-hidden="true"></i>{lecturer.Email}</li>
                         <li><i className="fa-li fa fa-phone" aria-hidden="true"></i>{lecturer.Phone}</li>
+                        <li><i className="fa-li fa fa-home" aria-hidden="true"></i>{lecturer.Address.City}.{lecturer.Address.Country}</li>
                     </ul>
                 </div>
                 <div className="row">
@@ -282,7 +285,7 @@ export default class LecturerDetailView extends Component {
     render() {
         const {isLoading, isEditing} = this.state;
         if (isLoading)
-            return <span>Loading lecture</span>;
+            return <Spinner/>;
 
         return isEditing ?
             this.renderForm() : this.renderDisplay();
