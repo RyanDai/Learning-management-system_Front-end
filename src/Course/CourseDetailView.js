@@ -54,14 +54,15 @@ class CourseDetailView extends Component {
 
 	handleSubmit = (event) => {
 		event.preventDefault();
-		this.setState({ isLoading: true });
+		this.setState({ isSaving: true });
 		const { course } = this.state;
 		const onSuccess = (response) => {
 			this.setState({
 				isEditing: false,
-				isLoading: false,
+				isSaving: false,
 				course: response.data,
 			});
+			this.loadCourse();
 		};
 
 		if (this.props.match.params.id === 'create') {
@@ -117,7 +118,7 @@ class CourseDetailView extends Component {
 	}
 
 	renderForm = () => {
-		const { course, isSaving } = this.state;
+		const { course } = this.state;
 
 		return (
 			<form onSubmit={this.handleSubmit}>
