@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import Gravatar from 'react-gravatar';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
 
 export default class LecturerDetailView extends Component {
     constructor(props) {
@@ -110,10 +113,23 @@ export default class LecturerDetailView extends Component {
             this.setState({
                 isEditing: false,
             });
+            this.loadLecturer();
         }
     }
 
-    handleDelete() {
+    confirmDelete=()=> {
+        const { lecturer } = this.state;
+        confirmAlert({
+            title: 'Really?',                        // Title dialog
+            message: 'Are you sure to delete:',               // Message dialog
+            childrenElement: () => (<div className="dialog-content">{lecturer.FirstName} {lecturer.LastName}</div>),       // Custom UI or Component
+            confirmLabel: 'Confirm',                           // Text button confirm
+            cancelLabel: 'Cancel',                             // Text button cancel
+            onConfirm: this.handleDelete,     // Action after Cancel
+        })
+    }
+
+    handleDelete=()=> {
         const { lecturer } = this.state;
         debugger;
         axios.delete(`/api/lecturer/${lecturer.ID}`)
@@ -142,7 +158,7 @@ export default class LecturerDetailView extends Component {
                     <button className="btn btn-primary shadow-sm" onClick={() => this.setState({isEditing: true})}>
                         Edit
                     </button>
-                        <button className="btn btn-danger shadow-sm">Delete</button>
+                        <button className="btn btn-danger shadow-sm" onClick={this.confirmDelete}>Delete</button>
                 </div>
             </div>
         )
