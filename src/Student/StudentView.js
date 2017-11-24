@@ -16,6 +16,5 @@ export default class StudentView extends Component{
         <button>Remove student</button>
       </div>
     )
-
   }
 }

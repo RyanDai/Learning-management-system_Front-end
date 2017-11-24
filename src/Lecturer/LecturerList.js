@@ -11,7 +11,7 @@ function Lecture(props) {
 
 export default function LectureList(props){
     return(
-    <ul class="list-group">
+    <ul className="list-group">
         {
             props.ls.map(
                 (lecturer) => <Lecture key={`${lecturer.id}`} lecturer={lecturer}/>)

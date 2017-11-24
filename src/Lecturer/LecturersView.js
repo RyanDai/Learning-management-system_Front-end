@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import LecturerList from './LecturerList';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 
 export default class LecturersView extends Component{
     constructor(props){
@@ -39,6 +40,7 @@ export default class LecturersView extends Component{
             <div>
                 <h1>Lectures</h1>
                 <LecturerList ls={lectures}/>
+                <Link className = "btn btn-danger shadow-sm" to={`/lecturers/create`}>Create</Link>
             </div>
         )
 

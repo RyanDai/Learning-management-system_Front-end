@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import '../styles/detail.css';
 import Gravatar from 'react-gravatar';
 
 export default class LecturerDetailView extends Component {
@@ -10,57 +9,129 @@ export default class LecturerDetailView extends Component {
             isLoading: false,
             isEditing: false,
             isSaving: false,
-            lecturer: {}
-
+            lecturer: {
+                FirstName:"",
+                LastName:"",
+                Email:"",
+                Phone:"",
+                Address:{
+                    Line1:"",
+                    Line2:"",
+                    City:"",
+                    State:"",
+                    PostCode:"",
+                    Country:""
+                }
+            }
         }
     }
 
     isNew() {
-        const { id } = this.props.match.params;
+        const {id} = this.props.match.params;
         return id === 'create';
     }
 
     componentWillMount() {
         if (this.isNew()) {
-            this.setState({lecturer: {}, isEditing: true});
+            this.setState({isEditing: true});
             return;
         }
         this.loadLecturer()
     }
 
     loadLecturer() {
-        const { id } = this.props.match.params;
+        const {id} = this.props.match.params;
         this.setState({isLoading: true});
         axios.get(`/api/lecturer/${id}`)
             .then(response => {
-                console.log(response.data);
+                console.log(response);
                 this.setState({
-                lecturer: response.data,
-                isLoading: false
+                    lecturer: response.data,
+                    isLoading: false
                 });
             })
             .catch(error => console.log(error));
     }
 
-    handleInputChange(event) {
+    handleInputChange(event, field) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
-        this.setState({
-            [name]: value
-        });
+        if(field === "p") {
+            this.setState({
+                lecturer:{
+                    ...this.state.lecturer,
+                    [name]: value
+                }
+            });
+        } else {
+            console.log(name+","+value);
+            this.setState({
+                lecturer: {
+                    ...this.state.lecturer,
+                    Address:{
+                        ...this.state.lecturer.Address,
+                        [name]: value
+                    }
+                }
+            })
+        }
+
     }
 
-    renderDisplay(lecturer) {
+    handleSubmit(event) {
+        event.preventDefault(); // prevent default form submission
+        this.setState({ isSaving: true });
+        const { lecturer } = this.state;
+        console.log(lecturer);
+        if (this.isNew()) {
+            axios.post('/api/lecturer', lecturer)
+                .then(response => {
+                    this.setState({ isEditing: false, isSaving:false});
+                    // dialog
+                });
+        } else {
+            axios.put(`/api/lecturer/${lecturer.ID}`, lecturer)
+                .then(response => {
+                    this.setState({ isEditing: false, isSaving:false});
+                    // dialog
+                })
+                .catch(error=>{
+                    console.log(error);
+                });
+        }
+    }
+
+    handleCancel() {
+        if (this.isNew()) {
+            this.props.history.push('/lecturers');
+        } else {
+            this.setState({
+                isEditing: false,
+            });
+        }
+    }
+
+    handleDelete() {
+        const { lecturer } = this.state;
+        debugger;
+        axios.delete(`/api/lecturer/${lecturer.ID}`)
+            .then(() => {
+                this.props.history.push('/lecturers');
+            });
+    }
+
+    renderDisplay(){
+        const {lecturer} = this.state;
         return (
             <div className="highlight shadow-lg">
                 <h1 className="name">{lecturer.FirstName} &nbsp; {lecturer.LastName}</h1>
                 <div className="row">
                     <Gravatar email={lecturer.Email} size={150} className="shadow-sm"/>
                     <ul className="fa-ul">
-                        <li><i class="fa-li fa fa-envelope" aria-hidden="true"></i>{lecturer.Email}</li>
-                        <li><i class="fa-li fa fa-phone" aria-hidden="true"></i>{lecturer.Phone}</li>
+                        <li><i className="fa-li fa fa-envelope" aria-hidden="true"></i>{lecturer.Email}</li>
+                        <li><i className="fa-li fa fa-phone" aria-hidden="true"></i>{lecturer.Phone}</li>
                     </ul>
                 </div>
                 <div className="row">
@@ -68,15 +139,17 @@ export default class LecturerDetailView extends Component {
                         Donec at nibh risus. Nam mollis nulla eget scelerisque facilisis.
                         Suspendisse sit amet condimentum dolor. Vestibulum euismod congue mi
                         pulvinar dignissim. </p>
-                    <button className = "btn btn-primary shadow-sm" onClick={()=>this.setState({isEditing: true})}>Edit</button>
-                    <button className = "btn btn-danger shadow-sm" >Delete</button>
+                    <button className="btn btn-primary shadow-sm" onClick={() => this.setState({isEditing: true})}>
+                        Edit
+                    </button>
+                        <button className="btn btn-danger shadow-sm">Delete</button>
                 </div>
             </div>
         )
     }
 
     validation(event) {
-        var form = document.getElementById('needs-validation');
+        const form = document.getElementById('needs-validation');
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
@@ -84,23 +157,28 @@ export default class LecturerDetailView extends Component {
         form.classList.add('was-validated');
     }
 
-    renderForm(lecturer) {
+    renderForm() {
+        const {lecturer} = this.state;
         return (
             <div className="highlight shadow-lg">
-                <form className="form-horizontal" role="form" id="needs-validation" noValidate>
+                <form className="form-horizontal" role="form" id="needs-validation" onSubmit={(e)=> this.handleSubmit(e)}>
                     <fieldset>
                         <legend>Personal Details</legend>
                         <div className="form-group row">
                             <label className="col-sm-2 col-form-label" htmlFor="textinput">FirstName</label>
                             <div className="col-sm-4">
-                                <input type="text" placeholder="FirstName" className="form-control" name="FirstName" required/>
+                                <input type="text" value={'' || lecturer.FirstName} placeholder="FirstName"
+                                       className="form-control" name="FirstName"
+                                       onChange={e=>this.handleInputChange(e,"p")} required/>
                                 <div class="invalid-feedback">
                                     Please provide a valid name.
                                 </div>
                             </div>
                             <label className="col-sm-2 col-form-label" htmlFor="textinput">LastName</label>
                             <div className="col-sm-4">
-                                <input type="text" placeholder="LastName" className="form-control" name="LastName" required/>
+                                <input type="text" value={'' || lecturer.LastName} placeholder="LastName"
+                                       className="form-control" name="LastName"
+                                       onChange={e=>this.handleInputChange(e,"p")} required/>
                                 <div class="invalid-feedback">
                                     Please provide a valid last name.
                                 </div>
@@ -110,14 +188,19 @@ export default class LecturerDetailView extends Component {
                         <div className="form-group row">
                             <label className="col-sm-2 col-form-label" htmlFor="textinput">Email</label>
                             <div className="col-sm-4">
-                                <input type="email" placeholder="example@example.com" className="form-control" name="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required/>
+                                <input type="email" value={'' || lecturer.Email} placeholder="example@example.com"
+                                       className="form-control"
+                                       name="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                                       onChange={e=>this.handleInputChange(e,"p")} required/>
                                 <div class="invalid-feedback">
                                     Please provide a valid email.
                                 </div>
                             </div>
                             <label className="col-sm-2 col-form-label" htmlFor="textinput">Phone</label>
                             <div className="col-sm-4">
-                                <input type="text" placeholder="+61412345678" className="form-control" name="Phone" pattern="\+61\d{9,9}" required/>
+                                <input type="text" value={'' || lecturer.Phone } placeholder="+61412345678"
+                                       className="form-control" name="Phone"
+                                       pattern="\+61\d{9,9}" onChange={e=>this.handleInputChange(e,"p")} required/>
                                 <div class="invalid-feedback">
                                     Please provide a valid phone number.
                                 </div>
@@ -129,43 +212,51 @@ export default class LecturerDetailView extends Component {
                         <div className="form-group row">
                             <label className="col-sm-2 col-form-label" htmlFor="textinput">Line 1</label>
                             <div className="col-sm-10">
-                                <input type="text" placeholder="Address Line 1" className="form-control" required/>
+                                <input type="text" value={'' || lecturer.Address.Line1} placeholder="Address Line 1"
+                                       className="form-control" name="Line1" onChange={e=>this.handleInputChange(e,"a")} required/>
                             </div>
                         </div>
 
                         <div className="form-group row">
                             <label className="col-sm-2 col-form-label" htmlFor="textinput">Line 2</label>
                             <div className="col-sm-10">
-                                <input type="text" placeholder="Address Line 2" className="form-control"/>
+                                <input type="text" value={'' || lecturer.Address.Line2} placeholder="Address Line 2"
+                                       className="form-control" name="Line2" onChange={e=>this.handleInputChange(e,"a")}/>
                             </div>
                         </div>
 
                         <div className="form-group row">
                             <label className="col-sm-2 col-form-label" htmlFor="textinput">State</label>
                             <div className="col-sm-4">
-                                <input type="text" placeholder="State" className="form-control" required/>
+                                <input type="text" value={'' || lecturer.Address.State} placeholder="State"
+                                       className="form-control" name="State" onChange={e=>this.handleInputChange(e,"a")} required/>
                             </div>
                             <label className="col-sm-2 col-form-label" htmlFor="textinput">City</label>
                             <div className="col-sm-4">
-                                <input type="text" placeholder="City" className="form-control" required/>
+                                <input type="text" value={'' || lecturer.Address.City} placeholder="City"
+                                       className="form-control" name="City" onChange={e=>this.handleInputChange(e,"a")} required/>
                             </div>
                         </div>
 
                         <div className="form-group row">
                             <label className="col-sm-2 col-form-label" htmlFor="textinput">Postcode</label>
                             <div className="col-sm-4">
-                                <input type="text" placeholder="Post Code" className="form-control" pattern="\d+" required/>
+                                <input type="text" value={'' || lecturer.Address.PostCode} placeholder="Post Code"
+                                       className="form-control" pattern="\d+"
+                                       name="PostCode" onChange={e=>this.handleInputChange(e,"a")} required/>
                             </div>
                             <label className="col-sm-2 col-form-label" htmlFor="textinput">Country</label>
                             <div className="col-sm-4">
-                                <input type="text" placeholder="Country" className="form-control" required/>
+                                <input type="text" value={'' || lecturer.Address.Country} placeholder="Country"
+                                       className="form-control" name="Country" onChange={e=>this.handleInputChange(e,"a")} required/>
                             </div>
                         </div>
                     </fieldset>
 
-                    <div className="form-group">
-                        <button type="submit" className="btn btn-default">Cancel</button>
-                        <button type="submit" className="btn btn-primary" onClick={e=>this.validation(e)}>Save</button>
+                    <div className="form-group row">
+                        <button type="submit" className="btn btn-primary shadow-sm" onClick={e => this.validation(e)}>Save
+                        </button>
+                        <button className="btn btn-danger shadow-sm" onClick={()=> this.handleCancel()}>Cancel</button>
                     </div>
                 </form>
             </div>
@@ -173,12 +264,12 @@ export default class LecturerDetailView extends Component {
     }
 
     render() {
-        const {isLoading, isEditing, lecturer} = this.state;
+        const {isLoading, isEditing} = this.state;
         if (isLoading)
             return <span>Loading lecture</span>;
 
         return isEditing ?
-            this.renderForm(lecturer) : this.renderDisplay(lecturer);
+            this.renderForm() : this.renderDisplay();
     }
 
 }
