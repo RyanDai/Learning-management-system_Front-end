@@ -2,8 +2,8 @@ import React from 'react';
 import classnames from 'classnames';
 
 
-export default function Button({children, primary, danger, className, type='button', ...rest}) {
-// calculate the css class name
+export default function Button({ children, primary, danger, className, type = 'button', ...rest }) {
+    // calculate the css class name
     let buttonStyle = 'btn-default';
     if (primary) {
         buttonStyle = 'btn-primary';
@@ -13,8 +13,8 @@ export default function Button({children, primary, danger, className, type='butt
     }
     return (
         <button type={type}
-                className={classnames('btn', buttonStyle, className, 'shadow-sm')}
-                {...rest}
+            className={classnames('btn', buttonStyle, className, 'shadow-sm')}
+            {...rest}
         >
             {children}
         </button>
