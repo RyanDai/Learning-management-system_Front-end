@@ -4,6 +4,7 @@ import Gravatar from 'react-gravatar';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import {Spinner} from '../UI/Spinner';
+import Button from '../UI/Button';
 
 
 export default class LecturerDetailView extends Component {
@@ -159,10 +160,12 @@ export default class LecturerDetailView extends Component {
                         Donec at nibh risus. Nam mollis nulla eget scelerisque facilisis.
                         Suspendisse sit amet condimentum dolor. Vestibulum euismod congue mi
                         pulvinar dignissim. </p>
-                    <button className="btn btn-primary shadow-sm" onClick={() => this.setState({isEditing: true})}>
+                    <Button primary onClick={() => this.setState({isEditing: true})}>
                         Edit
-                    </button>
-                        <button className="btn btn-danger shadow-sm" onClick={this.confirmDelete}>Delete</button>
+                    </Button>
+                    <Button danger onClick={this.confirmDelete}>
+                        Delete
+                    </Button>
                 </div>
             </div>
         )
@@ -274,9 +277,12 @@ export default class LecturerDetailView extends Component {
                     </fieldset>
 
                     <div className="form-group row">
-                        <button type="submit" className="btn btn-primary shadow-sm" onClick={e => this.validation(e)}>Save
-                        </button>
-                        <button className="btn btn-danger shadow-sm" onClick={()=> this.handleCancel()}>Cancel</button>
+                        <Button primary type="submit" onClick={e => this.validation(e)}>
+                            Save
+                        </Button>
+                        <Button danger onClick={()=> this.handleCancel()}>
+                            Cancel
+                        </Button>
                     </div>
                 </form>
             </div>
