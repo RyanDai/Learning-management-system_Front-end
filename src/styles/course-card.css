@@ -5,6 +5,8 @@
     box-shadow: 0 0 2px 0 rgba(119, 119, 119, 0.3);
     transition: box-shadow 0.5s;
     background-color: white;
+    border-radius: 10px;
+    margin: 10px 0 10px 0;
 }
 
 .course-card-name {

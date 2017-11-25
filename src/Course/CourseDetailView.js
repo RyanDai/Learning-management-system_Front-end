@@ -102,8 +102,8 @@ class CourseDetailView extends Component {
 		const { course } = this.state;
 
 		return (
-			<div className="details-card">
-				<h1>{course.Name}</h1>
+			<div className="highlight shadow-lg">
+				<h1 className="name">{course.Name}</h1>
 				<div className="row">
 					<ul>
 						<li>{course.CourseCode}</li>
@@ -127,7 +127,7 @@ class CourseDetailView extends Component {
 
 		return (
 			<form onSubmit={this.handleSubmit}>
-				<div className="form-group">
+				<div className="highlight shadow-lg">
 					<label>Name</label>
 					<input
 						type="text"
@@ -155,12 +155,15 @@ class CourseDetailView extends Component {
 						name="Description"
 						onChange={this.handleInputChange}
 					/>
-					<Button primary type="submit">
-						Save
-					</Button>
-					<Button danger onClick={() => this.handleCancel()}>
-						Cancel
-					</Button>
+					<p></p>
+					<div className="form-group row">
+						<Button primary type="submit">
+							Save
+						</Button>
+						<Button danger onClick={() => this.handleCancel()}>
+							Cancel
+						</Button>
+					</div>
 				</div>
 			</form>
 		)
