@@ -3,6 +3,7 @@ import Button from '../UI/Button';
 import CourseCard from './CourseCard';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { Spinner } from '../UI/Spinner';
 
 class CoursesView extends Component {
 	constructor(props) {
@@ -30,14 +31,14 @@ class CoursesView extends Component {
 	render() {
 		const { isLoading } = this.state;
 		if (isLoading)
-			return <span>Loading course</span>;
+			return <Spinner />;
 
 		return (
 			<div className="mainContainer">
 				<h1>Courses</h1>
 				<Link to="/courses/create">
 					<Button primary>
-						Add new course
+						Add New Course
 					</Button>
 				</Link>
 				<div className="row">

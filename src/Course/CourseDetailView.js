@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Button from '../UI/Button';
+import { Spinner } from '../UI/Spinner';
 
 class CourseDetailView extends Component {
 	constructor(props) {
@@ -168,7 +169,7 @@ class CourseDetailView extends Component {
 	render() {
 		const { isLoading, isEditing, course } = this.state;
 		if (isLoading) {
-			return <h3>Loading details...</h3>;
+			return <Spinner />;
 		}
 
 		return isEditing ?
