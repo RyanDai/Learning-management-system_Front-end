@@ -13,7 +13,7 @@ export default class StudentDetailView extends Component{
       }
     }
   }
-
+/*
   sendRequest(id){
     var studentURL = 'http://lazebear.azurewebsites.net/api/student'+'/'+id;
 
@@ -36,7 +36,7 @@ export default class StudentDetailView extends Component{
         console.log(error);
 
       });
-  }
+  }*/
 
   componentWillMount(){
     const id = this.props.match.params.id;
