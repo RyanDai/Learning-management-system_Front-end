@@ -93,6 +93,7 @@ export default class LecturerDetailView extends Component {
             axios.post('/api/lecturer', lecturer)
                 .then(response => {
                     this.setState({ isEditing: false, isLoading:false});
+                    this.props.history.push('/lecturers');
                     // dialog
                 });
         } else {
