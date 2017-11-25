@@ -5,6 +5,7 @@ import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import {Spinner} from '../UI/Spinner';
 import Button from '../UI/Button';
+import Highlight from '../UI/Highlight';
 
 
 export default class LecturerDetailView extends Component {
@@ -145,7 +146,7 @@ export default class LecturerDetailView extends Component {
     renderDisplay(){
         const {lecturer} = this.state;
         return (
-            <div className="highlight shadow-lg">
+            <Highlight>
                 <h1 className="name">{lecturer.FirstName} &nbsp; {lecturer.LastName}</h1>
                 <div className="row">
                     <Gravatar email={lecturer.Email} size={150} className="shadow-sm"/>
@@ -167,7 +168,7 @@ export default class LecturerDetailView extends Component {
                         Delete
                     </Button>
                 </div>
-            </div>
+            </Highlight>
         )
     }
 
@@ -183,7 +184,7 @@ export default class LecturerDetailView extends Component {
     renderForm() {
         const {lecturer} = this.state;
         return (
-            <div className="highlight shadow-lg">
+            <Highlight>
                 <form className="form-horizontal" role="form" id="needs-validation" onSubmit={(e)=> this.handleSubmit(e)}>
                     <fieldset>
                         <legend>Personal Details</legend>
@@ -285,7 +286,7 @@ export default class LecturerDetailView extends Component {
                         </Button>
                     </div>
                 </form>
-            </div>
+            </Highlight>
         )
     }
 
