@@ -1,0 +1,28 @@
+body{
+    background: #B71427; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #B71427 , #FFE658); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #B71427 , #FFE658); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.shadow-lg {
+    -webkit-box-shadow: 0 16px 28px 0 rgba(0, 0, 0, 0.22), 0 25px 55px 0 rgba(0, 0, 0, 0.21);
+    -moz-box-shadow: 0 16px 28px 0 rgba(0, 0, 0, 0.22), 0 25px 55px 0 rgba(0, 0, 0, 0.21);
+    box-shadow: 0 16px 28px 0 rgba(0, 0, 0, 0.22), 0 25px 55px 0 rgba(0, 0, 0, 0.21);
+}
+
+.shadow-sm {
+    -webkit-box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.22), 0 5px 11px 0 rgba(0, 0, 0, 0.21);
+    -moz-box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.22), 0 5px 11px 0 rgba(0, 0, 0, 0.21);
+    box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.22), 0 5px 11px 0 rgba(0, 0, 0, 0.21);
+}
+
+
+.react-gravatar {
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+}
+/*black: #404040*/
+/*light-blue:#6DBDD6*/
+/*red:#B71427*/
+/*yellow:#FFE658*/
