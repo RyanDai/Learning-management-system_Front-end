@@ -8,7 +8,7 @@ class CourseDetailView extends Component {
 			isLoading: false,
 			isEditing: false,
 			isSaving: false,
-			error: null,
+			// error: null,
 			course: null,
 		};
 	}
@@ -54,6 +54,7 @@ class CourseDetailView extends Component {
 
 	handleSubmit = (event) => {
 		event.preventDefault();
+
 		this.setState({ isSaving: true });
 		const { course } = this.state;
 		const onSuccess = (response) => {
@@ -62,7 +63,7 @@ class CourseDetailView extends Component {
 				isSaving: false,
 				course: response.data,
 			});
-			this.loadCourse();
+			this.props.history.push('/courses');
 		};
 
 		if (this.props.match.params.id === 'create') {
@@ -76,7 +77,7 @@ class CourseDetailView extends Component {
 
 	handleCancel() {
 		if (this.isNew()) {
-			this.props.history.push('/course');
+			this.props.history.push('/courses');
 		} else {
 			this.setState({
 				isEditing: false,
@@ -91,7 +92,7 @@ class CourseDetailView extends Component {
 		this.setState({ isDeleting: true });
 		axios.delete(`/api/course/${course.ID}`)
 			.then(() => {
-				this.props.history.push('/course');
+				this.props.history.push('/courses');
 			});
 	}
 

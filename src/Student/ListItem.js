@@ -18,7 +18,7 @@ function Item(props) {
 
 
 export default function ListItem(props) {
-	const students = props.students;
+	// const students = props.students;
 	return (
 		props.students.map((student, i) => <Item key={i} student={student} />)
 	)

@@ -35,7 +35,7 @@ class CoursesView extends Component {
 		return (
 			<div className="mainContainer">
 				<h1>Courses</h1>
-				<Link to="/courses/create" className="btn btn-lg btn-primary" >
+				<Link to="/courses/create" className="btn btn-primary" >
 					Add new course
                 </Link>
 				<div className="row">
