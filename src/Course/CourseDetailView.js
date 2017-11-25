@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Button from '../UI/Button';
 
 class CourseDetailView extends Component {
 	constructor(props) {
@@ -109,10 +110,12 @@ class CourseDetailView extends Component {
 					</ul>
 				</div>
 				<div className="row">
-					<button className="btn btn-primary shadow-sm" onClick={() => this.setState({ isEditing: true })}>
+					<Button primary onClick={() => this.setState({ isEditing: true })}>
 						Edit
-				</button>
-					<button className="btn btn-danger shadow-sm" onClick={this.handleConfirmDelete}>Delete</button>
+					</Button>
+					<Button danger onClick={this.handleConfirmDelete}>
+						Delete
+					</Button>
 				</div>
 			</div>
 		);
@@ -151,8 +154,12 @@ class CourseDetailView extends Component {
 						name="Description"
 						onChange={this.handleInputChange}
 					/>
-					<button type="submit" className="btn btn-primary shadow-sm">Save</button>
-					<button className="btn btn-danger shadow-sm" onClick={() => this.handleCancel()}>Cancel</button>
+					<Button primary type="submit">
+						Save
+					</Button>
+					<Button danger onClick={() => this.handleCancel()}>
+						Cancel
+					</Button>
 				</div>
 			</form>
 		)

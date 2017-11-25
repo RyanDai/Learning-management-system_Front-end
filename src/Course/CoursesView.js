@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import Button from '../UI/Button';
 import CourseCard from './CourseCard';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -35,9 +35,11 @@ class CoursesView extends Component {
 		return (
 			<div className="mainContainer">
 				<h1>Courses</h1>
-				<Link to="/courses/create" className="btn btn-primary" >
-					Add new course
-                </Link>
+				<Link to="/courses/create">
+					<Button primary>
+						Add new course
+					</Button>
+				</Link>
 				<div className="row">
 					{this.state.course.map(
 						course => <CourseCard course={course} key={course.ID} />

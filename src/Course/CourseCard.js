@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Button from '../UI/Button';
 
 export default function CourseCard(props) {
 	return (
@@ -10,9 +11,11 @@ export default function CourseCard(props) {
 					<p className="course-card-code">{props.course.CourseCode}</p>
 					<p className="course-card-description">{props.course.Description}</p>
 				</div>
-				<Link to={`/courses/${props.course.ID}`} className="btn btn-default">
-					Details
-                </Link>
+				<Link to={`/courses/${props.course.ID}`}>
+					<Button>
+						Details
+					</Button>
+				</Link>
 			</div>
 		</div>
 	)
