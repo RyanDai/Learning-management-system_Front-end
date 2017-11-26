@@ -6,6 +6,8 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import { Spinner } from '../UI/Spinner';
 import Button from '../UI/Button';
 import Highlight from '../UI/Highlight';
+import Courselist from '../UI/Courselist';
+import Enrolment from "../UI/Enrolment";
 
 
 export default class LecturerDetailView extends Component {
@@ -28,7 +30,8 @@ export default class LecturerDetailView extends Component {
 					PostCode: "",
 					Country: ""
 				}
-			}
+			},
+			course:{}
 		}
 	}
 
@@ -158,29 +161,11 @@ export default class LecturerDetailView extends Component {
                 </div>
                 <div className="row">
 					<h2>Teaching Course</h2>
-					<div id="exampleAccordion" data-children=".item">
-						<div class="item">
-							<a data-toggle="collapse" data-parent="#exampleAccordion" href="#exampleAccordion1" aria-expanded="true" aria-controls="exampleAccordion1">
-								Toggle item
-							</a>
-							<div id="exampleAccordion1" class="collapse show" role="tabpanel">
-								<p class="mb-3">
-									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium lorem non vestibulum scelerisque. Proin a vestibulum sem, eget tristique massa. Aliquam lacinia rhoncus nibh quis ornare.
-								</p>
-							</div>
-						</div>
-						<div class="item">
-							<a data-toggle="collapse" data-parent="#exampleAccordion" href="#exampleAccordion2" aria-expanded="false" aria-controls="exampleAccordion2">
-								Toggle item 2
-							</a>
-							<div id="exampleAccordion2" class="collapse" role="tabpanel">
-								<p class="mb-3">
-									Donec at ipsum dignissim, rutrum turpis scelerisque, tristique lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus nec dui turpis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-								</p>
-							</div>
-						</div>
-					</div>
                 </div>
+				<div className="row">
+					<Courselist course={lecturer.Teaching}/>
+					<Enrolment teaching id={lecturer.ID}/>
+				</div>
 				<div className="row">
 					<Button primary onClick={() => this.setState({ isEditing: true })}>
 						Edit
