@@ -4,7 +4,6 @@ import Button from './Button';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { Spinner } from '../UI/Spinner';
-import Modal from '../UI/Modal';
 
 function Course(props) {
     const course = props.course;

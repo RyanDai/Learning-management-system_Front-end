@@ -9,7 +9,6 @@ import Highlight from '../UI/Highlight';
 import Courselist from '../UI/Courselist';
 import Enrolment from "../UI/Enrolment";
 import Modal from "../UI/Modal";
-import { Portal } from 'react-portal';
 
 export default class LecturerDetailView extends Component {
 	constructor(props) {
@@ -203,7 +202,7 @@ export default class LecturerDetailView extends Component {
         const {lecturer} = this.state;
         return (
 			<Highlight id="main-body">
-                <form className="form-horizontal" role="form" id="needs-validation" onSubmit={(e)=> this.handleSubmit(e)}>
+                <div className="form-horizontal" role="form" id="needs-validation" onSubmit={(e)=> this.handleSubmit(e)}>
                     <fieldset>
                         <legend>Personal Details</legend>
                         <div className="form-group row">
@@ -212,7 +211,7 @@ export default class LecturerDetailView extends Component {
                                 <input type="text" value={'' || lecturer.FirstName} placeholder="FirstName"
                                        className="form-control" name="FirstName"
                                        onChange={e=>this.handleInputChange(e,"p")} required/>
-                                <div class="invalid-feedback">
+                                <div className="invalid-feedback">
                                     Please provide a valid name.
                                 </div>
 							</div>
@@ -221,7 +220,7 @@ export default class LecturerDetailView extends Component {
 								<input type="text" value={'' || lecturer.LastName} placeholder="LastName"
 									className="form-control" name="LastName"
 									onChange={e => this.handleInputChange(e, "p")} required />
-								<div class="invalid-feedback">
+								<div className="invalid-feedback">
 									Please provide a valid last name.
                                 </div>
 							</div>
@@ -234,7 +233,7 @@ export default class LecturerDetailView extends Component {
 									className="form-control"
 									name="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
 									onChange={e => this.handleInputChange(e, "p")} required />
-								<div class="invalid-feedback">
+								<div className="invalid-feedback">
 									Please provide a valid email.
                                 </div>
 							</div>
@@ -243,7 +242,7 @@ export default class LecturerDetailView extends Component {
 								<input type="text" value={'' || lecturer.Phone} placeholder="+61412345678"
 									className="form-control" name="Phone"
 									pattern="\+61\d{9,9}" onChange={e => this.handleInputChange(e, "p")} required />
-								<div class="invalid-feedback">
+								<div className="invalid-feedback">
 									Please provide a valid phone number.
                                 </div>
 							</div>
@@ -303,7 +302,7 @@ export default class LecturerDetailView extends Component {
 							Cancel
                         </Button>
                     </div>
-                </form>
+                </div>
             </Highlight>
         )
     }

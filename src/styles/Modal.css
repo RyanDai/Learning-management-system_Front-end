@@ -5,4 +5,9 @@
 
 .modal-header {
     margin:0 auto;
+    color: #FF0000;
+}
+
+.modal-body {
+    margin:0 auto;
 }
