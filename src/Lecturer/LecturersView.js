@@ -41,9 +41,9 @@ export default class LecturersView extends Component {
 
         return (
             <div>
-                <h1>Lectures</h1>
+                <h1 style={{color:"white"}}>Lectures</h1>
                 <LecturerList ls={lectures} />
-                <Link className="btn btn-danger shadow-sm" to={`/lecturers/create`}>Create</Link>
+                <Link className="btn btn-danger shadow-sm" style={{marginTop:"10px"}} to={`/lecturers/create`}>Create New Lecturer</Link>
             </div>
         )
 

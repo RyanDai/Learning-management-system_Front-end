@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import '../styles/course-list.css'
 function Course(props) {
     const course = props.course;
     return (
@@ -12,7 +12,7 @@ function Course(props) {
 
 export default function Courselist(props) {
     return (
-        <div className="col-12 course-list">
+        <div className="col-10 offset-1 course-list">
             <div className="d-flex flex-row flex-wrap">
                 {
                     props.course.map(

@@ -8,7 +8,9 @@ import Button from '../UI/Button';
 import Highlight from '../UI/Highlight';
 import Courselist from '../UI/Courselist';
 import Enrolment from "../UI/Enrolment";
+import Dropcourse from "../UI/Dropcourse";
 import Modal from "../UI/Modal";
+import ErrorMsg from '../UI/ErrorMsg';
 
 export default class LecturerDetailView extends Component {
 	constructor(props) {
@@ -32,8 +34,7 @@ export default class LecturerDetailView extends Component {
 					PostCode: "",
 					Country: ""
 				}
-			},
-			course:{}
+			}
 		}
 	}
 
@@ -58,7 +59,7 @@ export default class LecturerDetailView extends Component {
 		this.setState({showError:false});
 	}
 
-	loadLecturer() {
+	loadLecturer=()=> {
 		const { id } = this.props.match.params;
 		this.setState({ isLoading: true });
 		axios.get(`/api/lecturer/${id}`)
@@ -69,7 +70,10 @@ export default class LecturerDetailView extends Component {
 					isLoading: false
 				});
 			})
-			.catch(error => console.log(error));
+			.catch(error => {
+                const errorMsg = <ErrorMsg error={error}/>;
+                this.displayDialog(errorMsg);
+			});
 	}
 
 	handleInputChange(event, field) {
@@ -107,18 +111,16 @@ export default class LecturerDetailView extends Component {
 		if (this.isNew()) {
 			axios.post('/api/lecturer', lecturer)
 				.then(response => {
-					this.setState({ isEditing: false, isLoading: false });
 					this.props.history.push('/lecturers');
-					// dialog
 				});
 		} else {
 			axios.put(`/api/lecturer/${lecturer.ID}`, lecturer)
 				.then(response => {
 					this.setState({ isEditing: false, isLoading: false });
-					// dialog
 				})
 				.catch(error => {
-					console.log(error);
+                    const errorMsg = <ErrorMsg error={error}/>;
+                    this.displayDialog(errorMsg);
 				});
 		}
 	}
@@ -153,6 +155,10 @@ export default class LecturerDetailView extends Component {
 			.then(() => {
 				this.props.history.push('/lecturers');
 				this.setState({ isLoading: false })
+			})
+			.catch(error=>{
+                const errorMsg = <ErrorMsg error={error}/>;
+                this.displayDialog(errorMsg);
 			});
 	}
 
@@ -172,12 +178,17 @@ export default class LecturerDetailView extends Component {
                         <li><i className="fa-li fa fa-home" aria-hidden="true"></i>{lecturer.Address.City}.{lecturer.Address.Country}</li>
                     </ul>
                 </div>
-                <div className="row">
-					<h2>Teaching Course</h2>
+                <div className="row" style={{marginTop:"20px"}}>
+					<div className="col-6">
+						<h2>Teaching Course</h2>
+					</div>
+					<div className="col-6" style={{display: "inherit"}}>
+						<Enrolment teaching id={lecturer.ID} onSuccess={this.loadLecturer} onError={error=>this.displayDialog(error)}/>
+						<Dropcourse teaching id={lecturer.ID} courses={lecturer.Teaching} onSuccess={this.loadLecturer} onError={error=>this.displayDialog(error)}/>
+					</div>
                 </div>
-				<div className="row">
+				<div className="row" style={{marginTop:"10px", marginBottom:"20px"}}>
 					<Courselist course={lecturer.Teaching}/>
-					<Enrolment teaching id={lecturer.ID} dialog={error=>this.displayDialog(error)}/>
 				</div>
 				<div className="row">
 					<Button primary onClick={() => this.setState({ isEditing: true })}>
@@ -204,7 +215,7 @@ export default class LecturerDetailView extends Component {
         const {lecturer} = this.state;
         return (
 			<Highlight id="main-body">
-                <div className="form-horizontal" role="form" id="needs-validation" onSubmit={(e)=> this.handleSubmit(e)}>
+                <form className="form-horizontal" role="form" id="needs-validation" onSubmit={(e)=> this.handleSubmit(e)}>
                     <fieldset>
                         <legend>Personal Details</legend>
                         <div className="form-group row">
@@ -304,7 +315,7 @@ export default class LecturerDetailView extends Component {
 							Cancel
                         </Button>
                     </div>
-                </div>
+                </form>
             </Highlight>
         )
     }
@@ -313,8 +324,6 @@ export default class LecturerDetailView extends Component {
 		const { isLoading, isEditing} = this.state;
 		if (isLoading)
 			return <Spinner />;
-
-
 
 		return isEditing ?
 			this.renderForm() : this.renderDisplay();

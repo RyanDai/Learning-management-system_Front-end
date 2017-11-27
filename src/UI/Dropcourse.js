@@ -3,7 +3,6 @@ import axios from 'axios';
 import Button from './Button';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { Spinner } from '../UI/Spinner';
 import ErrorMsg from '../UI/ErrorMsg';
 
 function Course(props) {
@@ -13,18 +12,17 @@ function Course(props) {
     )
 }
 
-export default class Enrolment extends Component {
+export default class Dropcourse extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            course:{},
-            courseID:"0",
-            isLoading: false
+            courseID:"0"
         }
     }
 
-    handleAssign=()=>{
-        const {course} = this.state;
+    handleDrop=()=>{
+        const courses = this.props.courses;
+        console.log(courses);
         confirmAlert({
             title: 'Course Assign',                        // Title dialog
             message: 'Select a course from below',               // Message dialog
@@ -32,36 +30,18 @@ export default class Enrolment extends Component {
                 <select className="custom-select" onChange={(e)=>this.setState({courseID:e.target.value})}>
                     <option value="0">Open this select menu</option>
                     {
-                        course.map(
-                            (course) => <Course key={`${course.ID}`} course={course} />)
+                        courses.map(
+                            (course) => <Course key={`${course.Course.ID}`} course={course.Course} />)
                     }
                 </select>
             </div>),       // Custom UI or Component
             confirmLabel: 'Confirm',                           // Text button confirm
             cancelLabel: 'Cancel',                             // Text button cancel
-            onConfirm: this.requestEnrol,     // Action after Cancel
+            onConfirm: this.requestDrop,     // Action after Cancel
         })
     }
 
-
-    loadCourse=()=> {
-        this.setState({ isLoading: true });
-        axios.get(`/api/course`)
-            .then(response => {
-                console.log(response.data);
-                this.setState({
-                    course: response.data,
-                    isLoading: false
-                });
-                this.handleAssign();
-            })
-            .catch(error => {
-                const errorMsg = <ErrorMsg error={error}/>;
-                this.props.onError(errorMsg);
-            });
-    }
-
-    requestEnrol = () => {
+    requestDrop = () => {
 
         var url = "";
         if(this.props.teaching) {
@@ -71,8 +51,8 @@ export default class Enrolment extends Component {
         }
         url += `${this.props.id}/${this.state.courseID}`;
         console.log(url);
-        axios.post(url)
-            .then(response => {
+        axios.delete(url)
+            .then(() => {
                 this.setState({
                     isLoading: false
                 });
@@ -80,20 +60,13 @@ export default class Enrolment extends Component {
             })
             .catch(error =>
             {
-                this.setState({
-                    courseID: "0"
-                });
                 const errorMsg = <ErrorMsg error={error}/>;
                 this.props.onError(errorMsg);
             });
     }
     render() {
-        const {isLoading} = this.state;
-        if (isLoading)
-            return <Spinner />;
-
         return (
-            <Button primary onClick={this.loadCourse} className="fa fa-plus-circle"/>
+            <Button danger onClick={this.handleDrop} className="fa fa-minus-circle"/>
         )
     }
 }
