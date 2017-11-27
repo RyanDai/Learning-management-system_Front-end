@@ -8,7 +8,7 @@ import Button from '../UI/Button';
 import Highlight from '../UI/Highlight';
 import Courselist from '../UI/Courselist';
 import Enrolment from "../UI/Enrolment";
-
+import Modal from "../UI/Modal";
 
 export default class LecturerDetailView extends Component {
 	constructor(props) {
@@ -174,6 +174,7 @@ export default class LecturerDetailView extends Component {
 						Delete
 					</Button>
 				</div>
+				<Modal/>
             </Highlight>
         )
     }
