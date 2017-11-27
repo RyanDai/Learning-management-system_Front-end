@@ -3,7 +3,7 @@ import Button from './Button';
 import '../styles/Modal.css';
 
 
-export default function Modal({ body, btnClick}) {
+export default function Modal({ children, btnClick}) {
 
         return (
             <div className="modal" tabIndex="-1" role="dialog" id="dialog" style={{display:"block"}}>
@@ -13,7 +13,7 @@ export default function Modal({ body, btnClick}) {
                             <h5 className="modal-title">Error</h5>
                         </div>
                         <div className="modal-body">
-                            <p>{body}</p>
+                            {children}
                         </div>
                         <div className="modal-footer">
                             <Button primary onClick={btnClick}>Close</Button>
