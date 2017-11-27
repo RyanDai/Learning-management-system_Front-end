@@ -160,7 +160,7 @@ export default class LecturerDetailView extends Component {
         const {showError,lecturer, error} = this.state;
         return (
             <Highlight id="main-body">
-                {showError && <Modal title={"Error"} body={error} btnClick={this.hideDialog}/>}
+                {showError && <Modal body={error} btnClick={this.hideDialog}/>}
                 <h1 className="name">{lecturer.FirstName} &nbsp; {lecturer.LastName}</h1>
                 <div className="row">
                     <Gravatar email={lecturer.Email} size={150} className="shadow-sm"/>
