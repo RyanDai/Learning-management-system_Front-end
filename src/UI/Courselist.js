@@ -12,8 +12,8 @@ function Course(props) {
 
 export default function Courselist(props) {
     return (
-        <div class="col-12 course-list">
-            <div class="d-flex flex-row flex-wrap">
+        <div className="col-12 course-list">
+            <div className="d-flex flex-row flex-wrap">
                 {
                     props.course.map(
                         (course) => <Course key={`${course.Course.ID}`} course={course} />)

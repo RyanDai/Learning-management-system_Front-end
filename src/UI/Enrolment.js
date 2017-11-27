@@ -29,7 +29,7 @@ export default class Enrolment extends Component {
             title: 'Course Assign',                        // Title dialog
             message: 'Select a course from below',               // Message dialog
             childrenElement: () => (<div className="dialog-content">
-                <select class="custom-select" onChange={(e)=>this.setState({courseID:e.target.value})}>
+                <select className="custom-select" onChange={(e)=>this.setState({courseID:e.target.value})}>
                     <option value="0">Open this select menu</option>
                     {
                         course.map(

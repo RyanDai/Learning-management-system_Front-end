@@ -3,36 +3,24 @@ import Button from './Button';
 import '../styles/Modal.css';
 
 
-export default class Modal extends React.Component {
+export default function Modal({ body, title, btnClick}) {
 
-    constructor(props) {
-        super(props);
-        this.state={
-            show:"block"
-        }
-    }
-
-    closeDialog=()=> {
-        this.setState({show:"none"})
-    }
-
-    render() {
         return (
-            <div class="modal" tabindex="-1" role="dialog" id="dialog" style={{display:`${this.state.show}`}}>
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">{this.props.title}</h5>
+            <div className="modal" tabIndex="-1" role="dialog" id="dialog" style={{display:"block"}}>
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">{title}</h5>
                         </div>
-                        <div class="modal-body">
-                            <p>{this.props.body}</p>
+                        <div className="modal-body">
+                            <p>{body}</p>
                         </div>
-                        <div class="modal-footer">
-                            <Button primary onClick={this.props.btnClick}>Close</Button>
+                        <div className="modal-footer">
+                            <Button primary onClick={btnClick}>Close</Button>
                         </div>
                     </div>
                 </div>
             </div>
         );
-    }
+
 }
