@@ -9,6 +9,7 @@ import Highlight from '../UI/Highlight';
 import Courselist from '../UI/Courselist';
 import Enrolment from "../UI/Enrolment";
 import Modal from "../UI/Modal";
+import { Portal } from 'react-portal';
 
 export default class LecturerDetailView extends Component {
 	constructor(props) {
@@ -17,6 +18,8 @@ export default class LecturerDetailView extends Component {
 			isLoading: false,
 			isEditing: false,
 			isSaving: false,
+			showError: false,
+			error:null,
 			lecturer: {
 				FirstName: "",
 				LastName: "",
@@ -46,6 +49,14 @@ export default class LecturerDetailView extends Component {
 			return;
 		}
 		this.loadLecturer()
+	}
+
+    displayDialog=(error) =>{
+		this.setState({showError:true, error:error});
+    }
+
+    hideDialog=()=>{
+		this.setState({showError:false});
 	}
 
 	loadLecturer() {
@@ -147,9 +158,10 @@ export default class LecturerDetailView extends Component {
 	}
 
     renderDisplay(){
-        const {lecturer} = this.state;
+        const {showError,lecturer, error} = this.state;
         return (
-            <Highlight>
+            <Highlight id="main-body">
+                {showError && <Modal title={"Error"} body={error} btnClick={this.hideDialog}/>}
                 <h1 className="name">{lecturer.FirstName} &nbsp; {lecturer.LastName}</h1>
                 <div className="row">
                     <Gravatar email={lecturer.Email} size={150} className="shadow-sm"/>
@@ -164,7 +176,7 @@ export default class LecturerDetailView extends Component {
                 </div>
 				<div className="row">
 					<Courselist course={lecturer.Teaching}/>
-					<Enrolment teaching id={lecturer.ID}/>
+					<Enrolment teaching id={lecturer.ID} dialog={error=>this.displayDialog(error)}/>
 				</div>
 				<div className="row">
 					<Button primary onClick={() => this.setState({ isEditing: true })}>
@@ -174,7 +186,6 @@ export default class LecturerDetailView extends Component {
 						Delete
 					</Button>
 				</div>
-				<Modal/>
             </Highlight>
         )
     }
@@ -191,7 +202,7 @@ export default class LecturerDetailView extends Component {
     renderForm() {
         const {lecturer} = this.state;
         return (
-            <Highlight>
+			<Highlight id="main-body">
                 <form className="form-horizontal" role="form" id="needs-validation" onSubmit={(e)=> this.handleSubmit(e)}>
                     <fieldset>
                         <legend>Personal Details</legend>
@@ -298,9 +309,11 @@ export default class LecturerDetailView extends Component {
     }
 
 	render() {
-		const { isLoading, isEditing } = this.state;
+		const { isLoading, isEditing} = this.state;
 		if (isLoading)
 			return <Spinner />;
+
+
 
 		return isEditing ?
 			this.renderForm() : this.renderDisplay();

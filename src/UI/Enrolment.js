@@ -4,6 +4,7 @@ import Button from './Button';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { Spinner } from '../UI/Spinner';
+import Modal from '../UI/Modal';
 
 function Course(props) {
     const course = props.course;
@@ -42,6 +43,7 @@ export default class Enrolment extends Component {
         })
     }
 
+
     loadCourse=()=> {
         this.setState({ isLoading: true });
         axios.get(`/api/course`)
@@ -53,7 +55,11 @@ export default class Enrolment extends Component {
                 });
                 this.handleAssign();
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+                console.log(error);
+                this.showDialog(error);
+                console.log("what")
+            });
     }
 
     requestEnrol = () => {
@@ -74,7 +80,10 @@ export default class Enrolment extends Component {
                     isLoading: false
                 });
             })
-            .catch(error => console.log(error));
+            .catch(error =>
+            {
+                this.props.dialog(error.response.data);
+            });
     }
     render() {
         const {isLoading} = this.state;
