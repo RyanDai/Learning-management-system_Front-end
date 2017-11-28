@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Button from '../UI/Button';
 import { Spinner } from '../UI/Spinner';
+import Highlight from '../UI/Highlight';
+import ErrorMsg from '../UI/ErrorMsg';
 
 class CourseDetailView extends Component {
 	constructor(props) {
@@ -10,7 +12,7 @@ class CourseDetailView extends Component {
 			isLoading: false,
 			isEditing: false,
 			isSaving: false,
-			// error: null,
+			error: null,
 			course: null,
 		};
 	}
@@ -28,6 +30,14 @@ class CourseDetailView extends Component {
 		this.loadCourse()
 	}
 
+    displayDialog=(error) =>{
+		this.setState({showError:true, error:error});
+    }
+
+    hideDialog=()=>{
+		this.setState({showError:false});
+	}
+
 	loadCourse() {
 		const { id } = this.props.match.params;
 		this.setState({ isLoading: true });
@@ -39,6 +49,10 @@ class CourseDetailView extends Component {
 					isLoading: false
 				});
 			})
+			.catch(error => {
+                const errorMsg = <ErrorMsg error={error}/>;
+                this.displayDialog(errorMsg);
+			});
 	}
 
 	handleInputChange = (event) => {
@@ -102,7 +116,7 @@ class CourseDetailView extends Component {
 		const { course } = this.state;
 
 		return (
-			<div className="highlight shadow-lg">
+			<Highlight>
 				<h1 className="name">{course.Name}</h1>
 				<div className="row">
 					<ul>
@@ -118,7 +132,7 @@ class CourseDetailView extends Component {
 						Delete
 					</Button>
 				</div>
-			</div>
+			</Highlight>
 		);
 	}
 
