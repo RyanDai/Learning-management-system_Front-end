@@ -4,6 +4,7 @@ import Button from '../UI/Button';
 import { Spinner } from '../UI/Spinner';
 import Highlight from '../UI/Highlight';
 import ErrorMsg from '../UI/ErrorMsg';
+import Teachinglist from '../UI/Teachinglist';
 
 class CourseDetailView extends Component {
 	constructor(props) {
@@ -119,11 +120,18 @@ class CourseDetailView extends Component {
 			<Highlight>
 				<h1 className="name">{course.Name}</h1>
 				<div className="row">
-					<ul>
+					<ul className="list-group">
 						<li>{course.CourseCode}</li>
 						<li>{course.Description}</li>
 					</ul>
 				</div>
+				<div className="row" style={{marginTop:"20px"}}>
+					<div className="col-6">
+						<h2>Lecturer:</h2>
+					</div>
+					<Teachinglist lecturer={course.Teaching}/>
+				</div>
+				<p></p>
 				<div className="row">
 					<Button primary onClick={() => this.setState({ isEditing: true })}>
 						Edit
