@@ -9,8 +9,8 @@ import Highlight from '../UI/Highlight';
 import Courselist from '../UI/Courselist';
 import Enrolment from "../UI/Enrolment";
 import Dropcourse from "../UI/Dropcourse";
-import Modal from "../UI/Modal";
-import ErrorMsg from '../UI/ErrorMsg';
+import Modal from "../Utils/Modal";
+import ErrorMsg from '../Utils/ErrorMsg';
 
 export default class LecturerDetailView extends Component {
 	constructor(props) {
@@ -212,9 +212,12 @@ export default class LecturerDetailView extends Component {
 	}
 
     renderForm() {
-        const {lecturer} = this.state;
+        const {showError, error, lecturer} = this.state;
         return (
 			<Highlight id="main-body">
+                {showError && <Modal btnClick={this.hideDialog}>
+					<div>{error}</div>
+				</Modal>}
                 <form className="form-horizontal" role="form" id="needs-validation" onSubmit={(e)=> this.handleSubmit(e)}>
                     <fieldset>
                         <legend>Personal Details</legend>
