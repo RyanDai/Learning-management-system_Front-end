@@ -13,7 +13,7 @@ export default class StudentList extends Component{
   }
 
   sendRequest(){
-    var studentURL = 'http://lazebear.azurewebsites.net/api/student';
+    var studentURL = 'http://lms-sep-gruopc.azurewebsites.net/api/student';
     axios.get(studentURL)
       .then((response) => {
         this.setState({test:'1'});

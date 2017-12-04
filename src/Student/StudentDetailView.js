@@ -52,7 +52,7 @@ export default class StudentDetailView extends Component{
   }
 
   sendRequest(id){
-    var studentURL = 'http://lazebear.azurewebsites.net/api/student'+'/'+id;
+    var studentURL = 'http://lms-sep-gruopc.azurewebsites.net/api/student'+'/'+id;
 
     axios.get(studentURL)
       .then((response) => {
