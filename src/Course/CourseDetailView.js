@@ -14,7 +14,11 @@ class CourseDetailView extends Component {
 			isEditing: false,
 			isSaving: false,
 			error: null,
-			course: null,
+			course: {
+				Name: "",
+				CourseCode: "",
+				Description: "",
+			},
 		};
 	}
 
@@ -25,18 +29,18 @@ class CourseDetailView extends Component {
 
 	componentWillMount() {
 		if (this.isNew()) {
-			this.setState({ course: {}, isEditing: true });
+			this.setState({ isEditing: true });
 			return;
 		}
 		this.loadCourse()
 	}
 
-    displayDialog=(error) =>{
-		this.setState({showError:true, error:error});
-    }
+	displayDialog = (error) => {
+		this.setState({ showError: true, error: error });
+	}
 
-    hideDialog=()=>{
-		this.setState({showError:false});
+	hideDialog = () => {
+		this.setState({ showError: false });
 	}
 
 	loadCourse() {
@@ -51,8 +55,8 @@ class CourseDetailView extends Component {
 				});
 			})
 			.catch(error => {
-                const errorMsg = <ErrorMsg error={error}/>;
-                this.displayDialog(errorMsg);
+				const errorMsg = <ErrorMsg error={error} />;
+				this.displayDialog(errorMsg);
 			});
 	}
 
@@ -72,23 +76,23 @@ class CourseDetailView extends Component {
 	handleSubmit = (event) => {
 		event.preventDefault();
 
-		this.setState({ isSaving: true });
+		this.setState({ isLoading: true });
 		const { course } = this.state;
-		const onSuccess = (response) => {
-			this.setState({
-				isEditing: false,
-				isSaving: false,
-				course: response.data,
-			});
-			this.props.history.push('/courses');
-		};
 
 		if (this.props.match.params.id === 'create') {
 			axios.post('/api/course', course)
-				.then(onSuccess);
+				.then(response => {
+					this.props.history.push('/courses');
+				});
 		} else {
 			axios.put(`/api/course/${course.ID}`, course)
-				.then(onSuccess);
+				.then(response => {
+					this.setState({ isEditing: false, isLoading: false });
+				})
+				.catch(error => {
+                    const errorMsg = <ErrorMsg error={error}/>;
+                    this.displayDialog(errorMsg);
+				});
 		}
 	}
 
@@ -125,11 +129,11 @@ class CourseDetailView extends Component {
 						<li>{course.Description}</li>
 					</ul>
 				</div>
-				<div className="row" style={{marginTop:"20px"}}>
+				<div className="row" style={{ marginTop: "20px" }}>
 					<div className="col-6">
 						<h2>Lecturer:</h2>
 					</div>
-					<Teachinglist lecturer={course.Teaching}/>
+					<Teachinglist lecturer={course.Teaching} />
 				</div>
 				<p></p>
 				<div className="row">
