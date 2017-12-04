@@ -5,6 +5,7 @@ import { Spinner } from '../UI/Spinner';
 import Highlight from '../UI/Highlight';
 import ErrorMsg from '../UI/ErrorMsg';
 import Teachinglist from '../UI/Teachinglist';
+import Studentlist from '../UI/Studentlist';
 
 class CourseDetailView extends Component {
 	constructor(props) {
@@ -90,8 +91,8 @@ class CourseDetailView extends Component {
 					this.setState({ isEditing: false, isLoading: false });
 				})
 				.catch(error => {
-                    const errorMsg = <ErrorMsg error={error}/>;
-                    this.displayDialog(errorMsg);
+					const errorMsg = <ErrorMsg error={error} />;
+					this.displayDialog(errorMsg);
 				});
 		}
 	}
@@ -124,10 +125,12 @@ class CourseDetailView extends Component {
 			<Highlight>
 				<h1 className="name">{course.Name}</h1>
 				<div className="row">
-					<ul className="list-group">
-						<li>{course.CourseCode}</li>
-						<li>{course.Description}</li>
-					</ul>
+					<div className="list-group col-8 offset-2">
+						<h2>Course Code:</h2>
+						<h4>{course.CourseCode}</h4>
+						<h2>Description:</h2>
+						<p>{course.Description}</p>
+					</div>
 				</div>
 				<div className="row" style={{ marginTop: "20px" }}>
 					<div className="col-6">
@@ -135,8 +138,13 @@ class CourseDetailView extends Component {
 					</div>
 					<Teachinglist lecturer={course.Teaching} />
 				</div>
-				<p></p>
-				<div className="row">
+				<div className="row" style={{ marginTop: "20px" }}>
+					<div className="col-6">
+						<h2>Student:</h2>
+					</div>
+					<Studentlist student={course.Enrollments} />
+				</div>
+				<div className="row" style={{ marginTop: "20px" }}>
 					<Button primary onClick={() => this.setState({ isEditing: true })}>
 						Edit
 					</Button>
