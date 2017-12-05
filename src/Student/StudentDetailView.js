@@ -2,12 +2,18 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import Button from '../UI/Button';
 import { confirmAlert } from 'react-confirm-alert';
+import Enrolment from "../UI/Enrolment";
+import Dropcourse from "../UI/Dropcourse";
+import Courselist from '../UI/Courselist';
+import Highlight from '../UI/Highlight';
 
 export default class StudentDetailView extends Component{
   constructor(props){
     super(props);
     this.state = {
       num:0,
+      showError: false,
+			error:null,
       student:{
         ID:0,
         FirstName:"",
@@ -51,26 +57,18 @@ export default class StudentDetailView extends Component{
         });
   }
 
-  sendRequest(id){
-    var studentURL = 'http://lms-sep-gruopc.azurewebsites.net/api/student'+'/'+id;
-
-    axios.get(studentURL)
+  sendRequest(){
+    //var studentURL = 'http://lms-sep-gruopc.azurewebsites.net/api/student'+'/'+id;
+    const id = this.props.match.params.id;
+    this.setState({isLoading:true});
+    axios.get(`/api/student/${id}`)
       .then((response) => {
-        this.setState({isLoading:false});
-        const student = {
-            ID: response.data.ID,
-      			FirstName: response.data.FirstName,
-            LastName: response.data.LastName,
-      			Phone: response.data.Phone,
-            Email:response.data.Email,
-            Address:response.data.Address
-        }
-        this.setState({student});
-
+        this.setState({isLoading:false,
+          student:response.data,
+        num:id});
       })
       .catch((error) => {
         console.log(error);
-
       });
   }
 
@@ -79,28 +77,47 @@ export default class StudentDetailView extends Component{
         this.setState({isEditing: true});
         return;
     }
-    const id = this.props.match.params.id;
-    this.setState({num:id});
-    this.sendRequest(id);
+    this.sendRequest();
+  }
+
+  displayDialog=(error) =>{
+    this.setState({showError:true, error:error});
+  }
+
+  hideDialog=()=>{
+    this.setState({showError:false});
   }
 
   renderDisplay(){
+    const {showError,student, error} = this.state;
     return(
-      <div className="detailContainer">
+      <Highlight id="main-body">
+
         <h1>Student details</h1>
         <div className="jumbotron">
-          <h1 className="display-3">{this.state.student.FirstName} {this.state.student.LastName}</h1>
-          <p className="lead">Phone: {this.state.student.Phone}</p>
+          <h1 className="display-3">{student.FirstName} {student.LastName}</h1>
+          <p className="lead">Phone: {student.Phone}</p>
+          <p>Email: {student.Email}</p>
           <hr className="my-4"></hr>
-          <p>Email: {this.state.student.Email}</p>
 
-            <Button primary onClick={() => {this.setState({isEditing:true})}}>Edit student</Button>
+          <Enrolment enrolment id={student.ID} onSuccess={this.loadStudent} onError={error=>this.displayDialog(error)} />
+          <Dropcourse enrolment id={student.ID} courses={student.Enrollments} onSuccess={this.loadStudent} onError={error=>this.displayDialog(error)}/>
 
+          <div className="row" style={{marginTop:"10px", marginBottom:"20px"}}>
+  					<Courselist course={student.Enrollments}/>
+  				</div>
+
+          <hr className="my-4"></hr>
+
+          <Button primary onClick={() => {this.setState({isEditing:true})}}>
+            Edit student
+          </Button>
           <Button danger onClick={this.confirmDelete}>
               Delete student
           </Button>
         </div>
-      </div>
+      
+      </Highlight>
     )
   }
 
@@ -116,17 +133,9 @@ export default class StudentDetailView extends Component{
 			.then(response => {
 				console.log(response);
 				this.setState({
-					isLoading: false
+					isLoading: false,
+          student:response.data
 				});
-        const student = {
-            ID: response.data.ID,
-      			FirstName: response.data.FirstName,
-            LastName: response.data.LastName,
-      			Phone: response.data.Phone,
-            Email:response.data.Email,
-            Address:response.data.Address
-        }
-        this.setState({student});
 			})
 			.catch(error => {
             console.log(error);
@@ -152,9 +161,6 @@ export default class StudentDetailView extends Component{
 		if (this.isNew()) {
 			axios.post('/api/student', student)
 				.then(response => {
-          console.log("okokokokokokokokoko");
-          this.setState({ isLoading: false,
-                          isEditing: false });
 					this.props.history.push('/students');
 				});
 		} else {
@@ -169,16 +175,29 @@ export default class StudentDetailView extends Component{
 		}
   }
 
-  handleInputChange = (event) => {
+  handleInputChange = (event, field) => {
     const target = event.target;
     const {name, value} = target;
 
-    this.setState({
-      student: {
-        ...this.state.student,
-        [name]: value
-      }
-    });
+    if(field === "p"){
+      this.setState({
+        student: {
+          ...this.state.student,
+          [name]: value
+        }
+      });
+    } else {
+      this.setState({
+				student: {
+					...this.state.student,
+					Address: {
+						...this.state.student.Address,
+						[name]: value
+					}
+				}
+			})
+    }
+
   };
 
 
@@ -195,7 +214,7 @@ export default class StudentDetailView extends Component{
           placeholder="FirstName"
           value={student.FirstName || ''}
           name="FirstName"
-          onChange={e=>this.handleInputChange(e)}
+          onChange={e=>this.handleInputChange(e, "p")}
           />
         </div>
         <div className="form-group">
@@ -206,7 +225,7 @@ export default class StudentDetailView extends Component{
           placeholder="LastName"
           value={this.state.student.LastName || ''}
           name="LastName"
-          onChange={e=>this.handleInputChange(e)}
+          onChange={e=>this.handleInputChange(e, "p")}
           />
         </div>
         <div className="form-group">
@@ -217,7 +236,7 @@ export default class StudentDetailView extends Component{
           placeholder="Email"
           value={this.state.student.Email || ''}
           name="Email"
-          onChange={e=>this.handleInputChange(e)}
+          onChange={e=>this.handleInputChange(e, "p")}
           />
         </div>
         <div className="form-group">
@@ -228,7 +247,7 @@ export default class StudentDetailView extends Component{
           placeholder="Phone"
           value={this.state.student.Phone || ''}
           name="Phone"
-          onChange={e=>this.handleInputChange(e)}
+          onChange={e=>this.handleInputChange(e, "p")}
           />
         </div>
 

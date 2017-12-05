@@ -6,29 +6,17 @@ export default class StudentList extends Component{
   constructor(props){
     super(props);
     this.state = {
-      students:[],
-      test:'0'
+      students:[]
+
     }
 
   }
 
   sendRequest(){
-    var studentURL = 'http://lms-sep-gruopc.azurewebsites.net/api/student';
-    axios.get(studentURL)
+    //var studentURL = 'http://lms-sep-gruopc.azurewebsites.net/api/student';
+    axios.get("/api/student")
       .then((response) => {
-        this.setState({test:'1'});
-        const students = response.data.map(function(d){
-          return{
-            ID: d.ID,
-      			FirstName: d.FirstName,
-            LastName: d.LastName,
-      			Phone: d.Phone,
-            Email:d.Email,
-            Address:d.Address
-          }
-        });
-        this.setState({students});
-
+        this.setState({students:response.data});
       })
       .catch((error) => {
         console.log(error);
