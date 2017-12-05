@@ -3,9 +3,9 @@ import axios from 'axios';
 import Button from '../UI/Button';
 import { Spinner } from '../UI/Spinner';
 import Highlight from '../UI/Highlight';
-import ErrorMsg from '../UI/ErrorMsg';
 import Teachinglist from '../UI/Teachinglist';
 import Studentlist from '../UI/Studentlist';
+import ErrorMsg from '../Utils/ErrorMsg';
 
 class CourseDetailView extends Component {
 	constructor(props) {

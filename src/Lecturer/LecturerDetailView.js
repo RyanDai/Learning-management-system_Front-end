@@ -20,7 +20,7 @@ export default class LecturerDetailView extends Component {
 			isEditing: false,
 			isSaving: false,
 			showError: false,
-			error:null,
+			error: null,
 			lecturer: {
 				FirstName: "",
 				LastName: "",
@@ -51,15 +51,15 @@ export default class LecturerDetailView extends Component {
 		this.loadLecturer()
 	}
 
-    displayDialog=(error) =>{
-		this.setState({showError:true, error:error});
-    }
-
-    hideDialog=()=>{
-		this.setState({showError:false});
+	displayDialog = (error) => {
+		this.setState({ showError: true, error: error });
 	}
 
-	loadLecturer=()=> {
+	hideDialog = () => {
+		this.setState({ showError: false });
+	}
+
+	loadLecturer = () => {
 		const { id } = this.props.match.params;
 		this.setState({ isLoading: true });
 		axios.get(`/api/lecturer/${id}`)
@@ -71,8 +71,8 @@ export default class LecturerDetailView extends Component {
 				});
 			})
 			.catch(error => {
-                const errorMsg = <ErrorMsg error={error}/>;
-                this.displayDialog(errorMsg);
+				const errorMsg = <ErrorMsg error={error} />;
+				this.displayDialog(errorMsg);
 			});
 	}
 
@@ -119,8 +119,8 @@ export default class LecturerDetailView extends Component {
 					this.setState({ isEditing: false, isLoading: false });
 				})
 				.catch(error => {
-                    const errorMsg = <ErrorMsg error={error}/>;
-                    this.displayDialog(errorMsg);
+					const errorMsg = <ErrorMsg error={error} />;
+					this.displayDialog(errorMsg);
 				});
 		}
 	}
@@ -156,39 +156,39 @@ export default class LecturerDetailView extends Component {
 				this.props.history.push('/lecturers');
 				this.setState({ isLoading: false })
 			})
-			.catch(error=>{
-                const errorMsg = <ErrorMsg error={error}/>;
-                this.displayDialog(errorMsg);
+			.catch(error => {
+				const errorMsg = <ErrorMsg error={error} />;
+				this.displayDialog(errorMsg);
 			});
 	}
 
-    renderDisplay(){
-        const {showError,lecturer, error} = this.state;
-        return (
-            <Highlight id="main-body">
-                {showError && <Modal btnClick={this.hideDialog}>
+	renderDisplay() {
+		const { showError, lecturer, error } = this.state;
+		return (
+			<Highlight id="main-body">
+				{showError && <Modal btnClick={this.hideDialog}>
 					<div>{error}</div>
 				</Modal>}
-                <h1 className="name">{lecturer.FirstName} &nbsp; {lecturer.LastName}</h1>
-                <div className="row">
-                    <Gravatar email={lecturer.Email} size={150} className="shadow-sm"/>
-                    <ul className="fa-ul">
-                        <li><i className="fa-li fa fa-envelope" aria-hidden="true"></i>{lecturer.Email}</li>
-                        <li><i className="fa-li fa fa-phone" aria-hidden="true"></i>{lecturer.Phone}</li>
-                        <li><i className="fa-li fa fa-home" aria-hidden="true"></i>{lecturer.Address.City}.{lecturer.Address.Country}</li>
-                    </ul>
-                </div>
-                <div className="row" style={{marginTop:"20px"}}>
+				<h1 className="name">{lecturer.FirstName} &nbsp; {lecturer.LastName}</h1>
+				<div className="row">
+					<Gravatar email={lecturer.Email} size={150} className="shadow-sm" />
+					<ul className="fa-ul">
+						<li><i className="fa-li fa fa-envelope" aria-hidden="true"></i>{lecturer.Email}</li>
+						<li><i className="fa-li fa fa-phone" aria-hidden="true"></i>{lecturer.Phone}</li>
+						<li><i className="fa-li fa fa-home" aria-hidden="true"></i>{lecturer.Address.City}.{lecturer.Address.Country}</li>
+					</ul>
+				</div>
+				<div className="row" style={{ marginTop: "20px" }}>
 					<div className="col-6">
 						<h2>Teaching Course</h2>
 					</div>
-					<div className="col-6" style={{display: "inherit"}}>
-						<Enrolment teaching id={lecturer.ID} onSuccess={this.loadLecturer} onError={error=>this.displayDialog(error)}/>
-						<Dropcourse teaching id={lecturer.ID} courses={lecturer.Teaching} onSuccess={this.loadLecturer} onError={error=>this.displayDialog(error)}/>
+					<div className="col-6" style={{ display: "inherit" }}>
+						<Enrolment teaching id={lecturer.ID} onSuccess={this.loadLecturer} onError={error => this.displayDialog(error)} />
+						<Dropcourse teaching id={lecturer.ID} courses={lecturer.Teaching} onSuccess={this.loadLecturer} onError={error => this.displayDialog(error)} />
 					</div>
-                </div>
-				<div className="row" style={{marginTop:"10px", marginBottom:"20px"}}>
-					<Courselist course={lecturer.Teaching}/>
+				</div>
+				<div className="row" style={{ marginTop: "10px", marginBottom: "20px" }}>
+					<Courselist course={lecturer.Teaching} />
 				</div>
 				<div className="row">
 					<Button primary onClick={() => this.setState({ isEditing: true })}>
@@ -198,9 +198,9 @@ export default class LecturerDetailView extends Component {
 						Delete
 					</Button>
 				</div>
-            </Highlight>
-        )
-    }
+			</Highlight>
+		)
+	}
 
 	validation(event) {
 		const form = document.getElementById('needs-validation');
@@ -211,21 +211,21 @@ export default class LecturerDetailView extends Component {
 		form.classList.add('was-validated');
 	}
 
-    renderForm() {
-        const {lecturer} = this.state;
-        return (
+	renderForm() {
+		const { lecturer } = this.state;
+		return (
 			<Highlight id="main-body">
-                <form className="form-horizontal" role="form" id="needs-validation" onSubmit={(e)=> this.handleSubmit(e)}>
-                    <fieldset>
-                        <legend>Personal Details</legend>
-                        <div className="form-group row">
-                            <label className="col-sm-2 col-form-label" htmlFor="textinput">FirstName</label>
-                            <div className="col-sm-4">
-                                <input type="text" value={'' || lecturer.FirstName} placeholder="FirstName"
-                                       className="form-control" name="FirstName"
-                                       onChange={e=>this.handleInputChange(e,"p")} required/>
-                                <div className="invalid-feedback">
-                                    Please provide a valid name.
+				<form className="form-horizontal" role="form" id="needs-validation" onSubmit={(e) => this.handleSubmit(e)}>
+					<fieldset>
+						<legend>Personal Details</legend>
+						<div className="form-group row">
+							<label className="col-sm-2 col-form-label" htmlFor="textinput">FirstName</label>
+							<div className="col-sm-4">
+								<input type="text" value={'' || lecturer.FirstName} placeholder="FirstName"
+									className="form-control" name="FirstName"
+									onChange={e => this.handleInputChange(e, "p")} required />
+								<div className="invalid-feedback">
+									Please provide a valid name.
                                 </div>
 							</div>
 							<label className="col-sm-2 col-form-label" htmlFor="textinput">LastName</label>
@@ -314,14 +314,14 @@ export default class LecturerDetailView extends Component {
 						<Button danger onClick={() => this.handleCancel()}>
 							Cancel
                         </Button>
-                    </div>
-                </form>
-            </Highlight>
-        )
-    }
+					</div>
+				</form>
+			</Highlight>
+		)
+	}
 
 	render() {
-		const { isLoading, isEditing} = this.state;
+		const { isLoading, isEditing } = this.state;
 		if (isLoading)
 			return <Spinner />;
 
