@@ -25,7 +25,7 @@ export default function TopNav() {
 						<Link className="nav-link" to="/#">Login</Link>
 					</li>
 					<li className="nav-item">
-						<Link className="nav-link" to="/#">Register</Link>
+						<Link className="nav-link" to="/register">Register</Link>
 					</li>
 				</ul>
 			</div>

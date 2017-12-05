@@ -18,7 +18,7 @@ export default function LectureList(props) {
         <ul className="list-group">
             {
                 props.ls.map(
-                    (lecturer) => <Lecture key={`${lecturer.id}`} lecturer={lecturer} />)
+                    (lecturer) => <Lecture key={`${lecturer.ID}`} lecturer={lecturer} />)
             }
         </ul>
     )

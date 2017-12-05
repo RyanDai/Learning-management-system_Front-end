@@ -6,6 +6,7 @@ import LecturersView from '../Lecturer/LecturersView';
 import LecturerDetailView from '../Lecturer/LecturerDetailView';
 import StudentView from '../Student/StudentView';
 import StudentDetailView from '../Student/StudentDetailView';
+import Register from "../Login/Register";
 
 export default () => ((
     <div>
@@ -16,6 +17,7 @@ export default () => ((
         <Route exact path="/lecturers/:id" component={LecturerDetailView} />
         <Route exact path="/students" component={StudentView} />
         <Route exact path="/students/:id" component={StudentDetailView} />
+            <Route exact path="/register" component={Register} />
         {/*<Route exact path="/signin" component={SigninView} />*/}
     </div>
 ));

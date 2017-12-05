@@ -107,7 +107,7 @@ export default class LecturerDetailView extends Component {
 		event.preventDefault(); // prevent default form submission
 		this.setState({ isLoading: true });
 		const { lecturer } = this.state;
-
+		console.log("go")
 		if (this.isNew()) {
 			axios.post('/api/lecturer', lecturer)
 				.then(response => {
