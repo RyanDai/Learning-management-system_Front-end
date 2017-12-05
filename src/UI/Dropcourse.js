@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import Button from './Button';
 import { confirmAlert } from 'react-confirm-alert'; // Import
@@ -6,42 +6,42 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import ErrorMsg from '../Utils/ErrorMsg';
 
 function Course(props) {
-    const course = props.course;
-    return (
-        <option value={course.ID}>{course.Name}</option>
-    )
+	const course = props.course;
+	return (
+		<option value={course.ID}>{course.Name}</option>
+	)
 }
 
 export default class Dropcourse extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            courseID:"0"
-        }
-    }
+	constructor(props) {
+		super(props);
+		this.state = {
+			courseID: "0"
+		}
+	}
 
-    handleDrop=()=>{
-        const courses = this.props.courses;
-        console.log(courses);
-        confirmAlert({
-            title: 'Course Assign',                        // Title dialog
-            message: 'Select a course from below',               // Message dialog
-            childrenElement: () => (<div className="dialog-content">
-                <select className="custom-select" onChange={(e)=>this.setState({courseID:e.target.value})}>
-                    <option value="0">Open this select menu</option>
-                    {
-                        courses.map(
-                            (course) => <Course key={`${course.Course.ID}`} course={course.Course} />)
-                    }
-                </select>
-            </div>),       // Custom UI or Component
-            confirmLabel: 'Confirm',                           // Text button confirm
-            cancelLabel: 'Cancel',                             // Text button cancel
-            onConfirm: this.requestDrop,     // Action after Cancel
-        })
-    }
+	handleDrop = () => {
+		const courses = this.props.courses;
+		console.log(courses);
+		confirmAlert({
+			title: 'Course Assign',                        // Title dialog
+			message: 'Select a course from below',               // Message dialog
+			childrenElement: () => (<div className="dialog-content">
+				<select className="custom-select" onChange={(e) => this.setState({ courseID: e.target.value })}>
+					<option value="0">Open this select menu</option>
+					{
+						courses.map(
+							(course) => <Course key={`${course.Course.ID}`} course={course.Course} />)
+					}
+				</select>
+			</div>),       // Custom UI or Component
+			confirmLabel: 'Confirm',                           // Text button confirm
+			cancelLabel: 'Cancel',                             // Text button cancel
+			onConfirm: this.requestDrop,     // Action after Cancel
+		})
+	}
 
-    requestDrop = () => {
+	requestDrop = () => {
 
         var url = "";
         if(this.props.teaching) {

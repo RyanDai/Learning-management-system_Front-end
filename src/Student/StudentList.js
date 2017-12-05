@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import ListItem from './ListItem';
 
@@ -10,7 +10,7 @@ export default class StudentList extends Component{
 
     }
 
-  }
+	}
 
   sendRequest(){
     //var studentURL = 'http://lms-sep-gruopc.azurewebsites.net/api/student';
@@ -21,18 +21,18 @@ export default class StudentList extends Component{
       .catch((error) => {
         console.log(error);
 
-      });
-  }
+			});
+	}
 
-  componentWillMount(){
-    this.sendRequest();
-  }
+	componentWillMount() {
+		this.sendRequest();
+	}
 
-  render() {
-    return(
-      <ul className="list-group">
-        <ListItem students={this.state.students} />
-      </ul>
-    )
-  }
+	render() {
+		return (
+			<ul className="list-group">
+				<ListItem students={this.state.students} />
+			</ul>
+		)
+	}
 }

@@ -15,8 +15,6 @@ function Item(props) {
 	)
 }
 
-
-
 export default function ListItem(props) {
 	// const students = props.students;
 	return (

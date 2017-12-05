@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Button from '../UI/Button';
 import { Spinner } from '../UI/Spinner';
+import Highlight from '../UI/Highlight';
+import Teachinglist from '../UI/Teachinglist';
+import Studentlist from '../UI/Studentlist';
+import ErrorMsg from '../Utils/ErrorMsg';
 
 class CourseDetailView extends Component {
 	constructor(props) {
@@ -10,8 +14,12 @@ class CourseDetailView extends Component {
 			isLoading: false,
 			isEditing: false,
 			isSaving: false,
-			// error: null,
-			course: null,
+			error: null,
+			course: {
+				Name: "",
+				CourseCode: "",
+				Description: "",
+			},
 		};
 	}
 
@@ -22,10 +30,18 @@ class CourseDetailView extends Component {
 
 	componentWillMount() {
 		if (this.isNew()) {
-			this.setState({ course: {}, isEditing: true });
+			this.setState({ isEditing: true });
 			return;
 		}
 		this.loadCourse()
+	}
+
+	displayDialog = (error) => {
+		this.setState({ showError: true, error: error });
+	}
+
+	hideDialog = () => {
+		this.setState({ showError: false });
 	}
 
 	loadCourse() {
@@ -39,6 +55,10 @@ class CourseDetailView extends Component {
 					isLoading: false
 				});
 			})
+			.catch(error => {
+				const errorMsg = <ErrorMsg error={error} />;
+				this.displayDialog(errorMsg);
+			});
 	}
 
 	handleInputChange = (event) => {
@@ -57,23 +77,23 @@ class CourseDetailView extends Component {
 	handleSubmit = (event) => {
 		event.preventDefault();
 
-		this.setState({ isSaving: true });
+		this.setState({ isLoading: true });
 		const { course } = this.state;
-		const onSuccess = (response) => {
-			this.setState({
-				isEditing: false,
-				isSaving: false,
-				course: response.data,
-			});
-			this.props.history.push('/courses');
-		};
 
 		if (this.props.match.params.id === 'create') {
 			axios.post('/api/course', course)
-				.then(onSuccess);
+				.then(response => {
+					this.props.history.push('/courses');
+				});
 		} else {
 			axios.put(`/api/course/${course.ID}`, course)
-				.then(onSuccess);
+				.then(response => {
+					this.setState({ isEditing: false, isLoading: false });
+				})
+				.catch(error => {
+					const errorMsg = <ErrorMsg error={error} />;
+					this.displayDialog(errorMsg);
+				});
 		}
 	}
 
@@ -102,15 +122,29 @@ class CourseDetailView extends Component {
 		const { course } = this.state;
 
 		return (
-			<div className="highlight shadow-lg">
+			<Highlight>
 				<h1 className="name">{course.Name}</h1>
 				<div className="row">
-					<ul>
-						<li>{course.CourseCode}</li>
-						<li>{course.Description}</li>
-					</ul>
+					<div className="list-group col-8 offset-2">
+						<h2>Course Code:</h2>
+						<h4>{course.CourseCode}</h4>
+						<h2>Description:</h2>
+						<p>{course.Description}</p>
+					</div>
 				</div>
-				<div className="row">
+				<div className="row" style={{ marginTop: "20px" }}>
+					<div className="col-6">
+						<h2>Lecturer:</h2>
+					</div>
+					<Teachinglist lecturer={course.Teaching} />
+				</div>
+				<div className="row" style={{ marginTop: "20px" }}>
+					<div className="col-6">
+						<h2>Student:</h2>
+					</div>
+					<Studentlist student={course.Enrollments} />
+				</div>
+				<div className="row" style={{ marginTop: "20px" }}>
 					<Button primary onClick={() => this.setState({ isEditing: true })}>
 						Edit
 					</Button>
@@ -118,7 +152,7 @@ class CourseDetailView extends Component {
 						Delete
 					</Button>
 				</div>
-			</div>
+			</Highlight>
 		);
 	}
 

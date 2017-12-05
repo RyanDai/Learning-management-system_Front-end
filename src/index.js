@@ -6,7 +6,7 @@ import './styles.js';
 import App from './App/App';
 
 // axios.defaults.baseURL = 'http://lazebear.azurewebsites.net';
-axios.defaults.baseURL = 'http://lms-sep-gruopc.azurewebsites.net';
+axios.defaults.baseURL = 'https://lms-sep-gruopc.azurewebsites.net';
 ReactDOM.render(
 	<Router>
 		<App />
