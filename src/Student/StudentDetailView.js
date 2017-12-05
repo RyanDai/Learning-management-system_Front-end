@@ -94,14 +94,16 @@ export default class StudentDetailView extends Component{
       <Highlight id="main-body">
 
         <h1>Student details</h1>
-        <div className="jumbotron">
+        <div>
           <h1 className="display-3">{student.FirstName} {student.LastName}</h1>
           <p className="lead">Phone: {student.Phone}</p>
           <p>Email: {student.Email}</p>
           <hr className="my-4"></hr>
 
-          <Enrolment enrolment id={student.ID} onSuccess={this.loadStudent} onError={error=>this.displayDialog(error)} />
-          <Dropcourse enrolment id={student.ID} courses={student.Enrollments} onSuccess={this.loadStudent} onError={error=>this.displayDialog(error)}/>
+          <div className="row" style={{ marginTop: "20px" }}>
+            <Enrolment enrolment id={student.ID} onSuccess={this.loadStudent} onError={error=>this.displayDialog(error)} />
+            <Dropcourse enrolment id={student.ID} courses={student.Enrollments} onSuccess={this.loadStudent} onError={error=>this.displayDialog(error)}/>
+          </div>
 
           <div className="row" style={{marginTop:"10px", marginBottom:"20px"}}>
   					<Courselist course={student.Enrollments}/>
@@ -109,12 +111,14 @@ export default class StudentDetailView extends Component{
 
           <hr className="my-4"></hr>
 
-          <Button primary onClick={() => {this.setState({isEditing:true})}}>
-            Edit student
-          </Button>
-          <Button danger onClick={this.confirmDelete}>
-              Delete student
-          </Button>
+          <div className="row" style={{ marginTop: "20px" }}>
+            <Button primary onClick={() => {this.setState({isEditing:true})}}>
+              Edit student
+            </Button>
+            <Button danger onClick={this.confirmDelete}>
+                Delete student
+            </Button>
+            </div>
         </div>
 
       </Highlight>
@@ -126,7 +130,7 @@ export default class StudentDetailView extends Component{
 		return id === 'create';
 	}
 
-	loadStudent() {
+	loadStudent = () => {
 		const { id } = this.props.match.params;
 		this.setState({ isLoading: true });
 		axios.get(`/api/student/${id}`)
