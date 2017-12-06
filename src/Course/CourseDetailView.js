@@ -125,24 +125,24 @@ class CourseDetailView extends Component {
 			<Highlight>
 				<h1 className="name">{course.Name}</h1>
 				<div className="row">
-					<div className="list-group col-8 offset-2">
+					<div className="col-6">
 						<h2>Course Code:</h2>
-						<h4>{course.CourseCode}</h4>
+						<h2>{course.CourseCode}</h2>
+					</div>
+					<div className="col-6">
 						<h2>Description:</h2>
-						<p>{course.Description}</p>
+						<p className="modal-body">{course.Description}</p>
 					</div>
 				</div>
 				<div className="row" style={{ marginTop: "20px" }}>
 					<div className="col-6">
 						<h2>Lecturer:</h2>
+						<Teachinglist lecturer={course.Teaching} />
 					</div>
-					<Teachinglist lecturer={course.Teaching} />
-				</div>
-				<div className="row" style={{ marginTop: "20px" }}>
 					<div className="col-6">
 						<h2>Student:</h2>
+						<Studentlist student={course.Enrollments} />
 					</div>
-					<Studentlist student={course.Enrollments} />
 				</div>
 				<div className="row" style={{ marginTop: "20px" }}>
 					<Button primary onClick={() => this.setState({ isEditing: true })}>

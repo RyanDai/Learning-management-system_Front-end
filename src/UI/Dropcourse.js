@@ -43,30 +43,29 @@ export default class Dropcourse extends Component {
 
 	requestDrop = () => {
 
-        var url = "";
-        if(this.props.teaching) {
-            url="/api/teaching/";
-        } else {
-            url="/api/enrolment/"
-        }
-        url += `${this.props.id}/${this.state.courseID}`;
-        console.log(url);
-        axios.delete(url)
-            .then(() => {
-                this.setState({
-                    isLoading: false
-                });
-                this.props.onSuccess();
-            })
-            .catch(error =>
-            {
-                const errorMsg = <ErrorMsg error={error}/>;
-                this.props.onError(errorMsg);
-            });
-    }
-    render() {
-        return (
-            <Button danger onClick={this.handleDrop} className="fa fa-minus-circle"/>
-        )
-    }
+		var url = "";
+		if (this.props.teaching) {
+			url = "/api/teaching/";
+		} else {
+			url = "/api/enrolment/"
+		}
+		url += `${this.props.id}/${this.state.courseID}`;
+		console.log(url);
+		axios.delete(url)
+			.then(() => {
+				this.setState({
+					isLoading: false
+				});
+				this.props.onSuccess();
+			})
+			.catch(error => {
+				const errorMsg = <ErrorMsg error={error} />;
+				this.props.onError(errorMsg);
+			});
+	}
+	render() {
+		return (
+			<Button danger onClick={this.handleDrop} className="fa fa-minus-circle" />
+		)
+	}
 }

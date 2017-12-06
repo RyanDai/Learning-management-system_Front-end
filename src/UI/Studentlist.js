@@ -12,10 +12,10 @@ function Student(props) {
 
 export default function Studentlist(props) {
 	return (
-		<div className="list-group col-8 offset-2">
+		<div className="list-group">
 			{
 				props.student.map(
-					(student) => <Student key={`${student.Student.id}`} student={student} />)
+					(student) => <Student key={`${student.Student.ID}`} student={student} />)
 			}
 		</div>
 	)

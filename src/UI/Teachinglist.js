@@ -12,10 +12,10 @@ function Lecture(props) {
 
 export default function Teachinglist(props) {
 	return (
-		<div className="list-group col-8 offset-2">
+		<div className="list-group">
 			{
 				props.lecturer.map(
-					(lecturer) => <Lecture key={`${lecturer.Lecturer.id}`} lecturer={lecturer} />)
+					(lecturer) => <Lecture key={`${lecturer.Lecturer.ID}`} lecturer={lecturer} />)
 			}
 		</div>
 	)
