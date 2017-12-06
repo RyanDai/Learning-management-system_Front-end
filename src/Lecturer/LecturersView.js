@@ -51,7 +51,7 @@ export default class LecturersView extends Component {
 			return <Spinner />;
 
 		return (
-			<div>
+			<div className="container">
 				{this.state.showError && <Modal btnClick={this.hideDialog}>
 					<div>{this.state.error}</div>
 				</Modal>}
