@@ -6,6 +6,7 @@ import Enrolment from "../UI/Enrolment";
 import Dropcourse from "../UI/Dropcourse";
 import Courselist from '../UI/Courselist';
 import Highlight from '../UI/Highlight';
+import Chart from '../UI/Chart';
 
 export default class StudentDetailView extends Component{
   constructor(props){
@@ -14,6 +15,7 @@ export default class StudentDetailView extends Component{
       num:0,
       showError: false,
 			error:null,
+      showMark:false,
       student:{
         ID:0,
         FirstName:"",
@@ -98,6 +100,9 @@ export default class StudentDetailView extends Component{
           <h1 className="display-3">{student.FirstName} {student.LastName}</h1>
           <p className="lead">Phone: {student.Phone}</p>
           <p>Email: {student.Email}</p>
+          <Button primary onClick={() => {this.setState({showMark:true})}}>
+            Show Marks
+          </Button>
           <hr className="my-4"></hr>
 
           <div className="row" style={{ marginTop: "20px" }}>
@@ -203,6 +208,12 @@ export default class StudentDetailView extends Component{
     }
 
   };
+
+  renderChart(){
+    return(
+      <Chart />
+    )
+  }
 
 
   renderForm(){
@@ -310,11 +321,21 @@ export default class StudentDetailView extends Component{
 	}
 
 	render() {
-		const { isLoading, isEditing } = this.state;
+		const { isLoading, isEditing, showMark } = this.state;
 		if (isLoading)
 			return <span>Loading student</span>;
 
-		return isEditing ?
-			this.renderForm() : this.renderDisplay()
+    if(showMark)
+      return this.renderChart()
+
+
+
+      if(isEditing === true){
+        return this.renderForm()
+      } else {
+        return this.renderDisplay()
+
+      }
+
 	}
 }
