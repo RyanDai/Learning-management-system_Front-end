@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import Button from '../UI/Button';
 import { Spinner } from '../UI/Spinner';
 import Highlight from '../UI/Highlight';
@@ -108,13 +110,28 @@ class CourseDetailView extends Component {
 		}
 	}
 
-	handleConfirmDelete = () => {
+	confirmDelete = () => {
 		const { course } = this.state;
+		confirmAlert({
+			title: 'Really?',                        // Title dialog
+			message: 'Are you sure to delete:',               // Message dialog
+			childrenElement: () => (<div className="dialog-content">{course.Name}</div>),       // Custom UI or Component
+			confirmLabel: 'Confirm',                           // Text button confirm
+			cancelLabel: 'Cancel',                             // Text button cancel
+			onConfirm: this.handleDelete,     // Action after Cancel
+		})
+	}
 
+	handleDelete = () => {
+		const { course } = this.state;
 		this.setState({ isDeleting: true });
 		axios.delete(`/api/course/${course.ID}`)
 			.then(() => {
 				this.props.history.push('/courses');
+			})
+			.catch(error => {
+				const errorMsg = <ErrorMsg error={error} />;
+				this.displayDialog(errorMsg);
 			});
 	}
 
@@ -125,30 +142,30 @@ class CourseDetailView extends Component {
 			<Highlight>
 				<h1 className="name">{course.Name}</h1>
 				<div className="row">
-					<div className="list-group col-8 offset-2">
+					<div className="col-sm-6">
 						<h2>Course Code:</h2>
-						<h4>{course.CourseCode}</h4>
+						<h2>{course.CourseCode}</h2>
+					</div>
+					<div className="col-sm-6">
 						<h2>Description:</h2>
-						<p>{course.Description}</p>
+						<p className="modal-body">{course.Description}</p>
 					</div>
 				</div>
 				<div className="row" style={{ marginTop: "20px" }}>
-					<div className="col-6">
+					<div className="col-sm-6">
 						<h2>Lecturer:</h2>
+						<Teachinglist lecturer={course.Teaching} />
 					</div>
-					<Teachinglist lecturer={course.Teaching} />
-				</div>
-				<div className="row" style={{ marginTop: "20px" }}>
-					<div className="col-6">
+					<div className="col-sm-6">
 						<h2>Student:</h2>
+						<Studentlist student={course.Enrollments} />
 					</div>
-					<Studentlist student={course.Enrollments} />
 				</div>
 				<div className="row" style={{ marginTop: "20px" }}>
 					<Button primary onClick={() => this.setState({ isEditing: true })}>
 						Edit
 					</Button>
-					<Button danger onClick={this.handleConfirmDelete}>
+					<Button danger onClick={this.confirmDelete}>
 						Delete
 					</Button>
 				</div>
