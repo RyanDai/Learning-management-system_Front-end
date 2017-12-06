@@ -285,6 +285,11 @@ export default class StudentDetailView extends Component {
                   className="form-control" name="Line2" onChange={e => this.handleInputChange(e, "a")} />
               </div>
             </div>
+          </fieldset>
+        </div>
+      </form>
+    )
+  }
 
 	render() {
 		const { isLoading, isEditing, showMark } = this.state;
@@ -294,14 +299,12 @@ export default class StudentDetailView extends Component {
     if(showMark)
       return this.renderChart()
 
+    if(isEditing === true){
+      return this.renderForm()
+    } else {
+      return this.renderDisplay()
 
-
-      if(isEditing === true){
-        return this.renderForm()
-      } else {
-        return this.renderDisplay()
-
-      }
+    }
 
 	}
 }
