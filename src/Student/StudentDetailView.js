@@ -96,14 +96,16 @@ export default class StudentDetailView extends Component {
       <Highlight id="main-body">
 
         <h1>Student details</h1>
-        <div className="jumbotron">
+        <div>
           <h1 className="display-3">{student.FirstName} {student.LastName}</h1>
           <p className="lead">Phone: {student.Phone}</p>
           <p>Email: {student.Email}</p>
           <hr className="my-4"></hr>
 
-          <Enrolment enrolment id={student.ID} onSuccess={this.loadStudent} onError={error => this.displayDialog(error)} />
-          <Dropcourse enrolment id={student.ID} courses={student.Enrollments} onSuccess={this.loadStudent} onError={error => this.displayDialog(error)} />
+          <div className="row" style={{ marginTop: "20px" }}>
+            <Enrolment enrolment id={student.ID} onSuccess={this.loadStudent} onError={error=>this.displayDialog(error)} />
+            <Dropcourse enrolment id={student.ID} courses={student.Enrollments} onSuccess={this.loadStudent} onError={error=>this.displayDialog(error)}/>
+          </div>
 
           <div className="row" style={{ marginTop: "10px", marginBottom: "20px" }}>
             <Courselist course={student.Enrollments} />
@@ -111,71 +113,73 @@ export default class StudentDetailView extends Component {
 
           <hr className="my-4"></hr>
 
-          <Button primary onClick={() => { this.setState({ isEditing: true }) }}>
-            Edit student
-          </Button>
-          <Button danger onClick={this.confirmDelete}>
-            Delete student
-          </Button>
+          <div className="row" style={{ marginTop: "20px" }}>
+            <Button primary onClick={() => {this.setState({isEditing:true})}}>
+              Edit student
+            </Button>
+            <Button danger onClick={this.confirmDelete}>
+                Delete student
+            </Button>
+            </div>
         </div>
 
       </Highlight>
     )
   }
 
-  isNew() {
-    const { id } = this.props.match.params;
-    return id === 'create';
-  }
+	isNew() {
+		const { id } = this.props.match.params;
+		return id === 'create';
+	}
 
-  loadStudent() {
-    const { id } = this.props.match.params;
-    this.setState({ isLoading: true });
-    axios.get(`/api/student/${id}`)
-      .then(response => {
-        console.log(response);
-        this.setState({
-          isLoading: false,
-          student: response.data
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
+	loadStudent = () => {
+		const { id } = this.props.match.params;
+		this.setState({ isLoading: true });
+		axios.get(`/api/student/${id}`)
+			.then(response => {
+				console.log(response);
+				this.setState({
+					isLoading: false,
+          student:response.data
+				});
+			})
+			.catch(error => {
+				console.log(error);
+			});
+	}
 
-  handleCancel() {
-    if (this.isNew()) {
-      this.props.history.push('/students');
-    } else {
-      this.setState({
-        isEditing: false
-      });
-      this.loadStudent();
-    }
-  }
+	handleCancel() {
+		if (this.isNew()) {
+			this.props.history.push('/students');
+		} else {
+			this.setState({
+				isEditing: false
+			});
+			this.loadStudent();
+		}
+	}
 
-  handleSubmit(event) {
-    event.preventDefault(); // prevent default form submission
-    this.setState({ isLoading: true });
-    const { student } = this.state;
+	handleSubmit(event) {
+		event.preventDefault(); // prevent default form submission
+		this.setState({ isLoading: true });
+		const { student } = this.state;
 
-    if (this.isNew()) {
-      axios.post('/api/student', student)
-        .then(response => {
-          this.props.history.push('/students');
-        });
-    } else {
-      axios.put(`/api/student/${student.ID}`, student)
-        .then(response => {
+		if (this.isNew()) {
+			axios.post('/api/student', student)
+				.then(response => {
+					this.props.history.push('/students');
+				});
+		} else {
+			axios.put(`/api/student/${student.ID}`, student)
+				.then(response => {
 
-          this.setState({ isEditing: false, isLoading: false });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-  }
+					this.setState({ isEditing: false, isLoading: false });
+				})
+				.catch(error => {
+					console.log(error);
+				});
+		}
+	}
 
   handleInputChange = (event, field) => {
     const target = event.target;
