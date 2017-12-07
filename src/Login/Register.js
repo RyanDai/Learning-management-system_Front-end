@@ -13,26 +13,26 @@ export default class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            account:{
-                Email:"",
-                Phone:"",
-                Password:"",
-                Name:""
+            account: {
+                Email: "",
+                Phone: "",
+                Password: "",
+                Name: ""
             },
-            emailError:null,
-            phoneError:null,
-            pwdError:null,
-            nameError:null,
-            isLoading:false,
-            showError:false,
-            error:"",
-            verification:false,
-            verificationMsg:null,
-            code:""
+            emailError: null,
+            phoneError: null,
+            pwdError: null,
+            nameError: null,
+            isLoading: false,
+            showError: false,
+            error: "",
+            verification: false,
+            verificationMsg: null,
+            code: ""
         }
     }
 
-    handleInputChange=(event) => {
+    handleInputChange = (event) => {
         const target = event.target;
         const name = target.name;
         const value = target.value;
@@ -45,53 +45,53 @@ export default class Register extends Component {
         })
     }
 
-    displayDialog=(error) =>{
-        this.setState({showError:true, error:error});
+    displayDialog = (error) => {
+        this.setState({ showError: true, error: error });
     }
 
-    hideDialog=()=>{
-        this.setState({showError:false});
+    hideDialog = () => {
+        this.setState({ showError: false });
     }
 
-    validation=()=>{
-        const {Email, Phone, Password, Name} = this.state.account;
+    validation = () => {
+        const { Email, Phone, Password, Name } = this.state.account;
 
         const email = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        email.test(Email) === false ? this.setState({ emailError: (<p>Email is required and format should be john@doe.com</p>) }):this.setState({ emailError: null });
+        email.test(Email) === false ? this.setState({ emailError: (<p>Email is required and format should be john@doe.com</p>) }) : this.setState({ emailError: null });
 
         const phone = /\+61\d{9,9}$/;
-        phone.test(Phone) === false ? this.setState({ phoneError: (<p> Phone number is required and must start with +61</p>) }):this.setState({ phoneError: null });
+        phone.test(Phone) === false ? this.setState({ phoneError: (<p> Phone number is required and must start with +61</p>) }) : this.setState({ phoneError: null });
 
         const password = /^[a-zA-Z0-9_.-]{3,}$/;
-        password.test(Password) === false ? this.setState({ pwdError: (<p> Password can only contains characters and numbers, minimum 3 characters</p>) }):this.setState({ pwdError: null });
+        password.test(Password) === false ? this.setState({ pwdError: (<p> Password can only contains characters and numbers, minimum 3 characters</p>) }) : this.setState({ pwdError: null });
 
         const name = /^[a-zA-Z0-9_.-]{2,}$/;
-        name.test(Name) === false ? this.setState({ nameError: (<p> Name must contains at least two characters</p>) }):this.setState({ nameError: null });
+        name.test(Name) === false ? this.setState({ nameError: (<p> Name must contains at least two characters</p>) }) : this.setState({ nameError: null });
 
-        const valid = email.test(Email)&&phone.test(Phone)&&password.test(Password)&&name.test(Name);
-        if(valid) {
+        const valid = email.test(Email) && phone.test(Phone) && password.test(Password) && name.test(Name);
+        if (valid) {
             this.createAccount();
         }
     }
 
-    createAccount=() =>{
+    createAccount = () => {
 
         this.setState({ isLoading: true });
         const { account } = this.state;
 
         axios.post('/api/user/register', account)
             .then(response => {
-                this.setState({ isLoading: false, verification: true});
+                this.setState({ isLoading: false, verification: true });
             })
             .catch(error => {
                 this.setState({ isLoading: false });
-                const errorMsg = <ErrorMsg error={error}/>;
+                const errorMsg = <ErrorMsg error={error} />;
                 this.displayDialog(errorMsg);
             });
     }
 
-    renderRegister=() =>{
-        const {emailError, phoneError, pwdError, nameError} = this.state;
+    renderRegister = () => {
+        const { emailError, phoneError, pwdError, nameError } = this.state;
         return (
             <div>
                 <h3>Register</h3>
@@ -100,7 +100,7 @@ export default class Register extends Component {
                     floatingLabelText="Email"
                     fullWidth={true}
                     name={"Email"}
-                    onChange={ event=>this.handleInputChange(event) }
+                    onChange={event => this.handleInputChange(event)}
                     errorText={emailError}
                 />
                 <TextField
@@ -109,7 +109,7 @@ export default class Register extends Component {
                     floatingLabelText="Phone number"
                     fullWidth={true}
                     name={"Phone"}
-                    onChange={ event=>this.handleInputChange(event) }
+                    onChange={event => this.handleInputChange(event)}
                     errorText={phoneError}
                 />
                 <TextField
@@ -118,7 +118,7 @@ export default class Register extends Component {
                     fullWidth={true}
                     name={"Password"}
                     type={"password"}
-                    onChange={ event=>this.handleInputChange(event) }
+                    onChange={event => this.handleInputChange(event)}
                     errorText={pwdError}
                 />
                 <TextField
@@ -126,10 +126,10 @@ export default class Register extends Component {
                     floatingLabelText="Display name"
                     fullWidth={true}
                     name={"Name"}
-                    onChange={ event=>this.handleInputChange(event) }
+                    onChange={event => this.handleInputChange(event)}
                     errorText={nameError}
                 />
-                <br/>
+                <br />
                 <div className={"text-center"}>
                     <Button primary onClick={this.validation}>
                         Register
@@ -139,19 +139,19 @@ export default class Register extends Component {
         )
     }
 
-    requestVerify=()=>{
+    requestVerify = () => {
         axios.get(`/api/user/verification/${this.state.account.Email}`)
             .then(response => {
-                this.setState({verificationMsg:"We've just send a message with verification code to your mobile phone!"})
+                this.setState({ verificationMsg: "We've just send a message with verification code to your mobile phone!" })
             })
             .catch(error => {
                 this.setState({ isLoading: false });
-                const errorMsg = <ErrorMsg error={error}/>;
+                const errorMsg = <ErrorMsg error={error} />;
                 this.displayDialog(errorMsg);
             });
     }
 
-    sendCode=()=>{
+    sendCode = () => {
         axios.post(`/api/user/verification/${this.state.account.Email}/${this.state.code}`)
             .then(response => {
                 swal({
@@ -165,12 +165,12 @@ export default class Register extends Component {
             })
             .catch(error => {
                 this.setState({ isLoading: false });
-                const errorMsg = <ErrorMsg error={error}/>;
+                const errorMsg = <ErrorMsg error={error} />;
                 this.displayDialog(errorMsg);
             });
     }
-    renderVerification=()=>{
-        return(
+    renderVerification = () => {
+        return (
             <div className={"text-center"}>
                 <h3>Verification</h3>
                 <Button primary onClick={this.requestVerify}>
@@ -181,9 +181,9 @@ export default class Register extends Component {
                     hintText="6 digit code"
                     floatingLabelText="Verification code"
                     value={this.state.code}
-                    onChange={ event=>this.setState({code:event.target.value}) }
+                    onChange={event => this.setState({ code: event.target.value })}
                 />
-                <br/>
+                <br />
                 <Button primary onClick={this.sendCode}>
                     Verify
                 </Button>
@@ -191,11 +191,11 @@ export default class Register extends Component {
         )
     }
 
-    render(){
-        const {isLoading, verification, showError, error} = this.state;
+    render() {
+        const { isLoading, verification, showError, error } = this.state;
         if (isLoading)
             return <Spinner />;
-        return(
+        return (
             <Highlight className={"register-div"}>
                 {showError && <Modal btnClick={this.hideDialog}>
                     <div>{error}</div>
@@ -204,7 +204,7 @@ export default class Register extends Component {
                     {verification === false ? this.renderRegister() : this.renderVerification()}
                 </MuiThemeProvider>
             </Highlight>
-            )
+        )
     }
 
 }
