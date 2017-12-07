@@ -175,8 +175,7 @@ export default class StudentDetailView extends Component {
     )
   }
 
-<<<<<<< HEAD
-  hideChart(){
+ hideChart(){
     this.setState({showMark:false});
   }
 
@@ -233,61 +232,6 @@ export default class StudentDetailView extends Component {
 				});
 		}
 	}
-=======
-  isNew() {
-    const { id } = this.props.match.params;
-    return id === 'create';
-  }
-
-  loadStudent = () => {
-    const { id } = this.props.match.params;
-    this.setState({ isLoading: true });
-    axios.get(`/api/student/${id}`)
-      .then(response => {
-        console.log(response);
-        this.setState({
-          isLoading: false,
-          student: response.data
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
-
-  handleCancel() {
-    if (this.isNew()) {
-      this.props.history.push('/students');
-    } else {
-      this.setState({
-        isEditing: false
-      });
-      this.loadStudent();
-    }
-  }
-
-  handleSubmit(event) {
-    event.preventDefault(); // prevent default form submission
-    this.setState({ isLoading: true });
-    const { student } = this.state;
-
-    if (this.isNew()) {
-      axios.post('/api/student', student)
-        .then(response => {
-          this.props.history.push('/students');
-        });
-    } else {
-      axios.put(`/api/student/${student.ID}`, student)
-        .then(response => {
-
-          this.setState({ isEditing: false, isLoading: false });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-  }
->>>>>>> a24ba1307e2e6efc558c7714e0dfd9ea93e6b5df
 
   handleInputChange = (event, field) => {
     const target = event.target;
@@ -314,15 +258,9 @@ export default class StudentDetailView extends Component {
 
   };
 
-<<<<<<< HEAD
   renderChart(){
     return(
       <Chart studentID={this.state.student.ID} courseID={this.state.chosenCourse} hideChart={()=>this.hideChart()}/>
-=======
-  renderChart() {
-    return (
-      <Chart studentID={this.state.student.ID} courseID={this.state.chosenCourse} />
->>>>>>> a24ba1307e2e6efc558c7714e0dfd9ea93e6b5df
     )
   }
 
