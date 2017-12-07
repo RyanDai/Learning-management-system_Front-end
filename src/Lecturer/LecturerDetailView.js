@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import {Redirect } from 'react-router-dom';
 import Gravatar from 'react-gravatar';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -11,6 +12,7 @@ import Enrolment from "../UI/Enrolment";
 import Dropcourse from "../UI/Dropcourse";
 import Modal from "../Utils/Modal";
 import ErrorMsg from '../Utils/ErrorMsg';
+import Request from '../Utils/Request';
 
 export default class LecturerDetailView extends Component {
 	constructor(props) {
@@ -21,20 +23,22 @@ export default class LecturerDetailView extends Component {
 			isSaving: false,
 			showError: false,
 			error:null,
+			redirect:false,
 			lecturer: {
-				FirstName: "",
-				LastName: "",
-				Email: "",
-				Phone: "",
-				Address: {
-					Line1: "",
-					Line2: "",
-					City: "",
-					State: "",
-					PostCode: "",
-					Country: ""
-				}
-			}
+                FirstName: "",
+                LastName: "",
+                Email: "",
+                Phone: "",
+                Address: {
+                    Line1: "",
+                    Line2: "",
+                    City: "",
+                    State: "",
+                    PostCode: "",
+                    Country: ""
+                },
+                Teaching: []
+            }
 		}
 	}
 
@@ -57,12 +61,25 @@ export default class LecturerDetailView extends Component {
 
     hideDialog=()=>{
 		this.setState({showError:false});
+		if(this.state.redirect) {
+            this.props.history.push('/login');
+		}
+	}
+
+	handleErrorResponse=(error)=>{
+        this.setState({ isLoading: false });
+        const errorMsg = <ErrorMsg error={error}/>;
+        this.displayDialog(errorMsg);
+        if(error.response.status===401) {
+			this.setState({redirect:true})
+		}
 	}
 
 	loadLecturer=()=> {
 		const { id } = this.props.match.params;
 		this.setState({ isLoading: true });
-		axios.get(`/api/lecturer/${id}`)
+		Request("GET", `/api/lecturer/${id}`, null)
+		// axios.get(`/api/lecturer/${id}`)
 			.then(response => {
 				console.log(response);
 				this.setState({
@@ -71,8 +88,7 @@ export default class LecturerDetailView extends Component {
 				});
 			})
 			.catch(error => {
-                const errorMsg = <ErrorMsg error={error}/>;
-                this.displayDialog(errorMsg);
+                this.handleErrorResponse(error);
 			});
 	}
 
@@ -109,19 +125,19 @@ export default class LecturerDetailView extends Component {
 		const { lecturer } = this.state;
 		console.log("go")
 		if (this.isNew()) {
-			axios.post('/api/lecturer', lecturer)
+            Request("POST", `/api/lecturer`, lecturer)
+			// axios.post('/api/lecturer', lecturer)
 				.then(response => {
 					this.props.history.push('/lecturers');
-				});
+				})
+				.catch(error=>this.handleErrorResponse(error));
 		} else {
-			axios.put(`/api/lecturer/${lecturer.ID}`, lecturer)
+            Request("PUT", `/api/lecturer/${lecturer.ID}`, lecturer)
+			// axios.put(`/api/lecturer/${lecturer.ID}`, lecturer)
 				.then(response => {
 					this.setState({ isEditing: false, isLoading: false });
 				})
-				.catch(error => {
-                    const errorMsg = <ErrorMsg error={error}/>;
-                    this.displayDialog(errorMsg);
-				});
+				.catch(error => this.handleErrorResponse(error));
 		}
 	}
 
@@ -151,24 +167,20 @@ export default class LecturerDetailView extends Component {
 	handleDelete = () => {
 		const { lecturer } = this.state;
 		this.setState({ isLoading: true });
-		axios.delete(`/api/lecturer/${lecturer.ID}`)
+		Request("DELETE", `/api/lecturer/${lecturer.ID}`, null)
+		// axios.delete(`/api/lecturer/${lecturer.ID}`)
 			.then(() => {
 				this.props.history.push('/lecturers');
 				this.setState({ isLoading: false })
 			})
-			.catch(error=>{
-                const errorMsg = <ErrorMsg error={error}/>;
-                this.displayDialog(errorMsg);
-			});
+			.catch(error=>this.handleErrorResponse(error)
+			);
 	}
 
     renderDisplay(){
-        const {showError,lecturer, error} = this.state;
+        const {lecturer} = this.state;
         return (
             <Highlight id="main-body">
-                {showError && <Modal btnClick={this.hideDialog}>
-					<div>{error}</div>
-				</Modal>}
                 <h1 className="name">{lecturer.FirstName} &nbsp; {lecturer.LastName}</h1>
                 <div className="row">
                     <Gravatar email={lecturer.Email} size={150} className="shadow-sm"/>
@@ -212,13 +224,10 @@ export default class LecturerDetailView extends Component {
 	}
 
     renderForm() {
-        const {showError, error, lecturer} = this.state;
+        const {lecturer} = this.state;
         return (
 			<Highlight id="main-body">
-                {showError && <Modal btnClick={this.hideDialog}>
-					<div>{error}</div>
-				</Modal>}
-                <form className="form-horizontal" role="form" id="needs-validation" onSubmit={(e)=> this.handleSubmit(e)}>
+                <form className="form-horizontal" id="needs-validation" onSubmit={(e)=> this.handleSubmit(e)}>
                     <fieldset>
                         <legend>Personal Details</legend>
                         <div className="form-group row">
@@ -324,12 +333,19 @@ export default class LecturerDetailView extends Component {
     }
 
 	render() {
-		const { isLoading, isEditing} = this.state;
+		const { showError, error, isLoading, isEditing} = this.state;
 		if (isLoading)
 			return <Spinner />;
 
-		return isEditing ?
-			this.renderForm() : this.renderDisplay();
+		return (
+			<div>
+                {showError && <Modal btnClick={this.hideDialog}>
+					<div>{error}</div>
+				</Modal>}
+				{isEditing ?
+                    this.renderForm() : this.renderDisplay()}
+			</div>
+		)
 	}
 
 }

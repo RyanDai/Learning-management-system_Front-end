@@ -7,6 +7,7 @@ import axios from 'axios';
 import Modal from "../Utils/Modal";
 import ErrorMsg from '../Utils/ErrorMsg';
 import swal from 'sweetalert2';
+import { Spinner } from '../UI/Spinner';
 
 export default class Register extends Component {
     constructor(props) {
@@ -55,19 +56,19 @@ export default class Register extends Component {
     validation=()=>{
         const {Email, Phone, Password, Name} = this.state.account;
 
-        var email = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const email = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         email.test(Email) === false ? this.setState({ emailError: (<p>Email is required and format should be john@doe.com</p>) }):this.setState({ emailError: null });
 
-        var phone = /\+61\d{9,9}$/;
+        const phone = /\+61\d{9,9}$/;
         phone.test(Phone) === false ? this.setState({ phoneError: (<p> Phone number is required and must start with +61</p>) }):this.setState({ phoneError: null });
 
-        var password = /^[a-zA-Z0-9_.-]{3,}$/;
+        const password = /^[a-zA-Z0-9_.-]{3,}$/;
         password.test(Password) === false ? this.setState({ pwdError: (<p> Password can only contains characters and numbers, minimum 3 characters</p>) }):this.setState({ pwdError: null });
 
-        var name = /^[a-zA-Z0-9_.-]{2,}$/;
+        const name = /^[a-zA-Z0-9_.-]{2,}$/;
         name.test(Name) === false ? this.setState({ nameError: (<p> Name must contains at least two characters</p>) }):this.setState({ nameError: null });
 
-        var valid = email.test(Email)&&phone.test(Phone)&&password.test(Password)&&name.test(Name);
+        const valid = email.test(Email)&&phone.test(Phone)&&password.test(Password)&&name.test(Name);
         if(valid) {
             this.createAccount();
         }
@@ -189,7 +190,9 @@ export default class Register extends Component {
     }
 
     render(){
-        const {verification, showError, error} = this.state;
+        const {isLoading, verification, showError, error} = this.state;
+        if (isLoading)
+            return <Spinner />;
         return(
             <Highlight className={"register-div"}>
                 {showError && <Modal btnClick={this.hideDialog}>
