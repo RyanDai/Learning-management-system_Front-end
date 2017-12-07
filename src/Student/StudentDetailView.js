@@ -11,6 +11,8 @@ import Modal from "../Utils/Modal";
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import { Spinner } from '../UI/Spinner';
+import ErrorMsg from '../Utils/ErrorMsg';
+import Request from '../Utils/Request';
 
 export default class StudentDetailView extends Component {
   constructor(props) {
@@ -58,7 +60,8 @@ export default class StudentDetailView extends Component {
   handleDelete = () => {
     const { student } = this.state;
     this.setState({ isLoading: true });
-    axios.delete(`/api/student/${student.ID}`)
+    Request("DELETE", `/api/student/${student.ID}`, null)
+      // axios.delete(`/api/student/${student.ID}`)
       .then(() => {
         this.props.history.push('/students');
         this.setState({ isLoading: false })
@@ -69,7 +72,8 @@ export default class StudentDetailView extends Component {
     //var studentURL = 'http://lms-sep-gruopc.azurewebsites.net/api/student'+'/'+id;
     const id = this.props.match.params.id;
     this.setState({ isLoading: true });
-    axios.get(`/api/student/${id}`)
+    Request("GET", `/api/student/${id}`, null)
+      // axios.get(`/api/student/${id}`)
       .then((response) => {
         this.setState({
           isLoading: false,
@@ -97,6 +101,18 @@ export default class StudentDetailView extends Component {
 
   hideDialog = () => {
     this.setState({ showError: false });
+    if (this.state.redirect) {
+      this.props.history.push('/login');
+    }
+  }
+
+  handleErrorResponse = (error) => {
+    this.setState({ isLoading: false });
+    const errorMsg = <ErrorMsg error={error} />;
+    this.displayDialog(errorMsg);
+    if (error.response.status === 401) {
+      this.setState({ redirect: true })
+    }
   }
 
   renderDisplay() {
@@ -188,7 +204,8 @@ export default class StudentDetailView extends Component {
   loadStudent = () => {
     const { id } = this.props.match.params;
     this.setState({ isLoading: true });
-    axios.get(`/api/student/${id}`)
+    Request("GET", `/api/student/${id}`, null)
+      // axios.get(`/api/student/${id}`)
       .then(response => {
         console.log(response);
         this.setState({
@@ -218,178 +235,180 @@ export default class StudentDetailView extends Component {
     const { student } = this.state;
 
     if (this.isNew()) {
-      axios.post('/api/student', student)
+      Request("POST", `/api/student`, student)
+        // axios.post('/api/student', student)
         .then(response => {
           this.props.history.push('/students');
         });
     } else {
-      axios.put(`/api/student/${student.ID}`, student)
+      Request("PUT", `/api/student/${student.ID}`, student)
+        // axios.put(`/api/student/${student.ID}`, student)
         .then(response => {
 
           this.setState({ isEditing: false, isLoading: false });
         })
         .catch(error => {
-          console.log(error);
-        });
-    }
+          this.handleErrorResponse(error);
+    });
   }
+}
 
-  handleInputChange = (event, field) => {
-    const target = event.target;
-    const { name, value } = target;
+handleInputChange = (event, field) => {
+  const target = event.target;
+  const { name, value } = target;
 
-    if (field === "p") {
-      this.setState({
-        student: {
-          ...this.state.student,
+  if (field === "p") {
+    this.setState({
+      student: {
+        ...this.state.student,
+        [name]: value
+      }
+    });
+  } else {
+    this.setState({
+      student: {
+        ...this.state.student,
+        Address: {
+          ...this.state.student.Address,
           [name]: value
         }
-      });
-    } else {
-      this.setState({
-        student: {
-          ...this.state.student,
-          Address: {
-            ...this.state.student.Address,
-            [name]: value
-          }
-        }
-      })
-    }
-
-  };
-
-  renderChart() {
-    return (
-      <Chart studentID={this.state.student.ID} courseID={this.state.chosenCourse} hideChart={() => this.hideChart()} />
-    )
+      }
+    })
   }
 
+};
 
-  renderForm() {
-    const { student } = this.state;
-    return (
-      <form onSubmit={(e) => this.handleSubmit(e)}>
+renderChart() {
+  return (
+    <Chart studentID={this.state.student.ID} courseID={this.state.chosenCourse} hideChart={() => this.hideChart()} />
+  )
+}
+
+
+renderForm() {
+  const { student } = this.state;
+  return (
+    <form onSubmit={(e) => this.handleSubmit(e)}>
+      <div className="form-group">
         <div className="form-group">
-          <div className="form-group">
-            <label>FirstName</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="FirstName"
-              value={student.FirstName || ''}
-              name="FirstName"
-              onChange={e => this.handleInputChange(e, "p")}
-            />
-          </div>
-          <div className="form-group">
-            <label>LastName</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="LastName"
-              value={this.state.student.LastName || ''}
-              name="LastName"
-              onChange={e => this.handleInputChange(e, "p")}
-            />
-          </div>
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Email"
-              value={this.state.student.Email || ''}
-              name="Email"
-              onChange={e => this.handleInputChange(e, "p")}
-            />
-          </div>
-          <div className="form-group">
-            <label>Phone</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Phone"
-              value={this.state.student.Phone || ''}
-              name="Phone"
-              onChange={e => this.handleInputChange(e, "p")}
-            />
-          </div>
-
-          <fieldset>
-            <legend>Address Details</legend>
-            <div className="form-group row">
-              <label className="col-sm-2 col-form-label" htmlFor="textinput">Line 1</label>
-              <div className="col-sm-10">
-                <input type="text" value={'' || student.Address.Line1} placeholder="Address Line 1"
-                  className="form-control" name="Line1" onChange={e => this.handleInputChange(e, "a")} required />
-              </div>
-            </div>
-
-            <div className="form-group row">
-              <label className="col-sm-2 col-form-label" htmlFor="textinput">Line 2</label>
-              <div className="col-sm-10">
-                <input type="text" value={'' || student.Address.Line2} placeholder="Address Line 2"
-                  className="form-control" name="Line2" onChange={e => this.handleInputChange(e, "a")} />
-              </div>
-            </div>
-
-            <div className="form-group row">
-              <label className="col-sm-2 col-form-label" htmlFor="textinput">State</label>
-              <div className="col-sm-4">
-                <input type="text" value={'' || student.Address.State} placeholder="State"
-                  className="form-control" name="State" onChange={e => this.handleInputChange(e, "a")} required />
-              </div>
-              <label className="col-sm-2 col-form-label" htmlFor="textinput">City</label>
-              <div className="col-sm-4">
-                <input type="text" value={'' || student.Address.City} placeholder="City"
-                  className="form-control" name="City" onChange={e => this.handleInputChange(e, "a")} required />
-              </div>
-            </div>
-
-            <div className="form-group row">
-              <label className="col-sm-2 col-form-label" htmlFor="textinput">Postcode</label>
-              <div className="col-sm-4">
-                <input type="text" value={'' || student.Address.PostCode} placeholder="Post Code"
-                  className="form-control" pattern="\d+"
-                  name="PostCode" onChange={e => this.handleInputChange(e, "a")} required />
-              </div>
-              <label className="col-sm-2 col-form-label" htmlFor="textinput">Country</label>
-              <div className="col-sm-4">
-                <input type="text" value={'' || student.Address.Country} placeholder="Country"
-                  className="form-control" name="Country" onChange={e => this.handleInputChange(e, "a")} required />
-              </div>
-            </div>
-
-          </fieldset>
+          <label>FirstName</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="FirstName"
+            value={student.FirstName || ''}
+            name="FirstName"
+            onChange={e => this.handleInputChange(e, "p")}
+          />
+        </div>
+        <div className="form-group">
+          <label>LastName</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="LastName"
+            value={this.state.student.LastName || ''}
+            name="LastName"
+            onChange={e => this.handleInputChange(e, "p")}
+          />
+        </div>
+        <div className="form-group">
+          <label>Email</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Email"
+            value={this.state.student.Email || ''}
+            name="Email"
+            onChange={e => this.handleInputChange(e, "p")}
+          />
+        </div>
+        <div className="form-group">
+          <label>Phone</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Phone"
+            value={this.state.student.Phone || ''}
+            name="Phone"
+            onChange={e => this.handleInputChange(e, "p")}
+          />
         </div>
 
-        <div className="form-group row">
-          <Button primary type="submit" onClick={e => this.handleSubmit(e)}>
-            Save
+        <fieldset>
+          <legend>Address Details</legend>
+          <div className="form-group row">
+            <label className="col-sm-2 col-form-label" htmlFor="textinput">Line 1</label>
+            <div className="col-sm-10">
+              <input type="text" value={'' || student.Address.Line1} placeholder="Address Line 1"
+                className="form-control" name="Line1" onChange={e => this.handleInputChange(e, "a")} required />
+            </div>
+          </div>
+
+          <div className="form-group row">
+            <label className="col-sm-2 col-form-label" htmlFor="textinput">Line 2</label>
+            <div className="col-sm-10">
+              <input type="text" value={'' || student.Address.Line2} placeholder="Address Line 2"
+                className="form-control" name="Line2" onChange={e => this.handleInputChange(e, "a")} />
+            </div>
+          </div>
+
+          <div className="form-group row">
+            <label className="col-sm-2 col-form-label" htmlFor="textinput">State</label>
+            <div className="col-sm-4">
+              <input type="text" value={'' || student.Address.State} placeholder="State"
+                className="form-control" name="State" onChange={e => this.handleInputChange(e, "a")} required />
+            </div>
+            <label className="col-sm-2 col-form-label" htmlFor="textinput">City</label>
+            <div className="col-sm-4">
+              <input type="text" value={'' || student.Address.City} placeholder="City"
+                className="form-control" name="City" onChange={e => this.handleInputChange(e, "a")} required />
+            </div>
+          </div>
+
+          <div className="form-group row">
+            <label className="col-sm-2 col-form-label" htmlFor="textinput">Postcode</label>
+            <div className="col-sm-4">
+              <input type="text" value={'' || student.Address.PostCode} placeholder="Post Code"
+                className="form-control" pattern="\d+"
+                name="PostCode" onChange={e => this.handleInputChange(e, "a")} required />
+            </div>
+            <label className="col-sm-2 col-form-label" htmlFor="textinput">Country</label>
+            <div className="col-sm-4">
+              <input type="text" value={'' || student.Address.Country} placeholder="Country"
+                className="form-control" name="Country" onChange={e => this.handleInputChange(e, "a")} required />
+            </div>
+          </div>
+
+        </fieldset>
+      </div>
+
+      <div className="form-group row">
+        <Button primary type="submit" onClick={e => this.handleSubmit(e)}>
+          Save
           </Button>
-          <Button danger onClick={() => this.handleCancel()}>
-            Cancel
+        <Button danger onClick={() => this.handleCancel()}>
+          Cancel
           </Button>
-        </div>
-      </form>
-    )
+      </div>
+    </form>
+  )
+}
+
+render() {
+  const { isLoading, isEditing, showMark } = this.state;
+  if (isLoading)
+    return <Spinner />;
+
+  if (showMark)
+    return this.renderChart()
+
+  if (isEditing === true) {
+    return this.renderForm()
+  } else {
+    return this.renderDisplay()
+
   }
 
-  render() {
-    const { isLoading, isEditing, showMark } = this.state;
-    if (isLoading)
-      return <Spinner />;
-
-    if (showMark)
-      return this.renderChart()
-
-    if (isEditing === true) {
-      return this.renderForm()
-    } else {
-      return this.renderDisplay()
-
-    }
-
-  }
+}
 }

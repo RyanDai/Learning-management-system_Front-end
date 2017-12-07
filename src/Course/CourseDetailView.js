@@ -8,6 +8,7 @@ import Highlight from '../UI/Highlight';
 import Teachinglist from '../UI/Teachinglist';
 import Studentlist from '../UI/Studentlist';
 import ErrorMsg from '../Utils/ErrorMsg';
+import Request from '../Utils/Request';
 
 class CourseDetailView extends Component {
 	constructor(props) {
@@ -46,13 +47,25 @@ class CourseDetailView extends Component {
 
 	hideDialog = () => {
 		this.setState({ showError: false });
+		if (this.state.redirect) {
+			this.props.history.push('/login');
+		}
+	}
+
+	handleErrorResponse = (error) => {
+		this.setState({ isLoading: false });
+		const errorMsg = <ErrorMsg error={error} />;
+		this.displayDialog(errorMsg);
+		if (error.response.status === 401) {
+			this.setState({ redirect: true })
+		}
 	}
 
 	loadCourse() {
 		const { id } = this.props.match.params;
 		this.setState({ isLoading: true });
-
-		axios.get(`/api/course/${id}`)
+		Request("GET", `/api/course/${id}`, null)
+			// axios.get(`/api/course/${id}`)
 			.then(response => {
 				this.setState({
 					course: response.data,
@@ -60,8 +73,7 @@ class CourseDetailView extends Component {
 				});
 			})
 			.catch(error => {
-				const errorMsg = <ErrorMsg error={error} />;
-				this.displayDialog(errorMsg);
+				this.handleErrorResponse(error);
 			});
 	}
 
@@ -85,18 +97,19 @@ class CourseDetailView extends Component {
 		const { course } = this.state;
 
 		if (this.props.match.params.id === 'create') {
-			axios.post('/api/course', course)
+			Request("POST", `/api/course`, course)
+				// axios.post('/api/course', course)
 				.then(response => {
 					this.props.history.push('/courses');
 				});
 		} else {
-			axios.put(`/api/course/${course.ID}`, course)
+			Request("PUT", `/api/course/${course.ID}`, course)
+				// axios.put(`/api/course/${course.ID}`, course)
 				.then(response => {
 					this.setState({ isEditing: false, isLoading: false });
 				})
 				.catch(error => {
-					const errorMsg = <ErrorMsg error={error} />;
-					this.displayDialog(errorMsg);
+					this.handleErrorResponse(error);
 				});
 		}
 	}
@@ -127,13 +140,13 @@ class CourseDetailView extends Component {
 	handleDelete = () => {
 		const { course } = this.state;
 		this.setState({ isDeleting: true });
-		axios.delete(`/api/course/${course.ID}`)
+		Request("DELETE", `/api/course/${course.ID}`, null)
+			// axios.delete(`/api/course/${course.ID}`)
 			.then(() => {
 				this.props.history.push('/courses');
 			})
 			.catch(error => {
-				const errorMsg = <ErrorMsg error={error} />;
-				this.displayDialog(errorMsg);
+				this.handleErrorResponse(error);
 			});
 	}
 
