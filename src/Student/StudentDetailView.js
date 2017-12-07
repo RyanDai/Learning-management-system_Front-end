@@ -7,6 +7,7 @@ import Dropcourse from "../UI/Dropcourse";
 import Courselist from '../UI/Courselist';
 import Highlight from '../UI/Highlight';
 import Chart from '../UI/Chart';
+import Modal from "../Utils/Modal";
 
 export default class StudentDetailView extends Component {
   constructor(props) {
@@ -14,21 +15,21 @@ export default class StudentDetailView extends Component {
     this.state = {
       num: 0,
       showError: false,
-			error:null,
-      showMark:false,
-      student:{
-        ID:0,
-        FirstName:"",
-        LastName:"",
-        phone:"",
-        Email:"",
-        Address:{
-            Line1:"",
-            Line2:"",
-            City:"",
-            State:"",
-            PostCode:"",
-            Country:""
+      error: null,
+      showMark: false,
+      student: {
+        ID: 0,
+        FirstName: "",
+        LastName: "",
+        phone: "",
+        Email: "",
+        Address: {
+          Line1: "",
+          Line2: "",
+          City: "",
+          State: "",
+          PostCode: "",
+          Country: ""
         }
       },
       isLoading: false,
@@ -96,20 +97,24 @@ export default class StudentDetailView extends Component {
     const { showError, student, error } = this.state;
     return (
       <Highlight id="main-body">
-
+        {showError && <Modal btnClick={this.hideDialog}>
+          <div>{error}</div>
+        </Modal>}
         <h1>Student details</h1>
         <div>
           <h1 className="display-3">{student.FirstName} {student.LastName}</h1>
           <p className="lead">Phone: {student.Phone}</p>
           <p>Email: {student.Email}</p>
-          <Button primary onClick={() => {this.setState({showMark:true})}}>
-            Show Marks
-          </Button>
+          <div className="row" style={{ marginTop: "20px" }}>
+            <Button primary onClick={() => { this.setState({ showMark: true }) }}>
+              Show Marks
+            </Button>
+          </div>
           <hr className="my-4"></hr>
 
           <div className="row" style={{ marginTop: "20px" }}>
-            <Enrolment enrolment id={student.ID} onSuccess={this.loadStudent} onError={error=>this.displayDialog(error)} />
-            <Dropcourse enrolment id={student.ID} courses={student.Enrollments} onSuccess={this.loadStudent} onError={error=>this.displayDialog(error)}/>
+            <Enrolment enrolment id={student.ID} onSuccess={this.loadStudent} onError={error => this.displayDialog(error)} />
+            <Dropcourse enrolment id={student.ID} courses={student.Enrollments} onSuccess={this.loadStudent} onError={error => this.displayDialog(error)} />
           </div>
 
           <div className="row" style={{ marginTop: "10px", marginBottom: "20px" }}>
@@ -119,72 +124,72 @@ export default class StudentDetailView extends Component {
           <hr className="my-4"></hr>
 
           <div className="row" style={{ marginTop: "20px" }}>
-            <Button primary onClick={() => {this.setState({isEditing:true})}}>
+            <Button primary onClick={() => { this.setState({ isEditing: true }) }}>
               Edit student
             </Button>
             <Button danger onClick={this.confirmDelete}>
-                Delete student
+              Delete student
             </Button>
-            </div>
+          </div>
         </div>
 
       </Highlight>
     )
   }
 
-	isNew() {
-		const { id } = this.props.match.params;
-		return id === 'create';
-	}
+  isNew() {
+    const { id } = this.props.match.params;
+    return id === 'create';
+  }
 
-	loadStudent = () => {
-		const { id } = this.props.match.params;
-		this.setState({ isLoading: true });
-		axios.get(`/api/student/${id}`)
-			.then(response => {
-				console.log(response);
-				this.setState({
-					isLoading: false,
-          student:response.data
-				});
-			})
-			.catch(error => {
-				console.log(error);
-			});
-	}
+  loadStudent = () => {
+    const { id } = this.props.match.params;
+    this.setState({ isLoading: true });
+    axios.get(`/api/student/${id}`)
+      .then(response => {
+        console.log(response);
+        this.setState({
+          isLoading: false,
+          student: response.data
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 
-	handleCancel() {
-		if (this.isNew()) {
-			this.props.history.push('/students');
-		} else {
-			this.setState({
-				isEditing: false
-			});
-			this.loadStudent();
-		}
-	}
+  handleCancel() {
+    if (this.isNew()) {
+      this.props.history.push('/students');
+    } else {
+      this.setState({
+        isEditing: false
+      });
+      this.loadStudent();
+    }
+  }
 
-	handleSubmit(event) {
-		event.preventDefault(); // prevent default form submission
-		this.setState({ isLoading: true });
-		const { student } = this.state;
+  handleSubmit(event) {
+    event.preventDefault(); // prevent default form submission
+    this.setState({ isLoading: true });
+    const { student } = this.state;
 
-		if (this.isNew()) {
-			axios.post('/api/student', student)
-				.then(response => {
-					this.props.history.push('/students');
-				});
-		} else {
-			axios.put(`/api/student/${student.ID}`, student)
-				.then(response => {
+    if (this.isNew()) {
+      axios.post('/api/student', student)
+        .then(response => {
+          this.props.history.push('/students');
+        });
+    } else {
+      axios.put(`/api/student/${student.ID}`, student)
+        .then(response => {
 
-					this.setState({ isEditing: false, isLoading: false });
-				})
-				.catch(error => {
-					console.log(error);
-				});
-		}
-	}
+          this.setState({ isEditing: false, isLoading: false });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  }
 
   handleInputChange = (event, field) => {
     const target = event.target;
@@ -211,8 +216,8 @@ export default class StudentDetailView extends Component {
 
   };
 
-  renderChart(){
-    return(
+  renderChart() {
+    return (
       <Chart />
     )
   }
@@ -291,20 +296,20 @@ export default class StudentDetailView extends Component {
     )
   }
 
-	render() {
-		const { isLoading, isEditing, showMark } = this.state;
-		if (isLoading)
-			return <span>Loading student</span>;
+  render() {
+    const { isLoading, isEditing, showMark } = this.state;
+    if (isLoading)
+      return <span>Loading student</span>;
 
-    if(showMark)
+    if (showMark)
       return this.renderChart()
 
-    if(isEditing === true){
+    if (isEditing === true) {
       return this.renderForm()
     } else {
       return this.renderDisplay()
 
     }
 
-	}
+  }
 }

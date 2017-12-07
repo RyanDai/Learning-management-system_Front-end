@@ -179,10 +179,10 @@ export default class LecturerDetailView extends Component {
 					</ul>
 				</div>
 				<div className="row" style={{ marginTop: "20px" }}>
-					<div className="col-6">
+					<div className="col-sm-6">
 						<h2>Teaching Course</h2>
 					</div>
-					<div className="col-6" style={{ display: "inherit" }}>
+					<div className="col-sm-6" style={{ display: "inherit" }}>
 						<Enrolment teaching id={lecturer.ID} onSuccess={this.loadLecturer} onError={error => this.displayDialog(error)} />
 						<Dropcourse teaching id={lecturer.ID} courses={lecturer.Teaching} onSuccess={this.loadLecturer} onError={error => this.displayDialog(error)} />
 					</div>
@@ -215,7 +215,7 @@ export default class LecturerDetailView extends Component {
 		const { lecturer } = this.state;
 		return (
 			<Highlight id="main-body">
-				<form className="form-horizontal" role="form" id="needs-validation" onSubmit={(e) => this.handleSubmit(e)}>
+				<form className="form-horizontal" id="needs-validation" onSubmit={(e) => this.handleSubmit(e)}>
 					<fieldset>
 						<legend>Personal Details</legend>
 						<div className="form-group row">

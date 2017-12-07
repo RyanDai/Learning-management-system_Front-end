@@ -7,7 +7,7 @@ function Lecture(props) {
 	return (
 		<div className="list-group-item">
 			<Link to={`/lecturers/${lecturer.Lecturer.ID}`}>
-				<Gravatar style={{ height: "8%", width: "8%" }} email={lecturer.Lecturer.Email} /> &nbsp;
+				<Gravatar style={{ height: "1.5rem", width: "1.5rem" }} email={lecturer.Lecturer.Email} /> &nbsp;
 				{lecturer.Lecturer.FirstName} / {lecturer.Lecturer.LastName}
 			</Link>
 		</div>

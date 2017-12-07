@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function CourseCard(props) {
 	return (
-		<div className="col-sm-4 col-md-4">
+		<div className="col-sm-6 col-md-4">
 			<Link to={`/courses/${props.course.ID}`}>
 				<div className="course-card">
 					<h4 className="course-card-name">{props.course.Name}</h4>

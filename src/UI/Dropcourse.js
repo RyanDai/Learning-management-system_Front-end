@@ -65,7 +65,7 @@ export default class Dropcourse extends Component {
 	}
 	render() {
 		return (
-			<Button danger onClick={this.handleDrop} className="fa fa-minus-circle" />
+			<Button danger onClick={this.handleDrop} className="fa fa-minus-circle" style={{ width: "20%" }} />
 		)
 	}
 }

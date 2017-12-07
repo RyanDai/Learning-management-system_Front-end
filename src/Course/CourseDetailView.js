@@ -21,6 +21,8 @@ class CourseDetailView extends Component {
 				Name: "",
 				CourseCode: "",
 				Description: "",
+				StartTime: "",
+				EndTime: "",
 			},
 		};
 	}
@@ -144,11 +146,12 @@ class CourseDetailView extends Component {
 				<div className="row">
 					<div className="col-sm-6">
 						<h2>Course Code:</h2>
-						<h2>{course.CourseCode}</h2>
+						<div style={{ textAlign: "center" }}>{course.CourseCode}</div>
+						<div style={{ textAlign: "center" }}>{course.StartTime} - {course.EndTime}</div>
 					</div>
 					<div className="col-sm-6">
 						<h2>Description:</h2>
-						<p className="modal-body">{course.Description}</p>
+						<p style={{ margin: "0 20px" }}>{course.Description}</p>
 					</div>
 				</div>
 				<div className="row" style={{ marginTop: "20px" }}>
@@ -188,11 +191,11 @@ class CourseDetailView extends Component {
 						name="Name"
 						onChange={this.handleInputChange}
 					/>
-					<label>CourseCode</label>
+					<label>Course Code</label>
 					<input
 						type="text"
 						className="form-control"
-						placeholder="CourseCode"
+						placeholder="Code"
 						value={course.CourseCode || ''}
 						name="CourseCode"
 						onChange={this.handleInputChange}
@@ -206,8 +209,25 @@ class CourseDetailView extends Component {
 						name="Description"
 						onChange={this.handleInputChange}
 					/>
-					<p></p>
-					<div className="form-group row">
+					<label>Start Time</label>
+					<input
+						type="text"
+						className="form-control"
+						placeholder="DD/MM/YY"
+						value={course.StartTime || ''}
+						name="StartTime"
+						onChange={this.handleInputChange}
+					/>
+					<label>End Time</label>
+					<input
+						type="text"
+						className="form-control"
+						placeholder="DD/MM/YY"
+						value={course.EndTime || ''}
+						name="EndTime"
+						onChange={this.handleInputChange}
+					/>
+					<div className="form-group row" style={{ marginTop: "20px" }}>
 						<Button primary type="submit">
 							Save
 						</Button>
