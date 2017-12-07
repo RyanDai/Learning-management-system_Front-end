@@ -161,7 +161,7 @@ export default class Register extends Component {
                     timer: 2000
                 }).then(
                     this.props.history.push('/#')
-                    )
+                )
             })
             .catch(error => {
                 this.setState({ isLoading: false });

@@ -71,7 +71,7 @@ export default class Login extends Component {
                     timer: 5000
                 });
                 window.sessionStorage.token = response.data.token;
-                this.props.history.push(this.props.history.goBack);
+                this.props.history.push('/#');
             })
             .catch(error => {
                 this.setState({ isLoading: false });
