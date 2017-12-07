@@ -92,7 +92,7 @@ export default class Enrolment extends Component {
 			return <Spinner />;
 
 		return (
-			<Button primary onClick={this.loadCourse} className="fa fa-plus-circle" />
+			<Button primary onClick={this.loadCourse} className="fa fa-plus-circle" style={{ width: "20%" }} />
 		)
 	}
 }

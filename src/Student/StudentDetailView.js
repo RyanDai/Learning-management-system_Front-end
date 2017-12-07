@@ -7,6 +7,7 @@ import Dropcourse from "../UI/Dropcourse";
 import Courselist from '../UI/Courselist';
 import Highlight from '../UI/Highlight';
 import Chart from '../UI/Chart';
+import Modal from "../Utils/Modal";
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
@@ -16,28 +17,28 @@ export default class StudentDetailView extends Component {
     this.state = {
       num: 0,
       showError: false,
-			error:null,
-      showMark:false,
-      student:{
-        ID:0,
-        FirstName:"",
-        LastName:"",
-        phone:"",
-        Email:"",
-        Address:{
-            Line1:"",
-            Line2:"",
-            City:"",
-            State:"",
-            PostCode:"",
-            Country:""
+      error: null,
+      showMark: false,
+      student: {
+        ID: 0,
+        FirstName: "",
+        LastName: "",
+        phone: "",
+        Email: "",
+        Address: {
+          Line1: "",
+          Line2: "",
+          City: "",
+          State: "",
+          PostCode: "",
+          Country: ""
         }
       },
       isLoading: false,
       isEditing: false,
       isSaving: false,
-      chosenCourse:"",
-      courseList:[]
+      chosenCourse: "",
+      courseList: []
     }
   }
 
@@ -102,18 +103,19 @@ export default class StudentDetailView extends Component {
 
     return (
       <Highlight id="main-body">
-
+        {showError && <Modal btnClick={this.hideDialog}>
+          <div>{error}</div>
+        </Modal>}
         <h1>Student details</h1>
         <div>
           <h1 className="display-3">{student.FirstName} {student.LastName}</h1>
           <p className="lead">Phone: {student.Phone}</p>
           <p>Email: {student.Email}</p>
-
           <hr className="my-4"></hr>
 
           <div className="row" style={{ marginTop: "20px" }}>
-            <Enrolment enrolment id={student.ID} onSuccess={this.loadStudent} onError={error=>this.displayDialog(error)} />
-            <Dropcourse enrolment id={student.ID} courses={student.Enrollments} onSuccess={this.loadStudent} onError={error=>this.displayDialog(error)}/>
+            <Enrolment enrolment id={student.ID} onSuccess={this.loadStudent} onError={error => this.displayDialog(error)} />
+            <Dropcourse enrolment id={student.ID} courses={student.Enrollments} onSuccess={this.loadStudent} onError={error => this.displayDialog(error)} />
           </div>
 
           <div className="row" style={{ marginTop: "10px", marginBottom: "20px" }}>
@@ -123,11 +125,11 @@ export default class StudentDetailView extends Component {
           <hr className="my-4"></hr>
 
           <div className="row" style={{ marginTop: "20px" }}>
-            <Button primary onClick={() => {this.setState({isEditing:true})}}>
+            <Button primary onClick={() => { this.setState({ isEditing: true }) }}>
               Edit student
             </Button>
             <Button danger onClick={this.confirmDelete}>
-                Delete student
+              Delete student
             </Button>
           </div>
 
@@ -137,24 +139,24 @@ export default class StudentDetailView extends Component {
 
 
           <Select
-              placeholder="Select a course to view score"
-              name="singleSelect"
-              value={this.state.chosenCourse}
-              options={this.state.courseList}
-              onChange={(value) => {
-                if(value == undefined) {
-                  this.setState({ chosenCourse: value})
-                } else {
-                  this.setState({ chosenCourse: value.value})
-                }
+            placeholder="Select a course to view score"
+            name="singleSelect"
+            value={this.state.chosenCourse}
+            options={this.state.courseList}
+            onChange={(value) => {
+              if (value == undefined) {
+                this.setState({ chosenCourse: value })
+              } else {
+                this.setState({ chosenCourse: value.value })
+              }
 
-              }}
+            }}
           />
 
 
           <div className="row" style={{ marginTop: "20px" }}>
 
-            <Button primary onClick={() => {this.setState({showMark:true})}}>
+            <Button primary onClick={() => { this.setState({ showMark: true }) }}>
               Show Score
             </Button>
           </div>
@@ -164,15 +166,16 @@ export default class StudentDetailView extends Component {
     )
   }
 
-  changeEnrollmentsToArray(){
+  changeEnrollmentsToArray() {
     this.state.courseList = [];
     const { student, courseList } = this.state;
     const enrollments = student.Enrollments;
     enrollments.map(
-      (course) => {if(courseList.length < enrollments.length) courseList.push({value:course.Course.ID, label:course.Course.Name})}
+      (course) => { if (courseList.length < enrollments.length) courseList.push({ value: course.Course.ID, label: course.Course.Name }) }
     )
   }
 
+<<<<<<< HEAD
   hideChart(){
     this.setState({showMark:false});
   }
@@ -230,6 +233,61 @@ export default class StudentDetailView extends Component {
 				});
 		}
 	}
+=======
+  isNew() {
+    const { id } = this.props.match.params;
+    return id === 'create';
+  }
+
+  loadStudent = () => {
+    const { id } = this.props.match.params;
+    this.setState({ isLoading: true });
+    axios.get(`/api/student/${id}`)
+      .then(response => {
+        console.log(response);
+        this.setState({
+          isLoading: false,
+          student: response.data
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  handleCancel() {
+    if (this.isNew()) {
+      this.props.history.push('/students');
+    } else {
+      this.setState({
+        isEditing: false
+      });
+      this.loadStudent();
+    }
+  }
+
+  handleSubmit(event) {
+    event.preventDefault(); // prevent default form submission
+    this.setState({ isLoading: true });
+    const { student } = this.state;
+
+    if (this.isNew()) {
+      axios.post('/api/student', student)
+        .then(response => {
+          this.props.history.push('/students');
+        });
+    } else {
+      axios.put(`/api/student/${student.ID}`, student)
+        .then(response => {
+
+          this.setState({ isEditing: false, isLoading: false });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  }
+>>>>>>> a24ba1307e2e6efc558c7714e0dfd9ea93e6b5df
 
   handleInputChange = (event, field) => {
     const target = event.target;
@@ -256,9 +314,15 @@ export default class StudentDetailView extends Component {
 
   };
 
+<<<<<<< HEAD
   renderChart(){
     return(
       <Chart studentID={this.state.student.ID} courseID={this.state.chosenCourse} hideChart={()=>this.hideChart()}/>
+=======
+  renderChart() {
+    return (
+      <Chart studentID={this.state.student.ID} courseID={this.state.chosenCourse} />
+>>>>>>> a24ba1307e2e6efc558c7714e0dfd9ea93e6b5df
     )
   }
 
@@ -332,31 +396,31 @@ export default class StudentDetailView extends Component {
             </div>
 
             <div className="form-group row">
-							<label className="col-sm-2 col-form-label" htmlFor="textinput">State</label>
-							<div className="col-sm-4">
-								<input type="text" value={'' || student.Address.State} placeholder="State"
-									className="form-control" name="State" onChange={e => this.handleInputChange(e, "a")} required />
-							</div>
-							<label className="col-sm-2 col-form-label" htmlFor="textinput">City</label>
-							<div className="col-sm-4">
-								<input type="text" value={'' || student.Address.City} placeholder="City"
-									className="form-control" name="City" onChange={e => this.handleInputChange(e, "a")} required />
-							</div>
-						</div>
+              <label className="col-sm-2 col-form-label" htmlFor="textinput">State</label>
+              <div className="col-sm-4">
+                <input type="text" value={'' || student.Address.State} placeholder="State"
+                  className="form-control" name="State" onChange={e => this.handleInputChange(e, "a")} required />
+              </div>
+              <label className="col-sm-2 col-form-label" htmlFor="textinput">City</label>
+              <div className="col-sm-4">
+                <input type="text" value={'' || student.Address.City} placeholder="City"
+                  className="form-control" name="City" onChange={e => this.handleInputChange(e, "a")} required />
+              </div>
+            </div>
 
-						<div className="form-group row">
-							<label className="col-sm-2 col-form-label" htmlFor="textinput">Postcode</label>
-							<div className="col-sm-4">
-								<input type="text" value={'' || student.Address.PostCode} placeholder="Post Code"
-									className="form-control" pattern="\d+"
-									name="PostCode" onChange={e => this.handleInputChange(e, "a")} required />
-							</div>
-							<label className="col-sm-2 col-form-label" htmlFor="textinput">Country</label>
-							<div className="col-sm-4">
-								<input type="text" value={'' || student.Address.Country} placeholder="Country"
-									className="form-control" name="Country" onChange={e => this.handleInputChange(e, "a")} required />
-							</div>
-						</div>
+            <div className="form-group row">
+              <label className="col-sm-2 col-form-label" htmlFor="textinput">Postcode</label>
+              <div className="col-sm-4">
+                <input type="text" value={'' || student.Address.PostCode} placeholder="Post Code"
+                  className="form-control" pattern="\d+"
+                  name="PostCode" onChange={e => this.handleInputChange(e, "a")} required />
+              </div>
+              <label className="col-sm-2 col-form-label" htmlFor="textinput">Country</label>
+              <div className="col-sm-4">
+                <input type="text" value={'' || student.Address.Country} placeholder="Country"
+                  className="form-control" name="Country" onChange={e => this.handleInputChange(e, "a")} required />
+              </div>
+            </div>
 
           </fieldset>
         </div>
@@ -373,20 +437,20 @@ export default class StudentDetailView extends Component {
     )
   }
 
-	render() {
-		const { isLoading, isEditing, showMark } = this.state;
-		if (isLoading)
-			return <span>Loading student</span>;
+  render() {
+    const { isLoading, isEditing, showMark } = this.state;
+    if (isLoading)
+      return <span>Loading student</span>;
 
-    if(showMark)
+    if (showMark)
       return this.renderChart()
 
-    if(isEditing === true){
+    if (isEditing === true) {
       return this.renderForm()
     } else {
       return this.renderDisplay()
 
     }
 
-	}
+  }
 }
