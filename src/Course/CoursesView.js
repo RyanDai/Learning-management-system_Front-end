@@ -42,7 +42,7 @@ class CoursesView extends Component {
 					)}
 				</div>
 				<Link to="/courses/create">
-					<Button danger>
+					<Button danger style={{ margin: "10px 0 10px 0" }}>
 						Add New Course
 					</Button>
 				</Link>

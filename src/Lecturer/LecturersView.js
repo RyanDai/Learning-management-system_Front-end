@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Spinner } from '../UI/Spinner';
 import Modal from "../Utils/Modal";
 import ErrorMsg from '../Utils/ErrorMsg';
+import Button from '../UI/Button';
 
 export default class LecturersView extends Component {
 	constructor(props) {
@@ -57,7 +58,11 @@ export default class LecturersView extends Component {
 				</Modal>}
 				<h1 style={{ color: "white" }}>Lectures</h1>
 				<LecturerList ls={lectures} />
-				<Link className="btn btn-danger shadow-sm" style={{ marginTop: "10px" }} to={`/lecturers/create`}>Create New Lecturer</Link>
+				<Link to={`/lecturers/create`}>
+					<Button danger style={{ margin: "10px 0 10px 0" }}>
+						Create New Lecturer
+					</Button>
+				</Link>
 			</div>
 		)
 
