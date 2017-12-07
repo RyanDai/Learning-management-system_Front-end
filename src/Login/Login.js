@@ -6,6 +6,8 @@ import Button from "../UI/Button";
 import axios from 'axios';
 import swal from 'sweetalert2';
 import { Spinner } from '../UI/Spinner';
+import Decoder from 'jwt-decode';
+import Nav from '../App/TopNav';
 
 export default class Login extends Component {
     constructor(props) {
@@ -70,14 +72,22 @@ export default class Login extends Component {
                     showConfirmButton: false,
                     timer: 5000
                 });
+                const decode = Decoder(response.data.token);
                 window.sessionStorage.token = response.data.token;
+                window.sessionStorage.name = decode.name;
+                window.sessionStorage.exp = decode.exp;
                 this.props.history.push('/#');
             })
             .catch(error => {
                 this.setState({ isLoading: false });
-
                 this.displayDialog(error.response.statusText);
             });
+    }
+
+    _handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            this.validation();
+        }
     }
 
     render(){
@@ -104,6 +114,7 @@ export default class Login extends Component {
                             name={"Password"}
                             type={"password"}
                             onChange={ event=>this.handleInputChange(event) }
+                            onKeyPress={this._handleKeyPress}
                             errorText={pwdError}
                         />
                         <br/>

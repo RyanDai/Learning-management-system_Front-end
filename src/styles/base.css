@@ -23,6 +23,9 @@ body{
 	-webkit-border-radius: 50%;
 }
 
+.open .dropdown-menu {
+	display:block;
+}
 /*black: #404040*/
 /*light-blue:#6DBDD6*/
 /*red:#B71427*/
