@@ -10,6 +10,7 @@ import Chart from '../UI/Chart';
 import Modal from "../Utils/Modal";
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import { Spinner } from '../UI/Spinner';
 
 export default class StudentDetailView extends Component {
   constructor(props) {
@@ -378,7 +379,7 @@ export default class StudentDetailView extends Component {
   render() {
     const { isLoading, isEditing, showMark } = this.state;
     if (isLoading)
-      return <span>Loading student</span>;
+      return <Spinner />;
 
     if (showMark)
       return this.renderChart()
