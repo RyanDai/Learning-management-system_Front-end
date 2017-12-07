@@ -7,6 +7,8 @@ import Dropcourse from "../UI/Dropcourse";
 import Courselist from '../UI/Courselist';
 import Highlight from '../UI/Highlight';
 import Chart from '../UI/Chart';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 export default class StudentDetailView extends Component {
   constructor(props) {
@@ -33,7 +35,9 @@ export default class StudentDetailView extends Component {
       },
       isLoading: false,
       isEditing: false,
-      isSaving: false
+      isSaving: false,
+      chosenCourse:"",
+      courseList:[]
     }
   }
 
@@ -82,6 +86,7 @@ export default class StudentDetailView extends Component {
       return;
     }
     this.sendRequest();
+
   }
 
   displayDialog = (error) => {
@@ -94,6 +99,7 @@ export default class StudentDetailView extends Component {
 
   renderDisplay() {
     const { showError, student, error } = this.state;
+
     return (
       <Highlight id="main-body">
 
@@ -102,9 +108,7 @@ export default class StudentDetailView extends Component {
           <h1 className="display-3">{student.FirstName} {student.LastName}</h1>
           <p className="lead">Phone: {student.Phone}</p>
           <p>Email: {student.Email}</p>
-          <Button primary onClick={() => {this.setState({showMark:true})}}>
-            Show Marks
-          </Button>
+
           <hr className="my-4"></hr>
 
           <div className="row" style={{ marginTop: "20px" }}>
@@ -125,10 +129,47 @@ export default class StudentDetailView extends Component {
             <Button danger onClick={this.confirmDelete}>
                 Delete student
             </Button>
-            </div>
+          </div>
+
+          <hr className="my-4"></hr>
+
+          {this.changeEnrollmentsToArray()}
+
+
+          <Select
+              placeholder="Select a course to view score"
+              name="singleSelect"
+              value={this.state.chosenCourse}
+              options={this.state.courseList}
+              onChange={(value) => {
+                if(value == undefined) {
+                  this.setState({ chosenCourse: value})
+                } else {
+                  this.setState({ chosenCourse: value.value})
+                }
+
+              }}
+          />
+          
+
+          <div className="row" style={{ marginTop: "20px" }}>
+
+            <Button primary onClick={() => {this.setState({showMark:true})}}>
+              Show Score
+            </Button>
+          </div>
         </div>
 
       </Highlight>
+    )
+  }
+
+  changeEnrollmentsToArray(){
+    this.state.courseList = [];
+    const { student, courseList } = this.state;
+    const enrollments = student.Enrollments;
+    enrollments.map(
+      (course) => {if(courseList.length < enrollments.length) courseList.push({value:course.Course.ID, label:course.Course.Name})}
     )
   }
 
@@ -213,7 +254,7 @@ export default class StudentDetailView extends Component {
 
   renderChart(){
     return(
-      <Chart />
+      <Chart studentID={this.state.student.ID} courseID={this.state.chosenCourse} />
     )
   }
 
@@ -285,7 +326,44 @@ export default class StudentDetailView extends Component {
                   className="form-control" name="Line2" onChange={e => this.handleInputChange(e, "a")} />
               </div>
             </div>
+
+            <div className="form-group row">
+							<label className="col-sm-2 col-form-label" htmlFor="textinput">State</label>
+							<div className="col-sm-4">
+								<input type="text" value={'' || student.Address.State} placeholder="State"
+									className="form-control" name="State" onChange={e => this.handleInputChange(e, "a")} required />
+							</div>
+							<label className="col-sm-2 col-form-label" htmlFor="textinput">City</label>
+							<div className="col-sm-4">
+								<input type="text" value={'' || student.Address.City} placeholder="City"
+									className="form-control" name="City" onChange={e => this.handleInputChange(e, "a")} required />
+							</div>
+						</div>
+
+						<div className="form-group row">
+							<label className="col-sm-2 col-form-label" htmlFor="textinput">Postcode</label>
+							<div className="col-sm-4">
+								<input type="text" value={'' || student.Address.PostCode} placeholder="Post Code"
+									className="form-control" pattern="\d+"
+									name="PostCode" onChange={e => this.handleInputChange(e, "a")} required />
+							</div>
+							<label className="col-sm-2 col-form-label" htmlFor="textinput">Country</label>
+							<div className="col-sm-4">
+								<input type="text" value={'' || student.Address.Country} placeholder="Country"
+									className="form-control" name="Country" onChange={e => this.handleInputChange(e, "a")} required />
+							</div>
+						</div>
+
           </fieldset>
+        </div>
+
+        <div className="form-group row">
+          <Button primary type="submit" onClick={e => this.handleSubmit(e)}>
+            Save
+          </Button>
+          <Button danger onClick={() => this.handleCancel()}>
+            Cancel
+          </Button>
         </div>
       </form>
     )
