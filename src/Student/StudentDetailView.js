@@ -150,7 +150,7 @@ export default class StudentDetailView extends Component {
 
               }}
           />
-          
+
 
           <div className="row" style={{ marginTop: "20px" }}>
 
@@ -171,6 +171,10 @@ export default class StudentDetailView extends Component {
     enrollments.map(
       (course) => {if(courseList.length < enrollments.length) courseList.push({value:course.Course.ID, label:course.Course.Name})}
     )
+  }
+
+  hideChart(){
+    this.setState({showMark:false});
   }
 
 	isNew() {
@@ -254,7 +258,7 @@ export default class StudentDetailView extends Component {
 
   renderChart(){
     return(
-      <Chart studentID={this.state.student.ID} courseID={this.state.chosenCourse} />
+      <Chart studentID={this.state.student.ID} courseID={this.state.chosenCourse} hideChart={()=>this.hideChart()}/>
     )
   }
 
