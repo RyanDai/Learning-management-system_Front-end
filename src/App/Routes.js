@@ -18,7 +18,7 @@ export default () => ((
         <Route exact path="/lecturers" component={LecturersView} />
         <ProtectedRoute exact path="/lecturers/:id" component={LecturerDetailView} />
         <Route exact path="/students" component={StudentView} />
-        <Route exact path="/students/:id" component={StudentDetailView} />
+        <ProtectedRoute exact path="/students/:id" component={StudentDetailView} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Signin} />
     </div>

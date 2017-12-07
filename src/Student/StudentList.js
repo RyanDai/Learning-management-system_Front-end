@@ -1,51 +1,46 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import ListItem from './ListItem';
+import { Spinner } from '../UI/Spinner';
 
 export default class StudentList extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			students: [],
-			test: '0'
-		}
+  constructor(props) {
+    super(props);
+    this.state = {
+      students: [],
+      isloading: false
 
-	}
+    }
 
-	sendRequest() {
-		var studentURL = 'http://lazebear.azurewebsites.net/api/student';
+  }
 
-		axios.get(studentURL)
-			.then((response) => {
-				this.setState({ test: '1' });
-				const students = response.data.map(function (d) {
-					return {
-						ID: d.ID,
-						FirstName: d.FirstName,
-						LastName: d.LastName,
-						Phone: d.Phone,
-						Email: d.Email,
-						Address: d.Address
-					}
-				});
-				this.setState({ students });
+  sendRequest() {
+    //var studentURL = 'http://lms-sep-gruopc.azurewebsites.net/api/student';
+    this.setState({ isLoading: true });
+    axios.get("/api/student")
+      .then((response) => {
+        this.setState({
+          isLoading: false,
+          students: response.data
+        });
+      })
+      .catch((error) => {
+        console.log(error);
 
-			})
-			.catch((error) => {
-				console.log(error);
+      });
+  }
 
-			});
-	}
+  componentWillMount() {
+    this.sendRequest();
+  }
 
-	componentWillMount() {
-		this.sendRequest();
-	}
+  render() {
+    const { isLoading } = this.state;
+    if (isLoading)
+      return <Spinner />;
 
-	render() {
-		return (
-			<ul className="list-group">
-				<ListItem students={this.state.students} />
-			</ul>
-		)
-	}
+    return (
+      <ListItem students={this.state.students} />
+    )
+  }
 }

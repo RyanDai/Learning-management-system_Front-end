@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import StudentList from './StudentList';
+import { Link } from 'react-router-dom';
+import Button from '../UI/Button';
 
 export default class StudentView extends Component {
 	constructor(props) {
@@ -9,12 +11,17 @@ export default class StudentView extends Component {
 
 	render() {
 		return (
-			<div className="mainContainer">
-				<h1>Students</h1>
+			<div className="container">
+				<h1 style={{ color: "white" }}>Students</h1>
 				<StudentList />
-				<button>Add student</button>
-				<button>Remove student</button>
+				<Link to={`/students/create`}>
+					<Button danger style={{ margin: "10px 0 10px 0" }}>
+						Add New Student
+					</Button>
+				</Link>
+
 			</div>
 		)
+
 	}
 }

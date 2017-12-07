@@ -34,18 +34,18 @@ class CoursesView extends Component {
 			return <Spinner />;
 
 		return (
-			<div className="mainContainer">
-				<h1>Courses</h1>
-				<Link to="/courses/create">
-					<Button primary>
-						Add New Course
-					</Button>
-				</Link>
+			<div className="container">
+				<h1 style={{ color: "white" }}>Courses</h1>
 				<div className="row">
 					{this.state.course.map(
 						course => <CourseCard course={course} key={course.ID} />
 					)}
 				</div>
+				<Link to="/courses/create">
+					<Button danger style={{ margin: "10px 0 10px 0" }}>
+						Add New Course
+					</Button>
+				</Link>
 			</div>
 		)
 	}

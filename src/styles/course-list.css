@@ -1,8 +1,8 @@
 .course-list a{
-    color: #ffffff;
+	color: #ffffff;
 }
 
 .course-list a:hover{
-    color: #007BFF;
-    text-decoration: none;
+	color: #007BFF;
+	text-decoration: none;
 }
