@@ -7,20 +7,22 @@ export default class StudentList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: false,
-      students: []
+      students: [],
+      isloading: false
 
     }
 
   }
 
   sendRequest() {
-    this.setState({ isLoading: true });
     //var studentURL = 'http://lms-sep-gruopc.azurewebsites.net/api/student';
+    this.setState({ isLoading: true });
     axios.get("/api/student")
       .then((response) => {
-        this.setState({ students: response.data });
-        this.setState({ isLoading: false });
+        this.setState({
+          isLoading: false,
+          students: response.data
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -33,14 +35,12 @@ export default class StudentList extends Component {
   }
 
   render() {
-    const { isLoading, students } = this.state;
+    const { isLoading } = this.state;
     if (isLoading)
       return <Spinner />;
 
     return (
-      <ul className="list-group">
-        <ListItem students={this.state.students} />
-      </ul>
+      <ListItem students={this.state.students} />
     )
   }
 }
