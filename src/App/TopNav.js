@@ -14,11 +14,6 @@ export default class TopNav extends Component {
     	window.sessionStorage.clear();
     	this.setState({isLogin:false});
 	}
-
-	static userLogin=()=>{
-    	console.log('called')
-        this.setState({isLogin:true});
-	}
     loggedIn=()=>{
     	let greeting = "";
         const d = new Date();
@@ -63,7 +58,6 @@ export default class TopNav extends Component {
 	}
 
 	render () {
-    	const{isLogin} = this.state;
     	return(
 		<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
 			<Link className="navbar-brand" to="/#">X Net</Link>

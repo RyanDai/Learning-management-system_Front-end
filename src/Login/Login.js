@@ -4,9 +4,10 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TextField from 'material-ui/TextField';
 import Button from "../UI/Button";
 import axios from 'axios';
-import swal from 'sweetalert2';
+import Dialog from '../Utils/Dialog';
 import { Spinner } from '../UI/Spinner';
 import Decoder from 'jwt-decode';
+import swal from 'sweetalert2';
 import Nav from '../App/TopNav';
 
 export default class Login extends Component {
@@ -36,16 +37,17 @@ export default class Login extends Component {
         })
     }
 
-    displayDialog=(error) =>{
-        return (
-        swal({
-            type: 'error',
-            title: error,
-            showConfirmButton: true,
-            timer: 5000
-        })
-        )
-    }
+    // displayDialog=(error) =>{
+    //     // return (
+    //     // swal({
+    //     //     type: 'error',
+    //     //     title: error,
+    //     //     showConfirmButton: true,
+    //     //     timer: 5000
+    //     // })
+    //         Dialog(false, error);
+    //     // )
+    // }
 
     validation=()=>{
         const {Email, Password} = this.state.account;
@@ -66,21 +68,19 @@ export default class Login extends Component {
         axios.post(`/api/user/login`, this.state.account)
             .then(response => {
                 this.setState({ isLoading: false });
-                swal({
-                    type: 'success',
-                    title: 'Your are logged in!',
-                    showConfirmButton: false,
-                    timer: 5000
-                });
                 const decode = Decoder(response.data.token);
                 window.sessionStorage.token = response.data.token;
                 window.sessionStorage.name = decode.name;
                 window.sessionStorage.exp = decode.exp;
                 this.props.history.push('/#');
+                // return (<Dialog content={"You are logged in!"}/>);
+                Dialog(true, "You are logged in!");
             })
             .catch(error => {
                 this.setState({ isLoading: false });
-                this.displayDialog(error.response.statusText);
+                // this.displayDialog(error.response.statusText);
+                Dialog(false, error);
+                // return (<Dialog error content={error.response.statusText}/>);
             });
     }
 

@@ -1,0 +1,9 @@
+/*.swal2-icon.swal2-success  {*/
+    /*background-color: #43d229 !important;*/
+/*}*/
+
+.swal2-buttonswrapper button {
+    -webkit-box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.22), 0 5px 11px 0 rgba(0, 0, 0, 0.21) !important;
+    -moz-box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.22), 0 5px 11px 0 rgba(0, 0, 0, 0.21) !important;
+    box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.22), 0 5px 11px 0 rgba(0, 0, 0, 0.21) !important;
+}
