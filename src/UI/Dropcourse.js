@@ -4,7 +4,8 @@ import Button from './Button';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import ErrorMsg from '../Utils/ErrorMsg';
-
+import Request from "../Utils/Request";
+import swal from 'sweetalert2';
 function Course(props) {
 	const course = props.course;
 	return (
@@ -20,6 +21,19 @@ export default class Dropcourse extends Component {
 		}
 	}
 
+	content=()=>{
+        const courses = this.props.courses;
+		return (
+		<div className="dialog-content">
+			<select className="custom-select" onChange={(e) => this.setState({ courseID: e.target.value })}>
+				<option value="0">Open this select menu</option>
+                {
+                    courses.map(
+                        (course) => <Course key={`${course.Course.ID}`} course={course.Course} />)
+                }
+			</select>
+		</div>
+	)}
 	handleDrop = () => {
 		const courses = this.props.courses;
 		console.log(courses);
@@ -50,8 +64,9 @@ export default class Dropcourse extends Component {
 			url = "/api/enrolment/"
 		}
 		url += `${this.props.id}/${this.state.courseID}`;
-		console.log(url);
-		axios.delete(url)
+		// console.log(url);
+		// axios.delete(url)
+		Request("DELETE", url, null)
 			.then(() => {
 				this.setState({
 					isLoading: false
@@ -59,8 +74,8 @@ export default class Dropcourse extends Component {
 				this.props.onSuccess();
 			})
 			.catch(error => {
-				const errorMsg = <ErrorMsg error={error} />;
-				this.props.onError(errorMsg);
+				// const errorMsg = <ErrorMsg error={error} />;
+				this.props.onError(error);
 			});
 	}
 	render() {

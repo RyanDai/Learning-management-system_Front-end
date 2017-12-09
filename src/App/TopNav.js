@@ -18,9 +18,9 @@ export default class TopNav extends Component {
     	let greeting = "";
         const d = new Date();
         const h = d.getHours();
-    	if(d<12) {
+    	if(h<12) {
     		greeting = "Morning, "
-		} else if (d<18) {
+		} else if (h<18) {
             greeting = "Afternoon, "
 		} else {
             greeting = "Evening, "

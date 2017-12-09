@@ -10,9 +10,8 @@ import Highlight from '../UI/Highlight';
 import Courselist from '../UI/Courselist';
 import Enrolment from "../UI/Enrolment";
 import Dropcourse from "../UI/Dropcourse";
-import Modal from "../Utils/Modal";
-import ErrorMsg from '../Utils/ErrorMsg';
 import Request from '../Utils/Request';
+import Dialog from '../Utils/Dialog';
 
 export default class LecturerDetailView extends Component {
 	constructor(props) {
@@ -21,8 +20,6 @@ export default class LecturerDetailView extends Component {
 			isLoading: false,
 			isEditing: false,
 			isSaving: false,
-			showError: false,
-			error: null,
 			redirect: false,
 			lecturer: {
 				FirstName: "",
@@ -55,23 +52,14 @@ export default class LecturerDetailView extends Component {
 		this.loadLecturer()
 	}
 
-	displayDialog = (error) => {
-		this.setState({ showError: true, error: error });
-	}
-
-	hideDialog = () => {
-		this.setState({ showError: false });
-		if (this.state.redirect) {
-			this.props.history.push('/login');
-		}
-	}
-
 	handleErrorResponse = (error) => {
 		this.setState({ isLoading: false });
-		const errorMsg = <ErrorMsg error={error} />;
-		this.displayDialog(errorMsg);
+		// const errorMsg = <ErrorMsg error={error} />;
+		// this.displayDialog(errorMsg);
+		Dialog(false, error);
 		if (error.response.status === 401) {
-			this.setState({ redirect: true })
+			// this.setState({ redirect: true })
+            this.props.history.push('/login');
 		}
 	}
 
@@ -123,7 +111,6 @@ export default class LecturerDetailView extends Component {
 		event.preventDefault(); // prevent default form submission
 		this.setState({ isLoading: true });
 		const { lecturer } = this.state;
-		console.log("go")
 		if (this.isNew()) {
 			Request("POST", `/api/lecturer`, lecturer)
 				// axios.post('/api/lecturer', lecturer)
@@ -185,9 +172,9 @@ export default class LecturerDetailView extends Component {
 				<div className="row">
 					<Gravatar email={lecturer.Email} size={150} className="shadow-sm" />
 					<ul className="fa-ul">
-						<li><i className="fa-li fa fa-envelope" aria-hidden="true"></i>{lecturer.Email}</li>
-						<li><i className="fa-li fa fa-phone" aria-hidden="true"></i>{lecturer.Phone}</li>
-						<li><i className="fa-li fa fa-home" aria-hidden="true"></i>{lecturer.Address.City}.{lecturer.Address.Country}</li>
+						<li><i className="fa-li fa fa-envelope" aria-hidden="true"/>{lecturer.Email}</li>
+						<li><i className="fa-li fa fa-phone" aria-hidden="true"/>{lecturer.Phone}</li>
+						<li><i className="fa-li fa fa-home" aria-hidden="true"/>{lecturer.Address.City}.{lecturer.Address.Country}</li>
 					</ul>
 				</div>
 				<div className="row" style={{ marginTop: "20px" }}>
@@ -195,8 +182,8 @@ export default class LecturerDetailView extends Component {
 						<h2>Teaching Course</h2>
 					</div>
 					<div className="col-6" style={{ display: "inherit" }}>
-						<Enrolment teaching id={lecturer.ID} onSuccess={this.loadLecturer} onError={error => this.displayDialog(error)} />
-						<Dropcourse teaching id={lecturer.ID} courses={lecturer.Teaching} onSuccess={this.loadLecturer} onError={error => this.displayDialog(error)} />
+						<Enrolment teaching id={lecturer.ID} onSuccess={this.loadLecturer} onError={error => this.handleErrorResponse(error)} />
+						<Dropcourse teaching id={lecturer.ID} courses={lecturer.Teaching} onSuccess={this.loadLecturer} onError={error => this.handleErrorResponse(error)} />
 					</div>
 				</div>
 				<div className="row" style={{ marginTop: "10px", marginBottom: "20px" }}>
@@ -333,15 +320,12 @@ export default class LecturerDetailView extends Component {
 	}
 
 	render() {
-		const { showError, error, isLoading, isEditing } = this.state;
+		const {isLoading, isEditing } = this.state;
 		if (isLoading)
 			return <Spinner />;
 
 		return (
 			<div>
-				{showError && <Modal btnClick={this.hideDialog}>
-					<div>{error}</div>
-				</Modal>}
 				{isEditing ?
 					this.renderForm() : this.renderDisplay()}
 			</div>

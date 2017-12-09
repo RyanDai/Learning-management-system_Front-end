@@ -3,6 +3,7 @@ import swal from 'sweetalert2';
 import '../styles/dialog.css';
 
 export default function Dialog(success, content) {
+    console.log("called")
     if (success) {
         return (
             swal({
