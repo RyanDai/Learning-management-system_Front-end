@@ -14,18 +14,13 @@ export default class TopNav extends Component {
     	window.sessionStorage.clear();
     	this.setState({isLogin:false});
 	}
-
-	static userLogin=()=>{
-    	console.log('called')
-        this.setState({isLogin:true});
-	}
     loggedIn=()=>{
     	let greeting = "";
         const d = new Date();
         const h = d.getHours();
-    	if(d<12) {
+    	if(h<12) {
     		greeting = "Morning, "
-		} else if (d<18) {
+		} else if (h<18) {
             greeting = "Afternoon, "
 		} else {
             greeting = "Evening, "
@@ -33,10 +28,10 @@ export default class TopNav extends Component {
     	return (
 			<li className="nav-item dropdown">
 				<a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					{greeting}{Auth.getName()}
+					<i className="fa fa-user" aria-hidden="true"/>{greeting}{Auth.getName()}
 				</a>
 				<div className="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
-					<a className="dropdown-item" onClick={this.logOut}>Logout</a>
+					<a className="dropdown-item" onClick={this.logOut}><i className="fa fa-sign-out" aria-hidden="true"/> Logout</a>
 					<div className="dropdown-divider"></div>
 				</div>
 			</li>
@@ -47,14 +42,14 @@ export default class TopNav extends Component {
     	return (
 			<div className="nav-item dropdown">
 				<a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Account
+					<i className="fa fa-user" aria-hidden="true"/> Account
 				</a>
 				<div className="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
 					<li className="nav-item">
-						<Link className="nav-link" to="/login">Login</Link>
+						<Link className="nav-link" to="/login"><i className="fa fa-sign-in" aria-hidden="true"/> Login</Link>
 					</li>
 					<li className="nav-item">
-						<Link className="nav-link" to="/register">Register</Link>
+						<Link className="nav-link" to="/register"><i className="fa fa-user-plus" aria-hidden="true"/> Register</Link>
 					</li>
 					<div className="dropdown-divider"></div>
 				</div>
@@ -63,10 +58,9 @@ export default class TopNav extends Component {
 	}
 
 	render () {
-    	const{isLogin} = this.state;
     	return(
 		<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-			<Link className="navbar-brand" to="/#">X Net</Link>
+			<Link className="navbar-brand" to="/#"><i className="fa fa-ioxhost" aria-hidden="true"/> JR COLLEGE</Link>
 			<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
 					aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				<span className="navbar-toggler-icon"></span>
@@ -74,13 +68,13 @@ export default class TopNav extends Component {
 			<div id="navbarNavDropdown" className="navbar-collapse collapse">
 				<ul className="navbar-nav mr-auto">
 					<li className="nav-item">
-						<Link className="nav-link" to="/courses">Courses</Link>
+						<Link className="nav-link" to="/courses"><i className="fa fa-book" aria-hidden="true"/> Courses</Link>
 					</li>
 					<li className="nav-item">
-						<Link className="nav-link" to="/lecturers">Lectures</Link>
+						<Link className="nav-link" to="/lecturers"><i className="fa fa-user-secret" aria-hidden="true"/> Lectures</Link>
 					</li>
 					<li className="nav-item">
-						<Link className="nav-link" to="/students">Students</Link>
+						<Link className="nav-link" to="/students"><i className="fa fa-graduation-cap" aria-hidden="true"/> Students</Link>
 					</li>
 				</ul>
 				<ul className="navbar-nav">

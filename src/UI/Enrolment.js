@@ -58,8 +58,8 @@ export default class Enrolment extends Component {
 				this.handleAssign();
 			})
 			.catch(error => {
-				const errorMsg = <ErrorMsg error={error} />;
-				this.props.onError(errorMsg);
+				// const errorMsg = <ErrorMsg error={error} />;
+				this.props.onError(error);
 			});
 	}
 
@@ -85,8 +85,8 @@ export default class Enrolment extends Component {
 				this.setState({
 					courseID: "0"
 				});
-				const errorMsg = <ErrorMsg error={error} />;
-				this.props.onError(errorMsg);
+				// const errorMsg = <ErrorMsg error={error} />;
+				this.props.onError(error);
 			});
 	}
 	render() {

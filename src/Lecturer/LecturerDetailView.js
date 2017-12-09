@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { Redirect } from 'react-router-dom';
 import Gravatar from 'react-gravatar';
-import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { Spinner } from '../UI/Spinner';
 import Button from '../UI/Button';
@@ -10,9 +7,10 @@ import Highlight from '../UI/Highlight';
 import Courselist from '../UI/Courselist';
 import Enrolment from "../UI/Enrolment";
 import Dropcourse from "../UI/Dropcourse";
-import Modal from "../Utils/Modal";
-import ErrorMsg from '../Utils/ErrorMsg';
 import Request from '../Utils/Request';
+import Dialog from '../Utils/Dialog';
+import Toast, {showToast} from '../UI/Toast';
+import swal from 'sweetalert2';
 
 export default class LecturerDetailView extends Component {
 	constructor(props) {
@@ -21,9 +19,9 @@ export default class LecturerDetailView extends Component {
 			isLoading: false,
 			isEditing: false,
 			isSaving: false,
-			showError: false,
-			error: null,
 			redirect: false,
+			showToaster: false,
+			toaster:"",
 			lecturer: {
 				FirstName: "",
 				LastName: "",
@@ -55,23 +53,11 @@ export default class LecturerDetailView extends Component {
 		this.loadLecturer()
 	}
 
-	displayDialog = (error) => {
-		this.setState({ showError: true, error: error });
-	}
-
-	hideDialog = () => {
-		this.setState({ showError: false });
-		if (this.state.redirect) {
-			this.props.history.push('/login');
-		}
-	}
-
 	handleErrorResponse = (error) => {
 		this.setState({ isLoading: false });
-		const errorMsg = <ErrorMsg error={error} />;
-		this.displayDialog(errorMsg);
+		Dialog(false, error);
 		if (error.response.status === 401) {
-			this.setState({ redirect: true })
+            this.props.history.push('/login');
 		}
 	}
 
@@ -105,7 +91,6 @@ export default class LecturerDetailView extends Component {
 				}
 			});
 		} else {
-			console.log(name + "," + value);
 			this.setState({
 				lecturer: {
 					...this.state.lecturer,
@@ -119,15 +104,18 @@ export default class LecturerDetailView extends Component {
 
 	}
 
+	handleToaster=()=> {
+		this.setState({showToaster:false});
+	}
+
 	handleSubmit(event) {
 		event.preventDefault(); // prevent default form submission
 		this.setState({ isLoading: true });
 		const { lecturer } = this.state;
-		console.log("go")
 		if (this.isNew()) {
 			Request("POST", `/api/lecturer`, lecturer)
-				// axios.post('/api/lecturer', lecturer)
 				.then(response => {
+					Dialog(true, `Lecturer [${lecturer.FirstName} ${lecturer.LastName}] has been created`);
 					this.props.history.push('/lecturers');
 				})
 				.catch(error => this.handleErrorResponse(error));
@@ -135,7 +123,11 @@ export default class LecturerDetailView extends Component {
 			Request("PUT", `/api/lecturer/${lecturer.ID}`, lecturer)
 				// axios.put(`/api/lecturer/${lecturer.ID}`, lecturer)
 				.then(response => {
-					this.setState({ isEditing: false, isLoading: false });
+					this.setState({ isEditing: false,
+						isLoading: false,
+                        showToaster: true,
+                        toaster:`Lecturer [${lecturer.FirstName} ${lecturer.LastName}] has bee updated`
+					});
 				})
 				.catch(error => this.handleErrorResponse(error));
 		}
@@ -147,6 +139,8 @@ export default class LecturerDetailView extends Component {
 		} else {
 			this.setState({
 				isEditing: false,
+				showToaster: true,
+				toaster:"Edit action has been cancelled"
 			});
 			this.loadLecturer();
 		}
@@ -154,14 +148,21 @@ export default class LecturerDetailView extends Component {
 
 	confirmDelete = () => {
 		const { lecturer } = this.state;
-		confirmAlert({
-			title: 'Really?',                        // Title dialog
-			message: 'Are you sure to delete:',               // Message dialog
-			childrenElement: () => (<div className="dialog-content">{lecturer.FirstName} {lecturer.LastName}</div>),       // Custom UI or Component
-			confirmLabel: 'Confirm',                           // Text button confirm
-			cancelLabel: 'Cancel',                             // Text button cancel
-			onConfirm: this.handleDelete,     // Action after Cancel
-		})
+        swal({
+            title: 'Are you sure?',
+            html: `You are deleting <b>${lecturer.FirstName} ${lecturer.LastName}</b></br>You won't be able to revert this!`,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#4717F6',
+            cancelButtonColor: '#A239CA',
+            confirmButtonText: 'Delete',
+            animation: false,
+            customClass: 'animated pulse'
+        }).then((result) => {
+            if (result.value) {
+                this.handleDelete();
+            }
+        })
 	}
 
 	handleDelete = () => {
@@ -170,8 +171,8 @@ export default class LecturerDetailView extends Component {
 		Request("DELETE", `/api/lecturer/${lecturer.ID}`, null)
 			// axios.delete(`/api/lecturer/${lecturer.ID}`)
 			.then(() => {
+                Dialog(true, `Lecturer [${lecturer.FirstName} ${lecturer.LastName}] has been deleted`)
 				this.props.history.push('/lecturers');
-				this.setState({ isLoading: false })
 			})
 			.catch(error => this.handleErrorResponse(error)
 			);
@@ -185,9 +186,9 @@ export default class LecturerDetailView extends Component {
 				<div className="row">
 					<Gravatar email={lecturer.Email} size={150} className="shadow-sm" />
 					<ul className="fa-ul">
-						<li><i className="fa-li fa fa-envelope" aria-hidden="true"></i>{lecturer.Email}</li>
-						<li><i className="fa-li fa fa-phone" aria-hidden="true"></i>{lecturer.Phone}</li>
-						<li><i className="fa-li fa fa-home" aria-hidden="true"></i>{lecturer.Address.City}.{lecturer.Address.Country}</li>
+						<li><i className="fa-li fa fa-envelope" aria-hidden="true"/>{lecturer.Email}</li>
+						<li><i className="fa-li fa fa-phone" aria-hidden="true"/>{lecturer.Phone}</li>
+						<li><i className="fa-li fa fa-home" aria-hidden="true"/>{lecturer.Address.City}.{lecturer.Address.Country}</li>
 					</ul>
 				</div>
 				<div className="row" style={{ marginTop: "20px" }}>
@@ -195,8 +196,8 @@ export default class LecturerDetailView extends Component {
 						<h2>Teaching Course</h2>
 					</div>
 					<div className="col-6" style={{ display: "inherit" }}>
-						<Enrolment teaching id={lecturer.ID} onSuccess={this.loadLecturer} onError={error => this.displayDialog(error)} />
-						<Dropcourse teaching id={lecturer.ID} courses={lecturer.Teaching} onSuccess={this.loadLecturer} onError={error => this.displayDialog(error)} />
+						<Enrolment teaching id={lecturer.ID} onSuccess={this.loadLecturer} onError={error => this.handleErrorResponse(error)} />
+						<Dropcourse teaching id={lecturer.ID} courses={lecturer.Teaching} onSuccess={this.loadLecturer} onError={error => this.handleErrorResponse(error)} />
 					</div>
 				</div>
 				<div className="row" style={{ marginTop: "10px", marginBottom: "20px" }}>
@@ -333,15 +334,13 @@ export default class LecturerDetailView extends Component {
 	}
 
 	render() {
-		const { showError, error, isLoading, isEditing } = this.state;
+		const {showToaster, toaster, isLoading, isEditing } = this.state;
 		if (isLoading)
 			return <Spinner />;
 
 		return (
 			<div>
-				{showError && <Modal btnClick={this.hideDialog}>
-					<div>{error}</div>
-				</Modal>}
+				{showToaster&& <Toast Msg={toaster} onKill={this.handleToaster}/>}
 				{isEditing ?
 					this.renderForm() : this.renderDisplay()}
 			</div>
