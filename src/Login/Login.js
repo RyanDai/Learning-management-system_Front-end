@@ -7,8 +7,6 @@ import axios from 'axios';
 import Dialog from '../Utils/Dialog';
 import { Spinner } from '../UI/Spinner';
 import Decoder from 'jwt-decode';
-import swal from 'sweetalert2';
-import Nav from '../App/TopNav';
 
 export default class Login extends Component {
     constructor(props) {

@@ -22,6 +22,9 @@ body{
 	box-shadow: 0 4px 7px 0 rgba(14,11,22, 0.22), 0 5px 11px 0 rgba(14,11,22, 0.21);
 }
 
+.register-div button{
+	float: none !important;
+}
 
 .react-gravatar {
 	border-radius: 50%;
@@ -31,6 +34,32 @@ body{
 
 .open .dropdown-menu {
 	display:block;
+}
+
+.btn-primary {
+	/*background-color: rgba(71,23,246,0.85);*/
+	-webkit-box-shadow: 0 4px 7px 0 rgba(71,23,246, 0.22), 0 5px 11px 0 rgba(71,23,246, 0.21);
+	-moz-box-shadow: 0 4px 7px 0 rgba(71,23,246, 0.22), 0 5px 11px 0 rgba(71,23,246, 0.21);
+	box-shadow: 0 4px 7px 0 rgba(71,23,246, 0.22), 0 5px 11px 0 rgba(71,23,246, 0.21);
+	/*border-color: rgba(71,23,246,0.85);*/
+}
+
+.btn-primary:hover{
+	background-color: #4717F6;
+	border-color: #4717F6;
+}
+
+.btn-danger {
+	/*background-color: rgba(162,57,202,0.85);*/
+	-webkit-box-shadow: 0 4px 7px 0 rgba(162,57,202, 0.22), 0 5px 11px 0 rgba(162,57,202, 0.21);
+	-moz-box-shadow: 0 4px 7px 0 rgba(162,57,202, 0.22), 0 5px 11px 0 rgba(162,57,202, 0.21);
+	box-shadow: 0 4px 7px 0 rgba(162,57,202, 0.22), 0 5px 11px 0 rgba(162,57,202, 0.21);
+	/*border-color: rgba(162,57,202,0.85);*/
+}
+
+.btn-danger:hover{
+	background-color: #A239CA;
+	border-color: #A239CA;
 }
 /*black: #0E0B16 , 14,11,22*/
 /*PINK:#A239CA* , 162,57,202/
