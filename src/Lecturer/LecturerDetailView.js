@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { Redirect } from 'react-router-dom';
 import Gravatar from 'react-gravatar';
-import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { Spinner } from '../UI/Spinner';
 import Button from '../UI/Button';
@@ -12,6 +9,8 @@ import Enrolment from "../UI/Enrolment";
 import Dropcourse from "../UI/Dropcourse";
 import Request from '../Utils/Request';
 import Dialog from '../Utils/Dialog';
+import Toast, {showToast} from '../UI/Toast';
+import swal from 'sweetalert2';
 
 export default class LecturerDetailView extends Component {
 	constructor(props) {
@@ -21,6 +20,8 @@ export default class LecturerDetailView extends Component {
 			isEditing: false,
 			isSaving: false,
 			redirect: false,
+			showToaster: false,
+			toaster:"",
 			lecturer: {
 				FirstName: "",
 				LastName: "",
@@ -54,11 +55,8 @@ export default class LecturerDetailView extends Component {
 
 	handleErrorResponse = (error) => {
 		this.setState({ isLoading: false });
-		// const errorMsg = <ErrorMsg error={error} />;
-		// this.displayDialog(errorMsg);
 		Dialog(false, error);
 		if (error.response.status === 401) {
-			// this.setState({ redirect: true })
             this.props.history.push('/login');
 		}
 	}
@@ -93,7 +91,6 @@ export default class LecturerDetailView extends Component {
 				}
 			});
 		} else {
-			console.log(name + "," + value);
 			this.setState({
 				lecturer: {
 					...this.state.lecturer,
@@ -107,14 +104,18 @@ export default class LecturerDetailView extends Component {
 
 	}
 
+	handleToaster=()=> {
+		this.setState({showToaster:false});
+	}
+
 	handleSubmit(event) {
 		event.preventDefault(); // prevent default form submission
 		this.setState({ isLoading: true });
 		const { lecturer } = this.state;
 		if (this.isNew()) {
 			Request("POST", `/api/lecturer`, lecturer)
-				// axios.post('/api/lecturer', lecturer)
 				.then(response => {
+					Dialog(true, `Lecturer [${lecturer.FirstName} ${lecturer.LastName}] has been created`);
 					this.props.history.push('/lecturers');
 				})
 				.catch(error => this.handleErrorResponse(error));
@@ -122,7 +123,11 @@ export default class LecturerDetailView extends Component {
 			Request("PUT", `/api/lecturer/${lecturer.ID}`, lecturer)
 				// axios.put(`/api/lecturer/${lecturer.ID}`, lecturer)
 				.then(response => {
-					this.setState({ isEditing: false, isLoading: false });
+					this.setState({ isEditing: false,
+						isLoading: false,
+                        showToaster: true,
+                        toaster:`Lecturer [${lecturer.FirstName} ${lecturer.LastName}] has bee updated`
+					});
 				})
 				.catch(error => this.handleErrorResponse(error));
 		}
@@ -134,6 +139,8 @@ export default class LecturerDetailView extends Component {
 		} else {
 			this.setState({
 				isEditing: false,
+				showToaster: true,
+				toaster:"Edit action has been cancelled"
 			});
 			this.loadLecturer();
 		}
@@ -141,14 +148,21 @@ export default class LecturerDetailView extends Component {
 
 	confirmDelete = () => {
 		const { lecturer } = this.state;
-		confirmAlert({
-			title: 'Really?',                        // Title dialog
-			message: 'Are you sure to delete:',               // Message dialog
-			childrenElement: () => (<div className="dialog-content">{lecturer.FirstName} {lecturer.LastName}</div>),       // Custom UI or Component
-			confirmLabel: 'Confirm',                           // Text button confirm
-			cancelLabel: 'Cancel',                             // Text button cancel
-			onConfirm: this.handleDelete,     // Action after Cancel
-		})
+        swal({
+            title: 'Are you sure?',
+            html: `You are deleting <b>${lecturer.FirstName} ${lecturer.LastName}</b></br>You won't be able to revert this!`,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#4717F6',
+            cancelButtonColor: '#A239CA',
+            confirmButtonText: 'Delete',
+            animation: false,
+            customClass: 'animated pulse'
+        }).then((result) => {
+            if (result.value) {
+                this.handleDelete();
+            }
+        })
 	}
 
 	handleDelete = () => {
@@ -157,8 +171,8 @@ export default class LecturerDetailView extends Component {
 		Request("DELETE", `/api/lecturer/${lecturer.ID}`, null)
 			// axios.delete(`/api/lecturer/${lecturer.ID}`)
 			.then(() => {
+                Dialog(true, `Lecturer [${lecturer.FirstName} ${lecturer.LastName}] has been deleted`)
 				this.props.history.push('/lecturers');
-				this.setState({ isLoading: false })
 			})
 			.catch(error => this.handleErrorResponse(error)
 			);
@@ -320,12 +334,13 @@ export default class LecturerDetailView extends Component {
 	}
 
 	render() {
-		const {isLoading, isEditing } = this.state;
+		const {showToaster, toaster, isLoading, isEditing } = this.state;
 		if (isLoading)
 			return <Spinner />;
 
 		return (
 			<div>
+				{showToaster&& <Toast Msg={toaster} onKill={this.handleToaster}/>}
 				{isEditing ?
 					this.renderForm() : this.renderDisplay()}
 			</div>

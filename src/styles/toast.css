@@ -1,0 +1,13 @@
+.dark-toast{
+    background: rgba(71,23,246, 0.4);
+    color: #E7DFDD;
+    border-radius: 20px;
+}
+
+.dark-toast > .toastify__close{
+    color: #E7DFDD;
+}
+
+.dark-toast button {
+    color: #E7DFDD;
+}
