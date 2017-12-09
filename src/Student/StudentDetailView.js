@@ -244,7 +244,6 @@ export default class StudentDetailView extends Component {
       Request("PUT", `/api/student/${student.ID}`, student)
         // axios.put(`/api/student/${student.ID}`, student)
         .then(response => {
-
           this.setState({ isEditing: false, isLoading: false });
         })
         .catch(error => {

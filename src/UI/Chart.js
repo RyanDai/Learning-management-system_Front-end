@@ -7,6 +7,8 @@ import { charts } from '../variables/chartsVariables.jsx';
 import axios from 'axios';
 import Highlight from '../UI/Highlight';
 import Button from '../UI/Button';
+import ErrorMsg from '../Utils/ErrorMsg';
+import Request from '../Utils/Request';
 
 
 export default class Chart extends Component {
@@ -17,14 +19,16 @@ export default class Chart extends Component {
 			Assignment2:0,
 			Assignment3:0,
 			isLoading:false,
-			isLineChart:false,
-			isBarChart:true
+			isLineChart:true,
+			isBarChart:false
 		}
 	}
 
 	loadScore(studentID, courseID){
 		this.setState({ isLoading: true });
-    axios.get(`/api/score/${studentID}/${courseID}`)
+    //axios.get(`/api/score/${studentID}/${courseID}`)
+		console.log(studentID+","+courseID)
+		Request("GET", `/api/score/${studentID}/${courseID}`, null)
       .then((response) => {
         this.setState({
           isLoading: false,
@@ -34,7 +38,8 @@ export default class Chart extends Component {
         });
       })
       .catch((error) => {
-        console.log(error);
+				console.log(error)
+        this.handleErrorResponse(error);
       });
 	}
 
@@ -45,121 +50,24 @@ export default class Chart extends Component {
 		//console.log(studentID + " and " + courseID);
 	}
 
+	handleErrorResponse = (error) => {
+    this.setState({ isLoading: false });
+    const errorMsg = <ErrorMsg error={error} />;
+    this.displayDialog(errorMsg);
+    if (error.response.status === 401) {
+      this.setState({ redirect: true })
+    }
+  }
+
+	displayDialog = (error) => {
+    this.setState({ showError: true, error: error });
+  }
+
 	hideChart() {
 		this.props.hideChart();
 	}
 
-	renderBarChart(barChart){
-		return (
-			<Highlight id="main-body">
-        <h1>Student score</h1>
-				<div className="row" style={{ marginTop: "20px" }}>
-					<Button primary onClick={() => {this.setState(
-						{isLineChart:true,
-						isBarChart:false}
-					)}}>
-						Line chart
-					</Button>
-					<Button primary onClick={() => {this.setState(
-						{isLineChart:false,
-						isBarChart:true}
-					)}}>
-						Bar chart
-					</Button>
-					<Button primary onClick={() => {this.hideChart()}}>
-						Back
-					</Button>
-				</div>
-				<hr className="my-4"></hr>
-
-        <div className="main-content">
-            <Card
-                title="Score bar chart"
-                content={
-                    <ChartistGraph
-                        data={barChart.data}
-                        type="Bar"
-                        options={barChart.options}
-												responsiveOptions={barChart.responsiveOptions}
-                    />
-                }
-            />
-        </div>
-				{console.log(barChart.type)}
-			</Highlight>
-    )
-	}
-
-	renderLineChart(lineChart){
-		return (
-			<Highlight id="main-body">
-        <h1>Student score</h1>
-				<div className="row" style={{ marginTop: "20px" }}>
-					<Button primary onClick={() => {this.setState(
-						{isLineChart:true,
-						isBarChart:false}
-					)}}>
-						Line chart
-					</Button>
-					<Button primary onClick={() => {this.setState(
-						{isLineChart:false,
-						isBarChart:true}
-					)}}>
-						Bar chart
-					</Button>
-					<Button primary onClick={() => {this.hideChart()}}>
-						Back
-					</Button>
-				</div>
-				<hr className="my-4"></hr>
-
-        <div className="main-content">
-            <Card
-                title="Score line chart"
-                content={
-                    <ChartistGraph
-                        data={lineChart.data}
-                        type="Line"
-                        options={lineChart.options}
-
-                    />
-                }
-            />
-        </div>
-			</Highlight>
-    )
-	}
-
-  render(){
-		const lineChart = {
-		    type: "Line",
-		    data: {
-		        labels: ['Ass1','Ass2','Ass3'],
-		        series: [
-		            [this.state.Assignment1,this.state.Assignment2,this.state.Assignment3]
-		        ]
-		    },
-		    options: {
-		        lineSmooth: true,
-		        height: "270px",
-		        axisY: {
-		            offset: 40,
-		            labelInterpolationFnc: function(value) {
-		                return value;
-		            }
-		        },
-		        low: 0,
-		        high: 110,
-		        classNames: {
-		            point: 'ct-point ct-green',
-		            line: 'ct-line ct-green'
-		        },
-		        chartPadding: {
-		          right: -100
-		        }
-		    }
-		}
-
+	renderBarChart(){
 		const barChart = {
 		    type: "Bar",
 		    data: {
@@ -188,17 +96,139 @@ export default class Chart extends Component {
 		        }]
 		    ]
 		}
+		return (
+        <div className="main-content">
+            <Card
+                title="Score bar chart"
+                content={
+                    <ChartistGraph
+                        data={barChart.data}
+                        type="Bar"
+                        options={barChart.options}
+												responsiveOptions={barChart.responsiveOptions}
+                    />
+                }
+            />
+        </div>
+    )
+	}
 
+	renderLineChart(){
+		const lineChart = {
+		    type: "Line",
+		    data: {
+		        labels: ['Ass1','Ass2','Ass3'],
+		        series: [
+		            [this.state.Assignment1,this.state.Assignment2,this.state.Assignment3]
+		        ]
+		    },
+		    options: {
+		        lineSmooth: true,
+		        height: "270px",
+		        axisY: {
+		            offset: 40,
+		            labelInterpolationFnc: function(value) {
+		                return value;
+		            }
+		        },
+		        low: 0,
+		        high: 110,
+		        classNames: {
+		            point: 'ct-point ct-green',
+		            line: 'ct-line ct-green'
+		        },
+		        chartPadding: {
+		          right: -100
+		        }
+		    }
+		}
+		return (
+        <div className="main-content">
+            <Card
+                title="Score line chart"
+                content={
+                    <ChartistGraph
+                        data={lineChart.data}
+                        type="Line"
+                        options={lineChart.options}
 
+                    />
+                }
+            />
+        </div>
+    )
+	}
+
+	renderButton(){
+		return(
+			<div>
+				<h1>Student score</h1>
+				<div className="row" style={{ marginTop: "20px" }}>
+					<Button primary onClick={() => {this.setState(
+						{isLineChart:true,
+						isBarChart:false}
+					)}}>
+						Line chart
+					</Button>
+					<Button primary onClick={() => {this.setState(
+						{isLineChart:false,
+						isBarChart:true}
+					)}}>
+						Bar chart
+					</Button>
+					<Button primary onClick={() => {this.hideChart()}}>
+						Back
+					</Button>
+				</div>
+				<hr className="my-4"></hr>
+			</div>
+		)
+	}
+
+	buttonDiv=()=>{
+		return(
+			<div>
+				<h1>Student score</h1>
+				<div className="row" style={{ marginTop: "20px" }}>
+					<Button primary onClick={() => {this.setState(
+						{isLineChart:true,
+						isBarChart:false}
+					)}}>
+						Line chart
+					</Button>
+					<Button primary onClick={() => {this.setState(
+						{isLineChart:false,
+						isBarChart:true}
+					)}}>
+						Bar chart
+					</Button>
+					<Button primary onClick={() => {this.hideChart()}}>
+						Back
+					</Button>
+				</div>
+				<hr className="my-4"></hr>
+			</div>
+		)
+	}
+  render(){
 		const { isLoading, isLineChart, isBarChart } = this.state;
 		if (isLoading)
 			return <span>Loading student</span>;
 
-    if(isLineChart === true){
-				return this.renderLineChart(lineChart)
-		} else {
-			  return this.renderBarChart(barChart)
-		}
+
+		return(
+			<Highlight id="main-body">
+
+				{this.renderButton()}
+				{
+					isLineChart?this.renderLineChart():this.renderBarChart()
+				}
+
+
+				</Highlight>
+		)
+
+
 
 
 
