@@ -35,18 +35,6 @@ export default class Login extends Component {
         })
     }
 
-    // displayDialog=(error) =>{
-    //     // return (
-    //     // swal({
-    //     //     type: 'error',
-    //     //     title: error,
-    //     //     showConfirmButton: true,
-    //     //     timer: 5000
-    //     // })
-    //         Dialog(false, error);
-    //     // )
-    // }
-
     validation=()=>{
         const {Email, Password} = this.state.account;
 

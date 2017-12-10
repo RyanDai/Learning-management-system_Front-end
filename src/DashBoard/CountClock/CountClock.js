@@ -46,10 +46,11 @@ export default class CountClock extends Component {
                     </div>
 
                     <div className="countdown__item">
+                        {/*<div style={{backgroundColor:"black"}}>*/}
                         <div className="countdown__timer js-countdown-seconds" id={"cd_sec"} aria-labelledby="second-countdown">
 
                         </div>
-
+                        {/*</div>*/}
                         <div className="countdown__label" id="second-countdown">Seconds</div>
                     </div>
                 </div>

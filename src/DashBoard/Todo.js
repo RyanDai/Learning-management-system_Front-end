@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Button from "../UI/Button";
 import TodoList from "./TodoList";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
+import TextField from 'material-ui/TextField';
+import {Grid, Row, Col, Clearfix} from 'react-bootstrap';
 
 export default class Todo extends Component {
     constructor(props) {
@@ -66,19 +67,38 @@ export default class Todo extends Component {
 
     inputField=()=>{
         return(
-            <div>
-                <input type={"text"} value={this.state.input} onChange={this.handleInput}/>
-                <Button primary onClick={this.addToList}> Add </Button>
-            </div>
+            <Row>
+                <Col lg={9} md={10} sm={10}>
+                <TextField
+                    hintText="Let's do..."
+                    floatingLabelText="Add New Task"
+                    fullWidth={true}
+                    value={this.state.input}
+                    onChange={this.handleInput}
+                    id={"todo-input"}
+                />
+                </Col>
+                <Col lg={3} md={2} sm={2}>
+                <Button primary id={'todo-add'} onClick={this.addToList}> Add </Button>
+                </Col>
+            </Row>
         );
     }
     render() {
         return(
             <MuiThemeProvider>
                 <div className={"todo-wrapper dash-component-wrapper"}>
-                    <h1>To-do List</h1>
-                    {this.inputField()}
-                    <TodoList items={this.state.todos} delete={this.removeFromList} check={this.handleTaskState}/>
+                    <Grid>
+                        <Row>
+                        <h1>Task</h1>
+                        </Row>
+                        {/*<Row>*/}
+                        {this.inputField()}
+                        {/*</Row>*/}
+                        <Row>
+                        <TodoList items={this.state.todos} delete={this.removeFromList} check={this.handleTaskState}/>
+                        </Row>
+                    </Grid>
                 </div>
             </MuiThemeProvider>
         )
