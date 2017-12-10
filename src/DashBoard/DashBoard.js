@@ -2,6 +2,7 @@ import React from 'react';
 import {Grid, Row, Col, Clearfix} from 'react-bootstrap';
 import Todo from "./Todo";
 import '../styles/dashboard.css';
+import CountDown from "./CountDown";
 
 export default class DashBoard extends React.Component {
     constructor(props) {
@@ -29,7 +30,7 @@ export default class DashBoard extends React.Component {
                             </Row>
 
                             <Row className="show-grid">
-                                <Col xs={6} lg={6}>progress section</Col>
+                                <Col xs={6} lg={6}><CountDown/></Col>
                                 <Col xs={6} lg={6}>calendar</Col>
                             </Row>
                         </Col>

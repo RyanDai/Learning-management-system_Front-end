@@ -12,7 +12,7 @@ export default class Todo extends Component {
             nextId:2,
             todos:[
                 {id:0,text:"hello",done:false},
-                {id:1,text:"great!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",done:false},
+                {id:1,text:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",done:false},
             ]
 
         }
