@@ -1,3 +1,4 @@
+import $ from 'jquery';
 
 export default function startCountDown(time){
     let countDownDate = new Date(time).getTime();
@@ -5,6 +6,8 @@ export default function startCountDown(time){
 // Update the count down every 1 second
     let x = setInterval(function() {
 
+        const animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+        const animationName = 'flipInX';
         // Get todays date and time
         let now = new Date().getTime();
 
@@ -19,14 +22,32 @@ export default function startCountDown(time){
 
         // Display the result in the element with id="demo"
         document.getElementById("cd_day").innerHTML = ""+days;
+        if(seconds === 59 && minutes === 59 && hours === 23) {
+            $('#cd_day').addClass('animated ' + animationName).one(animationEnd, function() {
+                $(this).removeClass('animated ' + animationName);
+            });
+        }
         document.getElementById("cd_hour").innerHTML = ""+hours;
+        if(seconds === 59 && minutes === 59) {
+            $('#cd_hour').addClass('animated ' + animationName).one(animationEnd, function() {
+                $(this).removeClass('animated ' + animationName);
+            });
+        }
         document.getElementById("cd_min").innerHTML = ""+minutes;
+        if(seconds === 59) {
+            $('#cd_min').addClass('animated ' + animationName).one(animationEnd, function() {
+                $(this).removeClass('animated ' + animationName);
+            });
+        }
         document.getElementById("cd_sec").innerHTML = ""+seconds;
-
+        // $('#cd_sec').text(""+seconds);
+        $('#cd_sec').addClass('animated ' + animationName).one(animationEnd, function() {
+            $(this).removeClass('animated ' + animationName);
+        });
         // If the count down is finished, write some text
         if (distance < 0) {
             clearInterval(x);
-            document.getElementById("demo").innerHTML = "EXPIRED";
+            document.getElementById("demo").innerHTML = "WOHOO";
         }
     }, 1000);
 }

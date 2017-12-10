@@ -51,3 +51,10 @@
     font-size: 1em;
     padding-top: .40em;
 }
+
+.flipInX {
+    -webkit-animation-name: flipInX;
+    animation-name: flipInX;
+    -webkit-animation-duration: 0.9s;
+    animation-duration: 0.9s;
+}
