@@ -287,6 +287,7 @@ renderChart() {
 renderForm() {
   const { student } = this.state;
   return (
+    <Highlight id="main-body">
     <form onSubmit={(e) => this.handleSubmit(e)}>
       <div className="form-group">
         <div className="form-group">
@@ -391,6 +392,7 @@ renderForm() {
           </Button>
       </div>
     </form>
+  </Highlight>
   )
 }
 

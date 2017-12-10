@@ -155,13 +155,15 @@ class CourseDetailView extends Component {
 	}
 
 	giveScore(sID, cID){
-		{console.log(sID + "  " + cID)}
-
 		this.setState({
 			sID:sID,
 			cID:cID,
 			isMarking:true
 		});
+	}
+
+	cancelMarking(){
+		this.setState({isMarking:false});
 	}
 
 	renderDisplay() {
@@ -274,7 +276,7 @@ class CourseDetailView extends Component {
 		}
 
 		if(isMarking) {
-			return <MarkStudent sID={sID} cID={cID} />
+			return <MarkStudent sID={sID} cID={cID} cancelMarking={()=>this.cancelMarking()}/>
 		}
 
 		return isEditing ?
