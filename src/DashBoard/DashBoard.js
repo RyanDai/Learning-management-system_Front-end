@@ -22,8 +22,8 @@ export default class DashBoard extends React.Component {
                     </Row>
 
                     <Row className="show-grid">
-                        <Col xs={12} md={4}><Todo/></Col>
-                        <Col xs={12} md={8}>
+                        <Col xs={12} sm={12} md={12} lg={4}><Todo/></Col>
+                        <Col xs={12} sm={12} md={12} lg={8}>
                             <Row className="show-grid">
                                 <Col xs={6} lg={6}>Graph section</Col>
                                 <Col xs={6} lg={6}>weather</Col>
