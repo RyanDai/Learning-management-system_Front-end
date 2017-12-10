@@ -10,6 +10,7 @@ import Register from "../Login/Register";
 import Signin from '../Login/Login';
 import {Auth} from '../Utils/Auth';
 import DashBoard from "../DashBoard/DashBoard";
+import Calendar from '../UI/Calendar';
 
 export default () => ((
     <div>
@@ -22,6 +23,7 @@ export default () => ((
         <ProtectedRoute exact path="/students/:id" component={StudentDetailView} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Signin} />
+        <Route exact path="/calendar" component={Calendar} />
     </div>
 ));
 
