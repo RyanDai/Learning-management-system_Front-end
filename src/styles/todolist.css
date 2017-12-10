@@ -2,3 +2,7 @@
     word-wrap: break-word;
     word-break: break-all;
 }
+
+.todo-wrapper{
+    color: #000;
+}
