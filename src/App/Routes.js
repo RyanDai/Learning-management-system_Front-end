@@ -9,10 +9,11 @@ import StudentDetailView from '../Student/StudentDetailView';
 import Register from "../Login/Register";
 import Signin from '../Login/Login';
 import {Auth} from '../Utils/Auth';
+import DashBoard from "../DashBoard/DashBoard";
 
 export default () => ((
     <div>
-        <Route exact path="/" component={CoursesView} />
+        <Route exact path="/" component={DashBoard} />
         <Route exact path="/courses" component={CoursesView} />
         <ProtectedRoute exact path="/courses/:id" component={CourseDetailView} />
         <Route exact path="/lecturers" component={LecturersView} />

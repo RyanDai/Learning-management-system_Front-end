@@ -52,7 +52,7 @@ export default class LecturersView extends Component {
 			return <Spinner />;
 
 		return (
-			<div className="container">
+			<div className="page-wrapper">
 				{this.state.showError && <Modal btnClick={this.hideDialog}>
 					<div>{this.state.error}</div>
 				</Modal>}
