@@ -9,6 +9,7 @@ import Teachinglist from '../UI/Teachinglist';
 import Studentlist from '../UI/Studentlist';
 import ErrorMsg from '../Utils/ErrorMsg';
 import Request from '../Utils/Request';
+import MarkStudent from '../UI/MarkStudent';
 
 class CourseDetailView extends Component {
 	constructor(props) {
@@ -17,6 +18,9 @@ class CourseDetailView extends Component {
 			isLoading: false,
 			isEditing: false,
 			isSaving: false,
+			isMarking:false,
+			sID:0,
+			cID:0,
 			error: null,
 			course: {
 				Name: "",
@@ -150,6 +154,16 @@ class CourseDetailView extends Component {
 			});
 	}
 
+	giveScore(sID, cID){
+		{console.log(sID + "  " + cID)}
+
+		this.setState({
+			sID:sID,
+			cID:cID,
+			isMarking:true
+		});
+	}
+
 	renderDisplay() {
 		const { course } = this.state;
 
@@ -174,7 +188,7 @@ class CourseDetailView extends Component {
 					</div>
 					<div className="col-sm-6">
 						<h2>Student:</h2>
-						<Studentlist student={course.Enrollments} />
+						<Studentlist student={course.Enrollments} courseID={course.ID} giveScore={(sID,cID) => this.giveScore(sID,cID)} />
 					</div>
 				</div>
 				<div className="row" style={{ marginTop: "20px" }}>
@@ -254,9 +268,13 @@ class CourseDetailView extends Component {
 	}
 
 	render() {
-		const { isLoading, isEditing, course } = this.state;
+		const { isLoading, isEditing, course, isMarking, sID, cID } = this.state;
 		if (isLoading) {
 			return <Spinner />;
+		}
+
+		if(isMarking) {
+			return <MarkStudent sID={sID} cID={cID} />
 		}
 
 		return isEditing ?
