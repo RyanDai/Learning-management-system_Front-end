@@ -32,8 +32,6 @@ export default class DashBoard extends React.Component {
 
                             <Row className="show-grid">
                                 <Col xs={6} lg={6}><CountDown/></Col>
-                                <Col xs={6} lg={6}>calendar</Col>
-                                <Col xs={6} lg={6}>progress section</Col>
                                 <Col xs={6} lg={6}><Calendar /></Col>
                             </Row>
                         </Col>
