@@ -4,19 +4,38 @@ import TodoList from "./TodoList";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TextField from 'material-ui/TextField';
 import {Grid, Row, Col, Clearfix} from 'react-bootstrap';
+import Request from '../Utils/Request';
 
 export default class Todo extends Component {
     constructor(props) {
         super(props);
         this.state = {
             input:"",
-            nextId:2,
+            nextId:0,
             todos:[
-                {id:0,text:"hello",done:false},
-                {id:1,text:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",done:false},
             ]
 
         }
+    }
+
+    componentWillMount(){
+        Request("GET", "/api/dash/task")
+            .then(response=>{
+                const data = response.data;
+                this.loadTasks(data);
+            })
+            .catch(error=>{
+                console.log(error);
+            });
+    }
+
+    loadTasks=(data)=>{
+        let count = 1;
+        if(data.length > 0){
+            count = data[data.length-1].ID;
+        }
+        console.log(count);
+        this.setState({todos:data, nextId:count});
     }
 
     handleInput=(e)=>{
@@ -37,6 +56,14 @@ export default class Todo extends Component {
             nextId: nextId+1,
             input:""
         })
+        Request("POST", "/api/dash/task", newItem)
+            .then(response=>{
+                const data = response.data;
+                this.loadTasks(data);
+            })
+            .catch(error=>{
+                console.log(error);
+            });
     }
 
     removeFromList=(id)=>{
@@ -44,25 +71,41 @@ export default class Todo extends Component {
         for(let i = 0; i < items.length; i++) {
             let item = items[i];
 
-            if(item.id === id){
+            if(item.ID === id){
                 items.splice(i,1);
                 break;
             }
         }
         this.setState({todos:items});
+        Request("DELETE", `/api/dash/task/${id}`)
+            .then(r=>{
+                console.log(r);
+            })
+            .catch(e=>{
+                console.log(e);
+            })
     }
 
     handleTaskState=(id)=>{
         let items = this.state.todos;
+        let updateItem = null;
         for(let i = 0; i < items.length; i++) {
             let item = items[i];
 
-            if(item.id === id){
-                item.done = !item.done;
+            if(item.ID === id){
+                item.Done = !item.Done;
+                updateItem = item;
                 break;
             }
         }
         this.setState({todos:items});
+        Request("PUT", "/api/dash/task", updateItem)
+            .then(r=>{
+                console.log(r);
+            })
+            .catch(e=>{
+                console.log(e);
+            })
     }
 
     inputField=()=>{

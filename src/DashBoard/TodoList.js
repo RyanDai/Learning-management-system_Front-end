@@ -10,15 +10,15 @@ function Todo(props) {
         <tr>
             <td style={{maxWidth:"15%"}}>
                 <Checkbox
-                    checked={props.item.done}
-                    onCheck={()=>props.check(props.item.id)}
+                    checked={props.item.Done}
+                    onCheck={()=>props.check(props.item.ID)}
                 />
             </td>
             <td style={{maxWidth:"70%"}}>
-                {item.text}
+                {item.Text}
             </td>
             <td style={{maxWidth:"15%"}}>
-                <Button danger onClick={()=>props.delete(props.item.id)}><i className="fa fa-trash" aria-hidden="true"/></Button>
+                <Button danger onClick={()=>props.delete(props.item.ID)}><i className="fa fa-trash" aria-hidden="true"/></Button>
             </td>
         </tr>
     )
@@ -37,7 +37,7 @@ export default function TodoList(props) {
             <tbody>
             {
                 props.items.map(
-                    (item) => <Todo key={`${item.id}`} item={item} check={props.check} delete={props.delete}/>)
+                    (item) => <Todo key={`${item.ID}`} item={item} check={props.check} delete={props.delete}/>)
             }
             </tbody>
         </Table>
