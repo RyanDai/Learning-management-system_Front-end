@@ -21,6 +21,10 @@ export default function startCountDown(time){
         let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
         // Display the result in the element with id="demo"
+        if (document.getElementById("cd_day")===null) {
+            clearInterval(x);
+            return;
+        }
         document.getElementById("cd_day").innerHTML = ""+days;
         if(seconds === 59 && minutes === 59 && hours === 23) {
             $('#cd_day').addClass('animated ' + animationName).one(animationEnd, function() {
