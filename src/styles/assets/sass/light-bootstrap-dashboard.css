@@ -2890,7 +2890,7 @@ button.rbc-input::-moz-focus-inner {
   text-align: center;
   font-weight: 300;
   line-height: 1.1;
-  color: inherit;
+  color: black;
   font-size: 36px; }
 
 .rbc-toolbar button {
@@ -3182,10 +3182,12 @@ button.rbc-input::-moz-focus-inner {
 
 .rbc-agenda-date-cell,
 .rbc-agenda-time-cell {
-  white-space: nowrap; }
+  white-space: nowrap;
+color: black;}
 
 .rbc-agenda-event-cell {
-  width: 100%; }
+  width: 100%;
+color: black; }
 
 .rbc-time-column {
   display: -webkit-flex;
