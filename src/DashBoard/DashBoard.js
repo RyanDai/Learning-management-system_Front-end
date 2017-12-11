@@ -1,6 +1,7 @@
 import React from 'react';
 import {Grid, Row, Col, Clearfix} from 'react-bootstrap';
 import Todo from "./Todo";
+import Calendar from 'rc-calendar';
 import '../styles/dashboard.css';
 import CountDown from "./CountDown";
 
@@ -31,7 +32,7 @@ export default class DashBoard extends React.Component {
 
                             <Row className="show-grid">
                                 <Col xs={6} lg={6}><CountDown/></Col>
-                                <Col xs={6} lg={6}>calendar</Col>
+                                <Col xs={6} lg={6}><Calendar /></Col>
                             </Row>
                         </Col>
                     </Row>
