@@ -7,3 +7,4 @@ import './styles/course-card.css';
 import 'animate.css';
 import './styles/button.css';
 import './styles/nav.css';
+import './styles/smallCalendar.css';
