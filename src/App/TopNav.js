@@ -76,6 +76,9 @@ export default class TopNav extends Component {
 					<li className="nav-item">
 						<Link className="nav-link" to="/students"><i className="fa fa-graduation-cap" aria-hidden="true"/> Students</Link>
 					</li>
+          <li className="nav-item">
+						<Link className="nav-link" to="/calendar"><i className="fa fa-calendar" aria-hidden="true"/> Calendar</Link>
+					</li>
 				</ul>
 				<ul className="navbar-nav">
 					{Auth.loggedIn()? this.loggedIn():this.guest()}

@@ -2890,7 +2890,7 @@ button.rbc-input::-moz-focus-inner {
   text-align: center;
   font-weight: 300;
   line-height: 1.1;
-  color: inherit;
+  color: black;
   font-size: 36px; }
 
 .rbc-toolbar button {
@@ -3182,10 +3182,12 @@ button.rbc-input::-moz-focus-inner {
 
 .rbc-agenda-date-cell,
 .rbc-agenda-time-cell {
-  white-space: nowrap; }
+  white-space: nowrap;
+color: black;}
 
 .rbc-agenda-event-cell {
-  width: 100%; }
+  width: 100%;
+color: black; }
 
 .rbc-time-column {
   display: -webkit-flex;
@@ -5216,7 +5218,8 @@ form label.radio, form label.checkbox {
 .table > tfoot > tr > td {
   padding: 12px 8px;
   vertical-align: middle;
-  border-color: #E3E3E3; }
+  border-color: #E3E3E3;
+  color:grey; }
 
 .table > thead > tr > th {
   border-bottom-width: 1px;
