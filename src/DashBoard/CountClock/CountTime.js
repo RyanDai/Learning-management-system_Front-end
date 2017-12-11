@@ -1,10 +1,11 @@
 import $ from 'jquery';
 
+let x = null;
 export default function startCountDown(time){
     let countDownDate = new Date(time).getTime();
 
 // Update the count down every 1 second
-    let x = setInterval(function() {
+    x = setInterval(function() {
 
         const animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
         const animationName = 'flipInX';
@@ -51,7 +52,11 @@ export default function startCountDown(time){
         // If the count down is finished, write some text
         if (distance < 0) {
             clearInterval(x);
-            document.getElementById("demo").innerHTML = "WOHOO";
         }
     }, 1000);
+}
+
+export function stopCountDown(){
+    if(x !== null)
+    clearInterval(x);
 }
