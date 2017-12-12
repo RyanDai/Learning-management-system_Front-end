@@ -291,6 +291,17 @@ renderForm() {
     <form onSubmit={(e) => this.handleSubmit(e)}>
       <div className="form-group">
         <div className="form-group">
+          <label className="col-sm-2 col-form-label" htmlFor="textinput">Sex</label>
+          <div className="col-sm-4">
+            <div className="col-sm-4">
+              <select className="custom-select" name={"Sex"} defaultValue={student.Sex} onChange={e=>this.handleInputChange(e,"p")}>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div className="form-group">
           <label>FirstName</label>
           <input
             type="text"

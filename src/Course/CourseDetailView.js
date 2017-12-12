@@ -10,6 +10,8 @@ import Studentlist from '../UI/Studentlist';
 import ErrorMsg from '../Utils/ErrorMsg';
 import Request from '../Utils/Request';
 import MarkStudent from '../UI/MarkStudent';
+import DatePicker from 'material-ui/DatePicker';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class CourseDetailView extends Component {
 	constructor(props) {
@@ -68,7 +70,7 @@ class CourseDetailView extends Component {
 	loadCourse() {
 		const { id } = this.props.match.params;
 		this.setState({ isLoading: true });
-		Request("GET", `/api/course/${id}`, null)
+		Request("GET", `/api/course/${id}`)
 			// axios.get(`/api/course/${id}`)
 			.then(response => {
 				this.setState({
@@ -92,6 +94,30 @@ class CourseDetailView extends Component {
 				[name]: value,
 			},
 		});
+	};
+
+	handleStartTimeChange=(event, date)=>{
+        this.setState({
+			course: {
+				...this.state.course,
+				["StartTime"]: this.convertDate(date.toLocaleString().substring(0, 10))
+			},
+    	});
+	}
+    handleEndTimeChange=(event, date)=>{
+        this.setState({
+            course: {
+                ...this.state.course,
+                ["EndTime"]: this.convertDate(date.toLocaleString().substring(0, 10)),
+            },
+        });
+    }
+
+    convertDate=(date)=>{
+		let d = date.split("/");
+		let result="";
+		result+=d[2]+"-"+d[1]+"-"+d[0];
+		return result;
 	}
 
 	handleSubmit = (event) => {
@@ -238,24 +264,19 @@ class CourseDetailView extends Component {
 						name="Description"
 						onChange={this.handleInputChange}
 					/>
-					<label>Start Time</label>
-					<input
-						type="text"
-						className="form-control"
-						placeholder="DD/MM/YY"
-						value={course.StartTime || ''}
-						name="StartTime"
-						onChange={this.handleInputChange}
-					/>
+                    <label>Start Time</label>
+					<DatePicker
+						hintText="Start Time"
+						defaultDate={new Date(this.state.course.StartTime)}
+						onChange={this.handleStartTimeChange}
+						style={{backgroundColor:"white"}}/>
+
 					<label>End Time</label>
-					<input
-						type="text"
-						className="form-control"
-						placeholder="DD/MM/YY"
-						value={course.EndTime || ''}
-						name="EndTime"
-						onChange={this.handleInputChange}
-					/>
+					<DatePicker
+						hintText="End Time"
+						defaultDate={new Date(this.state.course.EndTime)}
+						onChange={this.handleEndTimeChange}
+						style={{backgroundColor:"white"}}/>
 					<div className="form-group row" style={{ marginTop: "20px" }}>
 						<Button primary type="submit">
 							Save
@@ -279,8 +300,12 @@ class CourseDetailView extends Component {
 			return <MarkStudent sID={sID} cID={cID} cancelMarking={()=>this.cancelMarking()}/>
 		}
 
-		return isEditing ?
-			this.renderForm(course) : this.renderDisplay(course)
+		return (
+			<MuiThemeProvider>
+				{isEditing ?
+				this.renderForm(course) : this.renderDisplay(course)}
+			</MuiThemeProvider>
+		)
 	}
 }
 

@@ -39,8 +39,15 @@ export default class CountClock extends Component {
 
     handleTimeChange=(event, date)=>{
         this.setState({
-            EndTime: date.toISOString().substring(0, 10)
+            EndTime: this.convertDate(date.toLocaleString().substring(0, 10))
         });
+    }
+
+    convertDate=(date)=>{
+        let d = date.split("/");
+        let result="";
+        result+=d[2]+"-"+d[1]+"-"+d[0];
+        return result;
     }
 
     changeTime=()=>{
