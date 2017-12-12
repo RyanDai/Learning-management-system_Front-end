@@ -17,7 +17,10 @@ export default function ListItem(props) {
 	// const students = props.students;
 	return (
 		<ul className="list-group">
-			{props.students.map((student, i) => <Item key={i} student={student} />)}
+			{props.students.filter(
+                (l)=>
+                    (props.search === "") || (l.FirstName.indexOf(props.search) !== -1) || (l.LastName.indexOf(props.search) !== -1)
+            ).map((student, i) => <Item key={i} student={student} />)}
 		</ul>
 	)
 }

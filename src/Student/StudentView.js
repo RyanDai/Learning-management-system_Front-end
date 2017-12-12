@@ -6,14 +6,21 @@ import Button from '../UI/Button';
 export default class StudentView extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {}
+		this.state = {
+			key:""
+		}
 	}
+
+    handleFilter=(e)=>{
+        this.setState({key:e.target.value});
+    }
 
 	render() {
 		return (
 			<div className="container">
 				<h1 style={{ color: "white" }}>Students</h1>
-				<StudentList />
+				<input onChange={this.handleFilter}/>
+				<StudentList search={this.state.key}/>
 				<Link to={`/students/create`}>
 					<Button danger style={{ margin: "10px 0 10px 0" }}>
 						Add New Student

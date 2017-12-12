@@ -14,7 +14,8 @@ export default class LecturersView extends Component {
 			isLoading: false,
 			lectures: [],
 			showError: false,
-			error: null
+			error: null,
+			key:"",
 		}
 	}
 
@@ -44,8 +45,12 @@ export default class LecturersView extends Component {
 		this.loadLectures();
 	}
 
+	handleFilter=(e)=>{
+		this.setState({key:e.target.value});
+	}
+
 	render() {
-		const { isLoading, lectures } = this.state;
+		const { isLoading, lectures , key} = this.state;
 		// if (isLoading)
 		//     return <span>Loading lectures</span>;
 		if (isLoading)
@@ -57,7 +62,8 @@ export default class LecturersView extends Component {
 					<div>{this.state.error}</div>
 				</Modal>}
 				<h1 style={{ color: "white" }}>Lectures</h1>
-				<LecturerList ls={lectures} />
+				<input onChange={this.handleFilter}/>
+				<LecturerList ls={lectures} search={key}/>
 				<Link to={`/lecturers/create`}>
 					<Button danger style={{ margin: "10px 0 10px 0" }}>
 						Create New Lecturer

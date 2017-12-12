@@ -11,6 +11,7 @@ class CoursesView extends Component {
 		this.state = {
 			isLoading: false,
 			course: [],
+			key:""
 		};
 	}
 
@@ -28,16 +29,25 @@ class CoursesView extends Component {
 		this.loadCourses();
 	}
 
+    handleFilter=(e)=>{
+        this.setState({key:e.target.value});
+    }
+
 	render() {
-		const { isLoading } = this.state;
+		const { isLoading, key } = this.state;
 		if (isLoading)
 			return <Spinner />;
 
 		return (
 			<div className="container">
 				<h1 style={{ color: "white" }}>Courses</h1>
+				<input onChange={this.handleFilter}/>
 				<div className="row">
-					{this.state.course.map(
+					{this.state.course.filter(
+                        (c)=>
+                        (key === "") || (c.CourseCode.indexOf(key) !== -1) || (c.Name.indexOf(key) !== -1)
+                        )
+						.map(
 						course => <CourseCard course={course} key={course.ID} />
 					)}
 				</div>
