@@ -232,6 +232,26 @@ export default class LecturerDetailView extends Component {
 					<fieldset>
 						<legend>Personal Details</legend>
 						<div className="form-group row">
+							<label className="col-sm-2 col-form-label" htmlFor="textinput">Title</label>
+							<div className="col-sm-4">
+								<select className="custom-select" name={"Title"} defaultValue={lecturer.Title} onChange={e=>this.handleInputChange(e,"p")}>
+									<option value="Mr">Mr</option>
+									<option value="Mrs">Mrs</option>
+									<option value="Professor">Professor</option>
+									<option value="Doctor">Doctor</option>
+								</select>
+							</div>
+							<label className="col-sm-2 col-form-label" htmlFor="textinput">Sex</label>
+							<div className="col-sm-4">
+								<div className="col-sm-4">
+									<select className="custom-select" name={"Sex"} defaultValue={lecturer.Sex} onChange={e=>this.handleInputChange(e,"p")}>
+										<option value="Male">Male</option>
+										<option value="Female">Female</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div className="form-group row">
 							<label className="col-sm-2 col-form-label" htmlFor="textinput">FirstName</label>
 							<div className="col-sm-4">
 								<input type="text" value={'' || lecturer.FirstName} placeholder="FirstName"
