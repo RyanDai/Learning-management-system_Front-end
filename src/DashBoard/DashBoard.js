@@ -4,22 +4,49 @@ import Todo from "./Todo";
 import Calendar from 'rc-calendar';
 import '../styles/dashboard.css';
 import CountDown from "./CountDown";
+import Request from "../Utils/Request";
+import DashCard from './DashCard';
 
 export default class DashBoard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            students:[],
+            lecturers:[],
+            courses:[]
         }
     }
 
+    componentWillMount(){
+        Request("GET", '/api/student')
+            .then(r=>{
+                this.setState({students:r.data});
+                return Request("GET", '/api/lecturer');
+            })
+            .then(r=>{
+                this.setState({lecturers:r.data});
+                return Request("GET", '/api/course');
+            })
+            .then(r=>{
+                this.setState({courses:r.data});
+                return Request("GET", '/api/course');
+            })
+            .catch(e=>{
+                console.log(e);
+            })
+    }
+
+
+
     render(){
+        const {students, lecturers, courses} = this.state;
         return (
             <div className={"page-wrapper"}>
                 <Grid>
                     <Row className="show-grid">
-                        <Col xs={12} md={4}>Course section</Col>
-                        <Col xs={12} md={4}>Lecturer section</Col>
-                        <Col xs={12} md={4}>Student section</Col>
+                        <Col xs={12} md={4}><DashCard number={courses.length}/></Col>
+                        <Col xs={12} md={4}><DashCard student number={students.length}/></Col>
+                        <Col xs={12} md={4}><DashCard lecturer number={lecturers.length}/></Col>
                     </Row>
 
                     <Row className="show-grid">
