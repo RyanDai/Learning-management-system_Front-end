@@ -40,7 +40,7 @@ export default class StudentList extends Component {
       return <Spinner />;
 
     return (
-      <ListItem students={this.state.students} />
+      <ListItem students={this.state.students} search={this.props.search}/>
     )
   }
 }
