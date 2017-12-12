@@ -6,6 +6,7 @@ import '../styles/dashboard.css';
 import CountDown from "./CountDown";
 import Request from "../Utils/Request";
 import DashCard from './DashCard';
+import Weather from "./Weather";
 
 export default class DashBoard extends React.Component {
     constructor(props) {
@@ -54,7 +55,7 @@ export default class DashBoard extends React.Component {
                         <Col xs={12} sm={12} md={12} lg={8}>
                             <Row className="show-grid">
                                 <Col xs={6} lg={6}>Graph section</Col>
-                                <Col xs={6} lg={6}>weather</Col>
+                                <Col xs={6} lg={6}><Weather/></Col>
                             </Row>
 
                             <Row className="show-grid">
