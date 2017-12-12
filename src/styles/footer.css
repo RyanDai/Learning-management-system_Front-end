@@ -1,0 +1,16 @@
+.footer {
+    position: absolute;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+}
+
+.footer-container {
+    text-align: center;
+    margin: 0 auto;
+    position: relative;
+    color: white;
+    background: rgba(0, 0, 0, 0.75);
+    border-radius: 10px;
+}
+  
