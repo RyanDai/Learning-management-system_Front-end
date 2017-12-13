@@ -62,7 +62,7 @@ export default class DashBoard extends React.Component {
 								<Col xs={6} lg={6}>
 									<div className={"dash-component-wrapper"}>
 										<h1>Calendar</h1>
-										<Calendar style={{margin:"0 auto"}}/>
+										<Calendar style={{ margin: "0 auto" }} />
 									</div>
 								</Col>
 							</Row>
