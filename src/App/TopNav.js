@@ -27,7 +27,7 @@ export default class TopNav extends Component {
 		}
 		return (
 			<li className="nav-item dropdown">
-				<a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<a className="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<i className="fa fa-user" aria-hidden="true" />{greeting}{Auth.getName()}
 				</a>
 				<div className="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
@@ -41,7 +41,7 @@ export default class TopNav extends Component {
 	guest = () => {
 		return (
 			<div className="nav-item dropdown">
-				<a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<a className="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<i className="fa fa-user" aria-hidden="true" /> Account
 				</a>
 				<div className="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
@@ -60,7 +60,7 @@ export default class TopNav extends Component {
 	render() {
 		return (
 			<nav className="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-				<Link className="navbar-brand" to="/"><img src={require('../img/school-logo.png')} height="50px" width="50px" /> McDowall State Primary School</Link>
+				<Link className="navbar-brand" to="/"><img src={require('../img/school-logo.png')} height="50px" width="50px" alt="school-logo" /> McDowall State Primary School</Link>
 				<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
 					aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 					<span className="navbar-toggler-icon"></span>
