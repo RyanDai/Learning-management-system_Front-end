@@ -8,7 +8,7 @@ export default function DashCard({ student, lecturer, number}) {
 
     let text = 'Courses';
     let to = "/courses";
-    let icon = <i className="fa fa-book" aria-hidden="true"/>;
+    let icon = <img src={require('../img/course.png')} height="80px" width="80px" />;
     if (student) {
         text = 'Students';
         to="/students";
