@@ -18,8 +18,8 @@ export default function LectureList(props) {
         <ul className="list-group">
             {
                 props.ls.filter(
-                    (l)=>
-                         (props.search === "") || (l.FirstName.indexOf(props.search) !== -1) || (l.LastName.indexOf(props.search) !== -1)
+                    (l) =>
+                        (props.search === "") || (l.FirstName.indexOf(props.search) !== -1) || (l.LastName.indexOf(props.search) !== -1)
                 ).map(
                     (lecturer) => <Lecture key={`${lecturer.ID}`} lecturer={lecturer} />)
             }

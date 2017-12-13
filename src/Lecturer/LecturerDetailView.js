@@ -9,7 +9,7 @@ import Enrolment from "../UI/Enrolment";
 import Dropcourse from "../UI/Dropcourse";
 import Request from '../Utils/Request';
 import Dialog from '../Utils/Dialog';
-import Toast, {showToast} from '../UI/Toast';
+import Toast, { showToast } from '../UI/Toast';
 import swal from 'sweetalert2';
 
 export default class LecturerDetailView extends Component {
@@ -21,7 +21,7 @@ export default class LecturerDetailView extends Component {
 			isSaving: false,
 			redirect: false,
 			showToaster: false,
-			toaster:"",
+			toaster: "",
 			lecturer: {
 				FirstName: "",
 				LastName: "",
@@ -33,7 +33,9 @@ export default class LecturerDetailView extends Component {
 					City: "",
 					State: "",
 					PostCode: "",
-					Country: ""
+					Country: "",
+					Title: "",
+					Sex: "",
 				},
 				Teaching: []
 			}
@@ -57,7 +59,7 @@ export default class LecturerDetailView extends Component {
 		this.setState({ isLoading: false });
 		Dialog(false, error);
 		if (error.response.status === 401) {
-            this.props.history.push('/login');
+			this.props.history.push('/login');
 		}
 	}
 
@@ -104,8 +106,8 @@ export default class LecturerDetailView extends Component {
 
 	}
 
-	handleToaster=()=> {
-		this.setState({showToaster:false});
+	handleToaster = () => {
+		this.setState({ showToaster: false });
 	}
 
 	handleSubmit(event) {
@@ -123,10 +125,11 @@ export default class LecturerDetailView extends Component {
 			Request("PUT", `/api/lecturer/${lecturer.ID}`, lecturer)
 				// axios.put(`/api/lecturer/${lecturer.ID}`, lecturer)
 				.then(response => {
-					this.setState({ isEditing: false,
+					this.setState({
+						isEditing: false,
 						isLoading: false,
-                        showToaster: true,
-                        toaster:`Lecturer [${lecturer.FirstName} ${lecturer.LastName}] has bee updated`
+						showToaster: true,
+						toaster: `Lecturer [${lecturer.FirstName} ${lecturer.LastName}] has bee updated`
 					});
 				})
 				.catch(error => this.handleErrorResponse(error));
@@ -140,7 +143,7 @@ export default class LecturerDetailView extends Component {
 			this.setState({
 				isEditing: false,
 				showToaster: true,
-				toaster:"Edit action has been cancelled"
+				toaster: "Edit action has been cancelled"
 			});
 			this.loadLecturer();
 		}
@@ -148,21 +151,21 @@ export default class LecturerDetailView extends Component {
 
 	confirmDelete = () => {
 		const { lecturer } = this.state;
-        swal({
-            title: 'Are you sure?',
-            html: `You are deleting <b>${lecturer.FirstName} ${lecturer.LastName}</b></br>You won't be able to revert this!`,
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#4717F6',
-            cancelButtonColor: '#A239CA',
-            confirmButtonText: 'Delete',
-            animation: false,
-            customClass: 'animated pulse'
-        }).then((result) => {
-            if (result.value) {
-                this.handleDelete();
-            }
-        })
+		swal({
+			title: 'Are you sure?',
+			html: `You are deleting <b>${lecturer.FirstName} ${lecturer.LastName}</b></br>You won't be able to revert this!`,
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#4717F6',
+			cancelButtonColor: '#A239CA',
+			confirmButtonText: 'Delete',
+			animation: false,
+			customClass: 'animated pulse'
+		}).then((result) => {
+			if (result.value) {
+				this.handleDelete();
+			}
+		})
 	}
 
 	handleDelete = () => {
@@ -171,7 +174,7 @@ export default class LecturerDetailView extends Component {
 		Request("DELETE", `/api/lecturer/${lecturer.ID}`, null)
 			// axios.delete(`/api/lecturer/${lecturer.ID}`)
 			.then(() => {
-                Dialog(true, `Lecturer [${lecturer.FirstName} ${lecturer.LastName}] has been deleted`)
+				Dialog(true, `Lecturer [${lecturer.FirstName} ${lecturer.LastName}] has been deleted`)
 				this.props.history.push('/lecturers');
 			})
 			.catch(error => this.handleErrorResponse(error)
@@ -186,16 +189,18 @@ export default class LecturerDetailView extends Component {
 				<div className="row">
 					<Gravatar email={lecturer.Email} size={150} className="shadow-sm" />
 					<ul className="fa-ul">
-						<li><i className="fa-li fa fa-envelope" aria-hidden="true"/>{lecturer.Email}</li>
-						<li><i className="fa-li fa fa-phone" aria-hidden="true"/>{lecturer.Phone}</li>
-						<li><i className="fa-li fa fa-home" aria-hidden="true"/>{lecturer.Address.City}.{lecturer.Address.Country}</li>
+						<li><i className="fa-li fa fa-id-card" aria-hidden="true" />{lecturer.Title} {lecturer.LastName}</li>
+						<li><i className="fa-li fa fa-male" aria-hidden="true" />{lecturer.Sex}</li>
+						<li><i className="fa-li fa fa-envelope" aria-hidden="true" />{lecturer.Email}</li>
+						<li><i className="fa-li fa fa-phone" aria-hidden="true" />{lecturer.Phone}</li>
+						<li><i className="fa-li fa fa-home" aria-hidden="true" />{lecturer.Address.City}.{lecturer.Address.Country}</li>
 					</ul>
 				</div>
 				<div className="row" style={{ marginTop: "20px" }}>
-					<div className="col-6">
+					<div className="col-sm-6">
 						<h2>Teaching Course</h2>
 					</div>
-					<div className="col-6" style={{ display: "inherit" }}>
+					<div className="col-sm-6" style={{ display: "inherit" }}>
 						<Enrolment teaching id={lecturer.ID} onSuccess={this.loadLecturer} onError={error => this.handleErrorResponse(error)} />
 						<Dropcourse teaching id={lecturer.ID} courses={lecturer.Teaching} onSuccess={this.loadLecturer} onError={error => this.handleErrorResponse(error)} />
 					</div>
@@ -234,7 +239,7 @@ export default class LecturerDetailView extends Component {
 						<div className="form-group row">
 							<label className="col-sm-2 col-form-label" htmlFor="textinput">Title</label>
 							<div className="col-sm-4">
-								<select className="custom-select" name={"Title"} defaultValue={lecturer.Title} onChange={e=>this.handleInputChange(e,"p")}>
+								<select className="custom-select" name={"Title"} defaultValue={lecturer.Title} onChange={e => this.handleInputChange(e, "p")}>
 									<option value="Mr">Mr</option>
 									<option value="Mrs">Mrs</option>
 									<option value="Professor">Professor</option>
@@ -243,12 +248,12 @@ export default class LecturerDetailView extends Component {
 							</div>
 							<label className="col-sm-2 col-form-label" htmlFor="textinput">Sex</label>
 							<div className="col-sm-4">
-								<div className="col-sm-4">
-									<select className="custom-select" name={"Sex"} defaultValue={lecturer.Sex} onChange={e=>this.handleInputChange(e,"p")}>
-										<option value="Male">Male</option>
-										<option value="Female">Female</option>
-									</select>
-								</div>
+
+								<select className="custom-select" name={"Sex"} defaultValue={lecturer.Sex} onChange={e => this.handleInputChange(e, "p")}>
+									<option value="Male">Male</option>
+									<option value="Female">Female</option>
+								</select>
+
 							</div>
 						</div>
 						<div className="form-group row">
@@ -354,13 +359,13 @@ export default class LecturerDetailView extends Component {
 	}
 
 	render() {
-		const {showToaster, toaster, isLoading, isEditing } = this.state;
+		const { showToaster, toaster, isLoading, isEditing } = this.state;
 		if (isLoading)
 			return <Spinner />;
 
 		return (
 			<div>
-				{showToaster&& <Toast Msg={toaster} onKill={this.handleToaster}/>}
+				{showToaster && <Toast Msg={toaster} onKill={this.handleToaster} />}
 				{isEditing ?
 					this.renderForm() : this.renderDisplay()}
 			</div>

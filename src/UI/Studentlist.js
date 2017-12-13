@@ -10,11 +10,11 @@ class Student extends Component {
 		this.state = {}
 	}
 
-	markStudent(sID, cID){
-	 this.props.mark(sID, cID);
- }
+	markStudent(sID, cID) {
+		this.props.mark(sID, cID);
+	}
 
-	render(){
+	render() {
 		const student = this.props.student;
 		return (
 			<div className="list-group-item">
@@ -24,7 +24,7 @@ class Student extends Component {
 				</Link>
 
 				<a>
-					<i className="fa fa-edit" style={{ float: "right", color:"blue" }} onClick={() => this.markStudent(student.Student.ID, this.props.id)}></i>
+					<i className="fa fa-edit" style={{ float: "right", color: "blue", margin: "5px 0" }} onClick={() => this.markStudent(student.Student.ID, this.props.id)}></i>
 				</a>
 
 			</div>
@@ -40,20 +40,20 @@ class Studentlist extends Component {
 		this.state = {}
 	}
 
-	mark(sID, cID){
-		
+	mark(sID, cID) {
+
 		//{console.log(this.props)}
 		this.props.giveScore(sID, cID);
 	}
 
 
-	 render() {
+	render() {
 		const courseID = this.props.courseID;
 		return (
 			<div className="list-group">
 				{
 					this.props.student.map(
-						(student) => <Student key={`${student.Student.ID}`} student={student} id={courseID} mark={(sID, cID)=>this.mark(sID, cID)}/>)
+						(student) => <Student key={`${student.Student.ID}`} student={student} id={courseID} mark={(sID, cID) => this.mark(sID, cID)} />)
 				}
 			</div>
 		)

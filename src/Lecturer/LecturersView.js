@@ -15,7 +15,7 @@ export default class LecturersView extends Component {
 			lectures: [],
 			showError: false,
 			error: null,
-			key:"",
+			key: "",
 		}
 	}
 
@@ -45,12 +45,12 @@ export default class LecturersView extends Component {
 		this.loadLectures();
 	}
 
-	handleFilter=(e)=>{
-		this.setState({key:e.target.value});
+	handleFilter = (e) => {
+		this.setState({ key: e.target.value });
 	}
 
 	render() {
-		const { isLoading, lectures , key} = this.state;
+		const { isLoading, lectures, key } = this.state;
 		// if (isLoading)
 		//     return <span>Loading lectures</span>;
 		if (isLoading)
@@ -61,14 +61,22 @@ export default class LecturersView extends Component {
 				{this.state.showError && <Modal btnClick={this.hideDialog}>
 					<div>{this.state.error}</div>
 				</Modal>}
-				<h1 style={{ color: "white" }}>Lectures</h1>
-				<input onChange={this.handleFilter}/>
-				<LecturerList ls={lectures} search={key}/>
-				<Link to={`/lecturers/create`}>
-					<Button danger style={{ margin: "10px 0 10px 0" }}>
-						Create New Lecturer
-					</Button>
-				</Link>
+				<h1 style={{ color: "white", padding: "10px" }}>Lectures</h1>
+				<div className="row" style={{ margin: "10px auto" }}>
+					<div className="col-sm-6">
+						<Link to={`/lecturers/create`}>
+							<Button danger>
+								Create New Lecturer
+							</Button>
+						</Link>
+					</div>
+					<div className="col-sm-6">
+						<input style={{ float: "right", margin: "5px auto" }} onChange={this.handleFilter} placeholder="Search by name" />
+					</div>
+				</div>
+				<div style={{ margin: "10px 15px" }}>
+					<LecturerList ls={lectures} search={key} />
+				</div>
 			</div>
 		)
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import Button from '../UI/Button';
@@ -20,9 +20,9 @@ class CourseDetailView extends Component {
 			isLoading: false,
 			isEditing: false,
 			isSaving: false,
-			isMarking:false,
-			sID:0,
-			cID:0,
+			isMarking: false,
+			sID: 0,
+			cID: 0,
 			error: null,
 			course: {
 				Name: "",
@@ -96,27 +96,27 @@ class CourseDetailView extends Component {
 		});
 	};
 
-	handleStartTimeChange=(event, date)=>{
-        this.setState({
+	handleStartTimeChange = (event, date) => {
+		this.setState({
 			course: {
 				...this.state.course,
 				["StartTime"]: this.convertDate(date.toLocaleString().substring(0, 10))
 			},
-    	});
+		});
 	}
-    handleEndTimeChange=(event, date)=>{
-        this.setState({
-            course: {
-                ...this.state.course,
-                ["EndTime"]: this.convertDate(date.toLocaleString().substring(0, 10)),
-            },
-        });
-    }
+	handleEndTimeChange = (event, date) => {
+		this.setState({
+			course: {
+				...this.state.course,
+				["EndTime"]: this.convertDate(date.toLocaleString().substring(0, 10)),
+			},
+		});
+	}
 
-    convertDate=(date)=>{
+	convertDate = (date) => {
 		let d = date.split("/");
-		let result="";
-		result+=d[2]+"-"+d[1]+"-"+d[0];
+		let result = "";
+		result += d[2] + "-" + d[1] + "-" + d[0];
 		return result;
 	}
 
@@ -180,16 +180,16 @@ class CourseDetailView extends Component {
 			});
 	}
 
-	giveScore(sID, cID){
+	giveScore(sID, cID) {
 		this.setState({
-			sID:sID,
-			cID:cID,
-			isMarking:true
+			sID: sID,
+			cID: cID,
+			isMarking: true
 		});
 	}
 
-	cancelMarking(){
-		this.setState({isMarking:false});
+	cancelMarking() {
+		this.setState({ isMarking: false });
 	}
 
 	renderDisplay() {
@@ -216,7 +216,7 @@ class CourseDetailView extends Component {
 					</div>
 					<div className="col-sm-6">
 						<h2>Student:</h2>
-						<Studentlist student={course.Enrollments} courseID={course.ID} giveScore={(sID,cID) => this.giveScore(sID,cID)} />
+						<Studentlist student={course.Enrollments} courseID={course.ID} giveScore={(sID, cID) => this.giveScore(sID, cID)} />
 					</div>
 				</div>
 				<div className="row" style={{ marginTop: "20px" }}>
@@ -264,19 +264,19 @@ class CourseDetailView extends Component {
 						name="Description"
 						onChange={this.handleInputChange}
 					/>
-                    <label>Start Time</label>
+					<label>Start Time</label>
 					<DatePicker
 						hintText="Start Time"
 						defaultDate={new Date(this.state.course.StartTime)}
 						onChange={this.handleStartTimeChange}
-						style={{backgroundColor:"white"}}/>
+						style={{ backgroundColor: "white" }} />
 
 					<label>End Time</label>
 					<DatePicker
 						hintText="End Time"
 						defaultDate={new Date(this.state.course.EndTime)}
 						onChange={this.handleEndTimeChange}
-						style={{backgroundColor:"white"}}/>
+						style={{ backgroundColor: "white" }} />
 					<div className="form-group row" style={{ marginTop: "20px" }}>
 						<Button primary type="submit">
 							Save
@@ -296,14 +296,14 @@ class CourseDetailView extends Component {
 			return <Spinner />;
 		}
 
-		if(isMarking) {
-			return <MarkStudent sID={sID} cID={cID} cancelMarking={()=>this.cancelMarking()}/>
+		if (isMarking) {
+			return <MarkStudent sID={sID} cID={cID} cancelMarking={() => this.cancelMarking()} />
 		}
 
 		return (
 			<MuiThemeProvider>
 				{isEditing ?
-				this.renderForm(course) : this.renderDisplay(course)}
+					this.renderForm(course) : this.renderDisplay(course)}
 			</MuiThemeProvider>
 		)
 	}

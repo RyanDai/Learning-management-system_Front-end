@@ -11,7 +11,7 @@ class CoursesView extends Component {
 		this.state = {
 			isLoading: false,
 			course: [],
-			key:""
+			key: ""
 		};
 	}
 
@@ -29,9 +29,9 @@ class CoursesView extends Component {
 		this.loadCourses();
 	}
 
-    handleFilter=(e)=>{
-        this.setState({key:e.target.value});
-    }
+	handleFilter = (e) => {
+		this.setState({ key: e.target.value });
+	}
 
 	render() {
 		const { isLoading, key } = this.state;
@@ -39,23 +39,29 @@ class CoursesView extends Component {
 			return <Spinner />;
 
 		return (
-			<div className="container">
-				<h1 style={{ color: "white" }}>Courses</h1>
-				<input onChange={this.handleFilter}/>
-				<div className="row">
-					{this.state.course.filter(
-                        (c)=>
-                        (key === "") || (c.CourseCode.indexOf(key) !== -1) || (c.Name.indexOf(key) !== -1)
-                        )
-						.map(
-						course => <CourseCard course={course} key={course.ID} />
-					)}
+			<div className="page-wrapper">
+				<h1 style={{ color: "white", padding: "10px" }}>Courses</h1>
+				<div className="row" style={{ margin: "10px auto" }}>
+					<div className="col-sm-6">
+						<Link to="/courses/create">
+							<Button danger>
+								Add New Course
+							</Button>
+						</Link>
+					</div>
+					<div className="col-sm-6">
+						<input style={{ float: "right", margin: "5px auto" }} onChange={this.handleFilter} placeholder="Search by name" />
+					</div>
 				</div>
-				<Link to="/courses/create">
-					<Button danger style={{ margin: "10px 0 10px 0" }}>
-						Add New Course
-					</Button>
-				</Link>
+				<div className="row" style={{ margin: "10px auto" }}>
+					{this.state.course.filter(
+						(c) =>
+							(key === "") || (c.CourseCode.indexOf(key) !== -1) || (c.Name.indexOf(key) !== -1)
+					).map(
+						course => <CourseCard course={course} key={course.ID} />
+						)}
+				</div>
+
 			</div>
 		)
 	}
