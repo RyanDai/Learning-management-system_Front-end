@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import axios from 'axios';
 import Button from '../UI/Button';
-import { confirmAlert } from 'react-confirm-alert';
+import swal from 'sweetalert2';
 import Enrolment from "../UI/Enrolment";
 import Dropcourse from "../UI/Dropcourse";
 import Courselist from '../UI/Courselist';
@@ -35,7 +35,7 @@ export default class StudentDetailView extends Component {
 					State: "",
 					PostCode: "",
 					Country: "",
-					Sex: "",
+					Sex: "Male",
 				}
 			},
 			isLoading: false,
@@ -48,14 +48,21 @@ export default class StudentDetailView extends Component {
 
 	confirmDelete = () => {
 		const { student } = this.state;
-		confirmAlert({
-			title: 'Really?',                        // Title dialog
-			message: 'Are you sure to delete:',               // Message dialog
-			childrenElement: () => (<div className="dialog-content">{student.FirstName} {student.LastName}</div>),       // Custom UI or Component
-			confirmLabel: 'Confirm',                           // Text button confirm
-			cancelLabel: 'Cancel',                             // Text button cancel
-			onConfirm: this.handleDelete     // Action after Cancel
-		})
+        swal({
+            title: 'Are you sure?',
+            html: `You are deleting <b>${student.FirstName} ${student.LastName}</b></br>You won't be able to revert this!`,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#4717F6',
+            cancelButtonColor: '#A239CA',
+            confirmButtonText: 'Delete',
+            animation: false,
+            customClass: 'animated pulse'
+        }).then((result) => {
+            if (result.value) {
+                this.handleDelete();
+            }
+        })
 	}
 
 	handleDelete = () => {
