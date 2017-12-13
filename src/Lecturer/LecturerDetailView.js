@@ -12,6 +12,12 @@ import Dialog from '../Utils/Dialog';
 import Toast, { showToast } from '../UI/Toast';
 import swal from 'sweetalert2';
 import { Grid, Row, Col, Clearfix } from 'react-bootstrap';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import TextField from 'material-ui/TextField';
 
 export default class LecturerDetailView extends Component {
 	constructor(props) {
@@ -28,6 +34,8 @@ export default class LecturerDetailView extends Component {
 				LastName: "",
 				Email: "",
 				Phone: "",
+                Title: "Mr",
+                Sex: "Male",
 				Address: {
 					Line1: "",
 					Line2: "",
@@ -35,11 +43,18 @@ export default class LecturerDetailView extends Component {
 					State: "",
 					PostCode: "",
 					Country: "",
-					Title: "Mr",
-					Sex: "Male",
 				},
 				Teaching: []
-			}
+			},
+			FNameError:"",
+			LNameError:"",
+			EmailError:"",
+			PhoneError:"",
+			L1Error:"",
+			StateError:"",
+			CityError:"",
+			CountryError:"",
+			PostError:""
 		}
 	}
 
@@ -85,6 +100,7 @@ export default class LecturerDetailView extends Component {
 		const target = event.target;
 		const value = target.type === 'checkbox' ? target.checked : target.value;
 		const name = target.name;
+		console.log(name,value);
 
 		if (field === "p") {
 			this.setState({
@@ -104,15 +120,26 @@ export default class LecturerDetailView extends Component {
 				}
 			})
 		}
-
 	}
+
+    handleTitleChange = (event, index, value) => this.setState({
+        lecturer: {
+            ...this.state.lecturer,
+            ["Title"]: value
+        }
+    });
+    handleSexChange = (event, index, value) => this.setState({
+        lecturer: {
+            ...this.state.lecturer,
+            ["Sex"]: value
+        }
+    });
 
 	handleToaster = () => {
 		this.setState({ showToaster: false });
 	}
 
-	handleSubmit(event) {
-		event.preventDefault(); // prevent default form submission
+	handleSubmit() {
 		this.setState({ isLoading: true });
 		const { lecturer } = this.state;
 		if (this.isNew()) {
@@ -221,142 +248,209 @@ export default class LecturerDetailView extends Component {
 		)
 	}
 
-	validation(event) {
-		const form = document.getElementById('needs-validation');
-		if (form.checkValidity() === false) {
-			event.preventDefault();
-			event.stopPropagation();
-		}
-		form.classList.add('was-validated');
-	}
+    validation = () => {
+        const { Email, Phone, FirstName, LastName } = this.state.lecturer;
+
+        const {Line1,State,City,PostCode,Country} = this.state.lecturer.Address;
+
+        const email = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        email.test(Email) === false ? this.setState({ EmailError: (<p>Email is required and format should be john@doe.com</p>) }) : this.setState({ EmailError: null });
+
+        const phone = /\d{9,10}$/;
+        phone.test(Phone) === false ? this.setState({ PhoneError: (<p> Phone number is required</p>) }) : this.setState({ PhoneError: null });
+
+        const name = /^[a-zA-Z]{2,}$/;
+        name.test(FirstName) === false ? this.setState({ FNameError: (<p> Name must contains at least two characters</p>) }) : this.setState({ FNameError: null });
+        name.test(LastName) === false ? this.setState({ LNameError: (<p> Name must contains at least two characters</p>) }) : this.setState({ LNameError: null });
+        name.test(Country) === false ? this.setState({ CountryError: (<p> Please provide a valid country</p>) }) : this.setState({ CountryError: null });
+        name.test(State) === false ? this.setState({ StateError: (<p> Please provide a valid state</p>) }) : this.setState({ StateError: null });
+
+        const post = /\d{3,6}$/;
+        post.test(PostCode) === false ? this.setState({ PostError: (<p> Please provide a valid postcode</p>) }) : this.setState({ PostError: null });
+
+        const line = /.+$/;
+        line.test(Line1) === false ? this.setState({ L1Error: (<p> Please provide a valid address</p>) }) : this.setState({ L1Error: null });
+        line.test(City) === false ? this.setState({ CityError: (<p> Please provide a valid city</p>) }) : this.setState({ CityError: null });
+
+        const valid = email.test(Email) && phone.test(Phone) && name.test(FirstName) && name.test(LastName)
+					&& name.test(Country) && name.test(State) && line.test(City) && post.test(PostCode) && line.test(Line1);
+        if (valid) {
+            this.handleSubmit();
+        }
+    }
 
 	renderForm() {
-		const { lecturer } = this.state;
+		const { FNameError, LNameError, EmailError, PhoneError, lecturer , L1Error, StateError, CityError, PostError, CountryError} = this.state;
+		const { Address } = this.state.lecturer;
 		return (
 			<Highlight id="main-body">
-				<form className="form-horizontal" id="needs-validation" onSubmit={(e) => this.handleSubmit(e)}>
+				<MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
 					<fieldset>
 						<legend>Personal Details</legend>
 						<Grid>
-						<div className="form-group row">
-							<label className="col-sm-2 col-form-label" htmlFor="textinput">Title</label>
-							<div className="col-sm-4">
-								<select className="custom-select" name={"Title"} defaultValue={lecturer.Title} onChange={e => this.handleInputChange(e, "p")}>
-									<option value="Mr">Mr</option>
-									<option value="Mrs">Mrs</option>
-									<option value="Professor">Professor</option>
-									<option value="Doctor">Doctor</option>
-								</select>
-							</div>
-							<label className="col-sm-2 col-form-label" htmlFor="textinput">Sex</label>
-							<div className="col-sm-4">
-
-								<select className="custom-select" name={"Sex"} defaultValue={lecturer.Sex} onChange={e => this.handleInputChange(e, "p")}>
-									<option value="Male">Male</option>
-									<option value="Female">Female</option>
-								</select>
-
-							</div>
-						</div>
-						<div className="form-group row">
-							<label className="col-sm-2 col-form-label" htmlFor="textinput">FirstName</label>
-							<div className="col-sm-4">
-								<input type="text" value={'' || lecturer.FirstName} placeholder="FirstName"
-									className="form-control" name="FirstName"
-									onChange={e => this.handleInputChange(e, "p")} required />
-								<div className="invalid-feedback">
-									Please provide a valid name.
-                                </div>
-							</div>
-							<label className="col-sm-2 col-form-label" htmlFor="textinput">LastName</label>
-							<div className="col-sm-4">
-								<input type="text" value={'' || lecturer.LastName} placeholder="LastName"
-									className="form-control" name="LastName"
-									onChange={e => this.handleInputChange(e, "p")} required />
-								<div className="invalid-feedback">
-									Please provide a valid last name.
-                                </div>
-							</div>
-						</div>
-
-						<div className="form-group row">
-							<label className="col-sm-2 col-form-label" htmlFor="textinput">Email</label>
-							<div className="col-sm-4">
-								<input type="email" value={'' || lecturer.Email} placeholder="example@example.com"
-									className="form-control"
-									name="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
-									onChange={e => this.handleInputChange(e, "p")} required />
-								<div className="invalid-feedback">
-									Please provide a valid email.
-                                </div>
-							</div>
-							<label className="col-sm-2 col-form-label" htmlFor="textinput">Phone</label>
-							<div className="col-sm-4">
-								<input type="text" value={'' || lecturer.Phone} placeholder="+61412345678"
-									className="form-control" name="Phone"
-									pattern="\+61\d{9,9}" onChange={e => this.handleInputChange(e, "p")} required />
-								<div className="invalid-feedback">
-									Please provide a valid phone number.
-                                </div>
-							</div>
-						</div>
+						<Row lg={12} xs={12}>
+							<Col lg={4} md={4}>
+								<SelectField
+									floatingLabelText="Title"
+									value={lecturer.Title}
+									name={"Title"}
+									onChange={this.handleTitleChange}
+								>
+									<MenuItem value={"Mr"} primaryText="Mr" />
+									<MenuItem value={"Mrs"} primaryText="Mrs" />
+									<MenuItem value={"Professor"} primaryText="Professor" />
+									<MenuItem value={"Doctor"} primaryText="Doctor" />
+								</SelectField>
+							</Col>
+							<Col lg={4} md={4}>
+								<TextField
+									hintText="John"
+									floatingLabelText="FirstName"
+									defaultValue={lecturer.FirstName}
+									fullWidth={true}
+									name={"FirstName"}
+									onChange={event => this.handleInputChange(event,"p")}
+									errorText={FNameError}
+								/>
+							</Col>
+							<Col lg={4} md={4}>
+								<TextField
+									hintText="Doe"
+									defaultValue={lecturer.LastName}
+									floatingLabelText="LastName"
+									fullWidth={true}
+									name={"LastName"}
+									onChange={event => this.handleInputChange(event,"p")}
+									errorText={LNameError}
+								/>
+							</Col>
+						</Row>
+							<Row lg={12} xs={12}>
+								<Col lg={4} md={4}>
+									<SelectField
+										floatingLabelText="Sex"
+										value={lecturer.Sex}
+										name={"Sex"}
+										onChange={this.handleSexChange}
+									>
+										<MenuItem value={"Male"} primaryText="Male" />
+										<MenuItem value={"Female"} primaryText="Female" />
+									</SelectField>
+								</Col>
+								<Col lg={4} md={4}>
+									<TextField
+										hintText="john.doe@example.com"
+										floatingLabelText="Email"
+										defaultValue={lecturer.Email}
+										fullWidth={true}
+										name={"Email"}
+										onChange={event => this.handleInputChange(event,"p")}
+										errorText={EmailError}
+									/>
+								</Col>
+								<Col lg={4} md={4}>
+									<TextField
+										hintText="0412345678"
+										floatingLabelText="Phone"
+										defaultValue={lecturer.Phone}
+										fullWidth={true}
+										name={"Phone"}
+										onChange={event => this.handleInputChange(event,"p")}
+										errorText={PhoneError}
+									/>
+								</Col>
+							</Row>
 						</Grid>
 					</fieldset>
+				</MuiThemeProvider>
+				<MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
 					<fieldset>
 						<legend>Address Details</legend>
-						<div className="form-group row">
-							<label className="col-sm-2 col-form-label" htmlFor="textinput">Line 1</label>
-							<div className="col-sm-10">
-								<input type="text" value={'' || lecturer.Address.Line1} placeholder="Address Line 1"
-									className="form-control" name="Line1" onChange={e => this.handleInputChange(e, "a")} required />
-							</div>
-						</div>
-
-						<div className="form-group row">
-							<label className="col-sm-2 col-form-label" htmlFor="textinput">Line 2</label>
-							<div className="col-sm-10">
-								<input type="text" value={'' || lecturer.Address.Line2} placeholder="Address Line 2"
-									className="form-control" name="Line2" onChange={e => this.handleInputChange(e, "a")} />
-							</div>
-						</div>
-
-						<div className="form-group row">
-							<label className="col-sm-2 col-form-label" htmlFor="textinput">State</label>
-							<div className="col-sm-4">
-								<input type="text" value={'' || lecturer.Address.State} placeholder="State"
-									className="form-control" name="State" onChange={e => this.handleInputChange(e, "a")} required />
-							</div>
-							<label className="col-sm-2 col-form-label" htmlFor="textinput">City</label>
-							<div className="col-sm-4">
-								<input type="text" value={'' || lecturer.Address.City} placeholder="City"
-									className="form-control" name="City" onChange={e => this.handleInputChange(e, "a")} required />
-							</div>
-						</div>
-
-						<div className="form-group row">
-							<label className="col-sm-2 col-form-label" htmlFor="textinput">Postcode</label>
-							<div className="col-sm-4">
-								<input type="text" value={'' || lecturer.Address.PostCode} placeholder="Post Code"
-									className="form-control" pattern="\d+"
-									name="PostCode" onChange={e => this.handleInputChange(e, "a")} required />
-							</div>
-							<label className="col-sm-2 col-form-label" htmlFor="textinput">Country</label>
-							<div className="col-sm-4">
-								<input type="text" value={'' || lecturer.Address.Country} placeholder="Country"
-									className="form-control" name="Country" onChange={e => this.handleInputChange(e, "a")} required />
-							</div>
-						</div>
+						<Grid>
+							<Row>
+								<Col md={12} lg={12} sm={12}>
+									<TextField
+										hintText="123 ABC Street"
+										floatingLabelText="Line 1"
+										defaultValue={Address.Line1}
+										fullWidth={true}
+										name={"Line1"}
+										onChange={event => this.handleInputChange(event,"a")}
+										errorText={L1Error}
+									/>
+								</Col>
+							</Row>
+							<Row>
+								<Col md={12} lg={12} sm={12}>
+									<TextField
+										hintText="..."
+										floatingLabelText="Line 2"
+										defaultValue={Address.Line2}
+										fullWidth={true}
+										name={"Line2"}
+										onChange={event => this.handleInputChange(event,"a")}
+									/>
+								</Col>
+							</Row>
+							<Row>
+								<Col md={6} lg={6} sm={6}>
+									<TextField
+										hintText="Brisbane"
+										floatingLabelText="City"
+										defaultValue={Address.City}
+										fullWidth={true}
+										name={"City"}
+										onChange={event => this.handleInputChange(event,"a")}
+										errorText={CityError}
+									/>
+								</Col>
+								<Col md={6} lg={6} sm={6}>
+									<TextField
+										hintText="4000"
+										floatingLabelText="Postcode"
+										defaultValue={Address.PostCode}
+										fullWidth={true}
+										name={"PostCode"}
+										onChange={event => this.handleInputChange(event,"a")}
+										errorText={PostError}
+									/>
+								</Col>
+							</Row>
+							<Row>
+								<Col md={6} lg={6} sm={6}>
+									<TextField
+										hintText="QLD"
+										floatingLabelText="State"
+										defaultValue={Address.State}
+										fullWidth={true}
+										name={"State"}
+										onChange={event => this.handleInputChange(event,"a")}
+										errorText={StateError}
+									/>
+								</Col>
+								<Col md={6} lg={6} sm={6}>
+									<TextField
+										hintText="Australia"
+										floatingLabelText="Country"
+										defaultValue={Address.Country}
+										fullWidth={true}
+										name={"Country"}
+										onChange={event => this.handleInputChange(event,"a")}
+										errorText={CountryError}
+									/>
+								</Col>
+							</Row>
+						</Grid>
 					</fieldset>
-
+				</MuiThemeProvider>
 					<div className="form-group row">
-						<Button primary type="submit" onClick={e => this.validation(e)}>
+						<Button primary type="submit" onClick={this.validation}>
 							Save
                         </Button>
 						<Button danger onClick={() => this.handleCancel()}>
 							Cancel
                         </Button>
 					</div>
-				</form>
 			</Highlight>
 		)
 	}
