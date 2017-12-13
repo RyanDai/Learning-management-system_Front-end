@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab');
+
 body{
 	background: #0E0B16; /* fallback for old browsers */
 	/*background: -webkit-linear-gradient(to left, #B71427 , #FFE658); !* Chrome 10-25, Safari 5.1-6 *!*/
@@ -9,6 +11,7 @@ body{
 	background-repeat: no-repeat;
 	background-size: cover;
 	padding-bottom: 50px;
+	font-family: 'Roboto Slab', serif;
 }
 
 .page-wrapper{
