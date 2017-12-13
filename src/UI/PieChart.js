@@ -35,8 +35,8 @@ export default class PieChart extends Component {
 
   calculateSexRate(){
     const {sexArray} = this.state;
-    let length = sexArray.length;
-    let male = 0;
+    var length = sexArray.length;
+    var male = 0;
     sexArray.map(function(sex, i){
       if(sex === 'M'){
         male++;
@@ -80,13 +80,15 @@ export default class PieChart extends Component {
     }
 
     return(
-        <div className={"dash-component-wrapper"}>
-            <h1>Sex Rate Chart</h1>
-                  <ChartistGraph
-                      data={publicChart.data}
-                      type="Pie"
-                  />
-        </div>
+      <Card
+          title="Sex Rate Chart"
+          content={
+              <ChartistGraph
+                  data={publicChart.data}
+                  type="Pie"
+              />
+          }
+      />
     )
   }
 }
