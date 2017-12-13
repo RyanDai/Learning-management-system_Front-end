@@ -28,7 +28,7 @@ export default class TopNav extends Component {
 		}
 		return (
 			<li className="nav-item dropdown">
-				<a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<a className="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<i className="fa fa-user" aria-hidden="true" />{greeting}{Auth.getName()}
 				</a>
 				<div className="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
@@ -42,7 +42,7 @@ export default class TopNav extends Component {
 	guest = () => {
 		return (
 			<div className="nav-item dropdown">
-				<a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<a className="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<i className="fa fa-user" aria-hidden="true" /> Account
 				</a>
 				<div className="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
