@@ -11,6 +11,7 @@ import Request from '../Utils/Request';
 import Dialog from '../Utils/Dialog';
 import Toast, { showToast } from '../UI/Toast';
 import swal from 'sweetalert2';
+import { Grid, Row, Col, Clearfix } from 'react-bootstrap';
 
 export default class LecturerDetailView extends Component {
 	constructor(props) {
@@ -34,8 +35,8 @@ export default class LecturerDetailView extends Component {
 					State: "",
 					PostCode: "",
 					Country: "",
-					Title: "",
-					Sex: "",
+					Title: "Mr",
+					Sex: "Male",
 				},
 				Teaching: []
 			}
@@ -236,6 +237,7 @@ export default class LecturerDetailView extends Component {
 				<form className="form-horizontal" id="needs-validation" onSubmit={(e) => this.handleSubmit(e)}>
 					<fieldset>
 						<legend>Personal Details</legend>
+						<Grid>
 						<div className="form-group row">
 							<label className="col-sm-2 col-form-label" htmlFor="textinput">Title</label>
 							<div className="col-sm-4">
@@ -298,6 +300,7 @@ export default class LecturerDetailView extends Component {
                                 </div>
 							</div>
 						</div>
+						</Grid>
 					</fieldset>
 					<fieldset>
 						<legend>Address Details</legend>

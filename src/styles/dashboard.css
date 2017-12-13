@@ -1,8 +1,8 @@
 .dash-component-wrapper {
-    background: white;
+    background: rgba(255, 255, 255, 0.9);
     color: black;
     margin: 10px auto;
     padding: 10px;
     border-radius: 10px;
-    box-shadow: 0 0 2px 0 rgba(119, 119, 119, 0.3);
+    box-shadow: 0 4px 7px 0 rgba(255, 255, 255, 0.3);
 }

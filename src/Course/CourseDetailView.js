@@ -28,8 +28,8 @@ class CourseDetailView extends Component {
 				Name: "",
 				CourseCode: "",
 				Description: "",
-				StartTime: "",
-				EndTime: "",
+				StartTime: "2017-01-01",
+				EndTime: "2017-01-01",
 			},
 		};
 	}
