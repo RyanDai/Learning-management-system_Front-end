@@ -68,6 +68,13 @@ export default class DashBoard extends React.Component {
 							</Row>
 						</Col>
 					</Row>
+					<Row className="show-grid">
+						<Col xs={12} lg={12}>
+							<div className="dash-component-wrapper" >
+								<img src={require('../img/school-pic.png')} height="100%" width="100%" />
+							</div>
+						</Col>
+					</Row>
 				</Grid>
 			</div>
 		)

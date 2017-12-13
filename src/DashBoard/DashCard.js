@@ -25,12 +25,12 @@ export default function DashCard({ student, lecturer, number }) {
         <div className={"dash-component-wrapper"}>
             <Grid>
                 <Row>
-                    <Col xs={6} sm={6} md={6} lg={6}>
+                    <Col xs={12} sm={12} md={12} lg={6}>
                         {icon}
                     </Col>
-                    <Col xs={6} sm={6} md={6} lg={6}>
-                        <h2>{text}</h2>
-                        <h3>{number} in total</h3>
+                    <Col xs={12} sm={12} md={12} lg={6}>
+                        <h4>{text}</h4>
+                        <p>{number} in total</p>
                     </Col>
                 </Row>
                 <Row>
