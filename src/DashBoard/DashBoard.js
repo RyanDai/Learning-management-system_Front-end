@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid, Row, Col, Clearfix } from 'react-bootstrap';
 import Todo from "./Todo";
 import Calendar from 'rc-calendar';
+import PieChart from '../UI/PieChart';
 import '../styles/dashboard.css';
 import CountDown from "./CountDown";
 import Request from "../Utils/Request";
@@ -52,7 +53,7 @@ export default class DashBoard extends React.Component {
 						<Col xs={12} sm={12} md={12} lg={4}><Todo /></Col>
 						<Col xs={12} sm={12} md={12} lg={8}>
 							<Row className="show-grid">
-								<Col xs={6} lg={6}>Graph section</Col>
+								<Col xs={6} lg={6}><PieChart /></Col>
 								<Col xs={6} lg={6}><Weather /></Col>
 							</Row>
 
@@ -62,8 +63,6 @@ export default class DashBoard extends React.Component {
 							</Row>
 						</Col>
 					</Row>
-
-
 				</Grid>
 			</div>
 		)
