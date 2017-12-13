@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import Highlight from "../UI/Highlight";
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import TextField from 'material-ui/TextField';
 import Button from "../UI/Button";
 import axios from 'axios';
 import Dialog from '../Utils/Dialog';
 import { Spinner } from '../UI/Spinner';
 import Decoder from 'jwt-decode';
+import '../styles/login.css';
+import Logo from '../UI/Logo';
 
 export default class Login extends Component {
     constructor(props) {
@@ -81,10 +84,12 @@ export default class Login extends Component {
         if (isLoading)
             return <Spinner />;
         return(
-            <Highlight className={"register-div"}>
-                <MuiThemeProvider>
+            <div className={"login-div"}>
+                <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
                     <div className={"text-center"}>
-                        <h3>Log in</h3>
+                        <h3>McDowall Management</h3>
+                        <br/>
+                        <Logo/>
                         <TextField
                             hintText="john.doe@example.com"
                             floatingLabelText="Email"
@@ -104,12 +109,12 @@ export default class Login extends Component {
                             errorText={pwdError}
                         />
                         <br/>
-                        <Button primary onClick={this.validation}>
-                            Log in
+                        <Button onClick={this.validation}>
+                            Log in <i className="fa fa-fw fa-chevron-right"/>
                         </Button>
                     </div>
                 </MuiThemeProvider>
-            </Highlight>
+            </div>
         )
     }
 

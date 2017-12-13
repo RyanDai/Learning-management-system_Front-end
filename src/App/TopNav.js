@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Auth } from '../Utils/Auth';
+import Logo from '../UI/Logo';
 
 export default class TopNav extends Component {
 	constructor(props) {
@@ -32,7 +33,7 @@ export default class TopNav extends Component {
 				</a>
 				<div className="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
 					<a className="dropdown-item" onClick={this.logOut}><i className="fa fa-sign-out" aria-hidden="true" /> Logout</a>
-					<div className="dropdown-divider"></div>
+					{/*<div className="dropdown-divider"></div>*/}
 				</div>
 			</li>
 		)
@@ -51,7 +52,7 @@ export default class TopNav extends Component {
 					<li className="nav-item">
 						<Link className="nav-link" to="/register"><i className="fa fa-user-plus" aria-hidden="true" /> Register</Link>
 					</li>
-					<div className="dropdown-divider"></div>
+					{/*<div className="dropdown-divider"></div>*/}
 				</div>
 			</div>
 		)
@@ -60,7 +61,7 @@ export default class TopNav extends Component {
 	render() {
 		return (
 			<nav className="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-				<Link className="navbar-brand" to="/"><img src={require('../img/school-logo.png')} height="50px" width="50px" /> McDowall State Primary School</Link>
+				<Link className="navbar-brand" to="/"><Logo/> McDowall State Primary School</Link>
 				<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
 					aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 					<span className="navbar-toggler-icon"></span>

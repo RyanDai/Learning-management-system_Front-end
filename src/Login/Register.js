@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Highlight from "../UI/Highlight";
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import TextField from 'material-ui/TextField';
 import Button from "../UI/Button";
 import axios from 'axios';
@@ -26,7 +28,7 @@ export default class Register extends Component {
             isLoading: false,
             showError: false,
             error: "",
-            verification: false,
+            verification: true,
             verificationMsg: null,
             code: ""
         }
@@ -94,7 +96,7 @@ export default class Register extends Component {
         const { emailError, phoneError, pwdError, nameError } = this.state;
         return (
             <div>
-                <h3>Register</h3>
+                <h3>Create an account</h3>
                 <TextField
                     hintText="john.doe@example.com"
                     floatingLabelText="Email"
@@ -131,9 +133,9 @@ export default class Register extends Component {
                 />
                 <br />
                 <div className={"text-center"}>
-                    <Button primary onClick={this.validation}>
-                        Register
-                    </Button>
+                    <button onClick={this.validation}>
+                        REGISTER <i className="fa fa-fw fa-user-plus"/>
+                    </button>
                 </div>
             </div>
         )
@@ -172,8 +174,8 @@ export default class Register extends Component {
     renderVerification = () => {
         return (
             <div className={"text-center"}>
-                <h3>Verification</h3>
-                <Button primary onClick={this.requestVerify}>
+                <h3>Almost done <i class="fa fa-smile-o" aria-hidden="true"/></h3>
+                <Button danger onClick={this.requestVerify}>
                     Request verification code
                 </Button>
                 <p className={"text-center"}>{this.state.verificationMsg}</p>
@@ -184,8 +186,8 @@ export default class Register extends Component {
                     onChange={event => this.setState({ code: event.target.value })}
                 />
                 <br />
-                <Button primary onClick={this.sendCode}>
-                    Verify
+                <Button danger onClick={this.sendCode}>
+                    VERIFY
                 </Button>
             </div>
         )
@@ -196,14 +198,14 @@ export default class Register extends Component {
         if (isLoading)
             return <Spinner />;
         return (
-            <Highlight className={"register-div"}>
+            <div className={"login-div"}>
                 {showError && <Modal btnClick={this.hideDialog}>
                     <div>{error}</div>
                 </Modal>}
-                <MuiThemeProvider>
+                <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
                     {verification === false ? this.renderRegister() : this.renderVerification()}
                 </MuiThemeProvider>
-            </Highlight>
+            </div>
         )
     }
 
