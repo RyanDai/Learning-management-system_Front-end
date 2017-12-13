@@ -19,6 +19,56 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 
+// const muiTheme = getMuiTheme({
+//     palette: {
+//         accent1Color:"#ff4081",
+//         accent2Color:
+// "#f50057",
+// accent3Color
+//     :
+//     "#ff80ab",
+// alternateTextColor
+//     :
+//     "#303030",
+// borderColor
+//     :
+//     "rgba(255, 255, 255, 0.3)",
+// canvasColor
+//     :
+//     "#303030",
+// clockCircleColor
+//     :
+//     "rgba(255, 255, 255, 0.12)",
+// disabledColor
+//     :
+//     "rgba(255, 255, 255, 0.3)",
+// pickerHeaderColor
+//     :
+//     "rgba(255, 255, 255, 0.12)",
+// primary1Color
+//     :
+//     "#DD403A",
+// primary2Color
+//     :
+//     "#DD403A",
+// primary3Color
+//     :
+//     "#fff",
+// secondaryTextColor
+//     :
+//     "rgba(0, 0, 0, 0.7)",
+// shadowColor
+//     :
+//     "rgba(0, 0, 0, 1)",
+// textColor
+//     :
+//     "rgba(255, 255, 255, 1)"
+//     },
+// });
+
+
+
+
 export default class LecturerDetailView extends Component {
 	constructor(props) {
 		super(props);
@@ -56,6 +106,7 @@ export default class LecturerDetailView extends Component {
 			CountryError:"",
 			PostError:""
 		}
+        console.log(getMuiTheme(darkBaseTheme));
 	}
 
 	isNew() {

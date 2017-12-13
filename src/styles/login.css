@@ -1,0 +1,67 @@
+.register-div{
+    position: absolute;
+
+    width: 100%;
+
+    height: 100%;
+
+    background-image: url('../img/school-pic.png');
+
+    background-color: yellow;
+    background-size: contain;
+}
+
+.login-div{
+    color: #ffffff;
+    background: #3E363F;
+    border-radius: 5px;
+    padding: 40px;
+    width: 400px;
+    height: auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -200px; /* Negative half of height. */
+    margin-left: -200px; /* Negative half of width. */
+}
+
+.login-div button {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background: #DD403A;
+    border: 0;
+    border-radius: 3px;
+    color: white;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    font-family: "Lato", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    margin-top: 20px;
+    outline: none;
+    padding: 10px 9px 10px 11px;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.login-div button .fa {
+    font-size: 12px;
+    margin-left: auto;
+    position: relative;
+    top: 1px;
+}
+
+.login-div button:hover {
+    -webkit-transform: scale(1.05);
+    transform: scale(1.05);
+}
+
+.login-div button:active {
+    -webkit-transform: scale(0.99);
+    transform: scale(0.99);
+}

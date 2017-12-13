@@ -8,16 +8,16 @@ export default function DashCard({ student, lecturer, number }) {
 
     let text = 'Courses';
     let to = "/courses";
-    let icon = <img src={require('../img/course.png')} height="80px" width="80px" />;
+    let icon = <img src={require('../img/course.png')} height="80px" width="80px" alt="course" />;
     if (student) {
         text = 'Students';
         to = "/students";
-        icon = <img src={require('../img/student.png')} height="80px" width="80px" />;
+        icon = <img src={require('../img/student.png')} height="80px" width="80px" alt="student" />;
     }
     if (lecturer) {
         text = 'Lecturers';
         to = "/lecturers"
-        icon = <img src={require('../img/lecturer.png')} height="80px" width="80px" />;
+        icon = <img src={require('../img/lecturer.png')} height="80px" width="80px" alt="lecturer" />;
     }
 
     // const title = `Total number of ${text} are:`;
