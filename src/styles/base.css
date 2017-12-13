@@ -17,6 +17,15 @@ body{
 	border-radius: 10px;
 	margin: 10% auto;
 	padding: 20px 10px;
+	-webkit-box-shadow: 0 16px 28px 0 rgba(14,11,22, 0.22), 0 25px 55px 0 rgba(14,11,22, 0.21);
+	-moz-box-shadow: 0 16px 28px 0 rgba(14,11,22, 0.22), 0 25px 55px 0 rgba(14,11,22, 0.21);
+	box-shadow: 0 16px 28px 0 rgba(14,11,22, 0.22), 0 25px 55px 0 rgba(14,11,22, 0.21);
+}
+#dash-wrapper{
+	background: url('../img/school-pic.png');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 .shadow-lg {

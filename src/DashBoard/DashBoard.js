@@ -41,7 +41,7 @@ export default class DashBoard extends React.Component {
 	render() {
 		const { students, lecturers, courses } = this.state;
 		return (
-			<div className={"page-wrapper"}>
+			<div className={"page-wrapper"} id={"dash-wrapper"}>
 				<Grid>
 					<Row className="show-grid">
 						<Col xs={12} md={4}><DashCard number={courses.length} /></Col>
@@ -68,13 +68,13 @@ export default class DashBoard extends React.Component {
 							</Row>
 						</Col>
 					</Row>
-					<Row className="show-grid">
-						<Col xs={12} lg={12}>
-							<div className="dash-component-wrapper" >
-								<img src={require('../img/school-pic.png')} height="100%" width="100%" />
-							</div>
-						</Col>
-					</Row>
+					{/*<Row className="show-grid">*/}
+						{/*<Col xs={12} lg={12}>*/}
+							{/*<div className="dash-component-wrapper" >*/}
+								{/*<img src={require('../img/school-pic.png')} height="100%" width="100%" />*/}
+							{/*</div>*/}
+						{/*</Col>*/}
+					{/*</Row>*/}
 				</Grid>
 			</div>
 		)
