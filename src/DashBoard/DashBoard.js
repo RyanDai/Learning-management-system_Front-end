@@ -62,10 +62,17 @@ export default class DashBoard extends React.Component {
 								<Col xs={6} lg={6}>
 									<div className={"dash-component-wrapper"}>
 										<h1>Calendar</h1>
-										<Calendar style={{margin:"0 auto"}}/>
+										<Calendar style={{ margin: "0 auto" }} />
 									</div>
 								</Col>
 							</Row>
+						</Col>
+					</Row>
+					<Row className="show-grid">
+						<Col xs={12} lg={12}>
+							<div className="dash-component-wrapper" >
+								<img src={require('../img/school-pic.png')} height="100%" width="100%" />
+							</div>
 						</Col>
 					</Row>
 				</Grid>
