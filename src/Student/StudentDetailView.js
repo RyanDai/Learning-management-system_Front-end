@@ -51,7 +51,7 @@ export default class StudentDetailView extends Component {
 			isLoading: false,
 			isEditing: false,
 			isSaving: false,
-			chosenCourse: "",
+			chosenCourse: "none",
 			courseList: [],
             FNameError: "",
             LNameError: "",
@@ -128,6 +128,14 @@ export default class StudentDetailView extends Component {
 
 	}
 
+  showMarks(){
+    if(this.state.chosenCourse === "none"){
+      Dialog(true, "You must select a course to view.");
+    } else {
+      this.setState({showMark:true});
+    }
+  }
+
     handleEnrolResponse=(enrol)=>{
         this.loadLecturer();
         this.setState({
@@ -144,6 +152,8 @@ export default class StudentDetailView extends Component {
 			this.props.history.push('/login');
 		}
 	}
+
+
 
     handleSexChange = (event, index, value) => this.setState({
         lecturer: {
@@ -205,7 +215,7 @@ export default class StudentDetailView extends Component {
 						/>
 					</div>
 					<div className="row" style={{ marginTop: "20px" }}>
-						<Button primary onClick={() => { this.setState({ showMark: true }) }}>
+						<Button primary onClick={() => {this.showMarks()}}>
 							Show Score
             </Button>
 					</div>

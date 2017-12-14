@@ -16,6 +16,10 @@
     box-shadow: 0 4px 7px 0 rgba(255, 255, 255, 0.3);
 }
 
+.calendarIcon {
+  text-align: center;
+}
+
 .clock-container{
     margin:8% auto !important;
     width:50%;
