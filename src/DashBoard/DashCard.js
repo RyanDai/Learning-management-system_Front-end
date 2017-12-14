@@ -26,9 +26,9 @@ export default function DashCard({ student, lecturer, number }) {
         <div className={"dash-component-wrapper"}>
             <StatsCard
                 bigIcon={icon}
-                statsText={text + ":"}
+                statsText={text}
                 statsValue={number}
-                statsIcon={<i className="fa fa-folder-open"></i>}
+                statsIcon={<i className="fa fa-folder-open"/>}
                 statsIconText={<Link to={to}>View in details</Link>}
             />
         </div>
