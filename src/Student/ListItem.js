@@ -16,10 +16,10 @@ function Item(props) {
 export default function ListItem(props) {
 	// const students = props.students;
 	return (
-		<ul className="list-group">
+		<ul className="list-group people-list">
 			{props.students.filter(
 				(l) =>
-					(props.search === "") || (l.FirstName.indexOf(props.search) !== -1) || (l.LastName.indexOf(props.search) !== -1)
+					(props.search === "") || (l.FirstName.toUpperCase().indexOf(props.search.toUpperCase()) !== -1) || (l.LastName.toUpperCase().indexOf(props.search.toUpperCase()) !== -1)
 			).map((student, i) => <Item key={i} student={student} />)}
 		</ul>
 	)

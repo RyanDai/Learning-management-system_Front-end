@@ -94,3 +94,13 @@ fieldset {
 	box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.22), 0 5px 11px 0 rgba(0, 0, 0, 0.21);
 	font-size: 14px;
 }
+
+.people-list{
+	-webkit-overflow-scrolling: touch;
+	overflow: scroll;
+	height: 100vh;
+}
+
+.page-wrapper h1{
+	text-align: center;
+}
