@@ -14,12 +14,12 @@ import Calendar from '../UI/Calendar';
 
 export default () => ((
     <div>
-        <Route exact path="/" component={DashBoard} />
-        <Route exact path="/courses" component={CoursesView} />
+        <ProtectedRoute exact path="/" component={DashBoard} />
+        <ProtectedRoute exact path="/courses" component={CoursesView} />
         <ProtectedRoute exact path="/courses/:id" component={CourseDetailView} />
-        <Route exact path="/lecturers" component={LecturersView} />
+        <ProtectedRoute exact path="/lecturers" component={LecturersView} />
         <ProtectedRoute exact path="/lecturers/:id" component={LecturerDetailView} />
-        <Route exact path="/students" component={StudentView} />
+        <ProtectedRoute exact path="/students" component={StudentView} />
         <ProtectedRoute exact path="/students/:id" component={StudentDetailView} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Signin} />
