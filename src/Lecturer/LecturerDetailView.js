@@ -106,7 +106,7 @@ export default class LecturerDetailView extends Component {
 			CountryError: "",
 			PostError: ""
 		}
-		console.log(getMuiTheme(darkBaseTheme));
+		// console.log(getMuiTheme(darkBaseTheme));
 	}
 
 	isNew() {
@@ -186,9 +186,18 @@ export default class LecturerDetailView extends Component {
 		}
 	});
 
+	handleEnrolResponse=(enrol)=>{
+		this.loadLecturer();
+        this.setState({
+            isLoading: false,
+            showToaster: true,
+            toaster: enrol?`Enrol course succeeded`:`Drop course succeeded`
+        });
+	};
+
 	handleToaster = () => {
 		this.setState({ showToaster: false });
-	}
+	};
 
 	handleSubmit() {
 		this.setState({ isLoading: true });
@@ -245,7 +254,7 @@ export default class LecturerDetailView extends Component {
 				this.handleDelete();
 			}
 		})
-	}
+	};
 
 	handleDelete = () => {
 		const { lecturer } = this.state;
@@ -258,7 +267,7 @@ export default class LecturerDetailView extends Component {
 			})
 			.catch(error => this.handleErrorResponse(error)
 			);
-	}
+	};
 
 	renderDisplay() {
 		const { lecturer } = this.state;
@@ -280,8 +289,8 @@ export default class LecturerDetailView extends Component {
 						<h2>Teaching Course</h2>
 					</div>
 					<div className="col-sm-6" style={{ display: "inherit" }}>
-						<Enrolment teaching id={lecturer.ID} onSuccess={this.loadLecturer} onError={error => this.handleErrorResponse(error)} />
-						<Dropcourse teaching id={lecturer.ID} courses={lecturer.Teaching} onSuccess={this.loadLecturer} onError={error => this.handleErrorResponse(error)} />
+						<Enrolment teaching id={lecturer.ID} onSuccess={()=>this.handleEnrolResponse(true)} onError={error => this.handleErrorResponse(error)} />
+						<Dropcourse teaching id={lecturer.ID} courses={lecturer.Teaching} onSuccess={()=>this.handleEnrolResponse(false)} onError={error => this.handleErrorResponse(error)} />
 					</div>
 				</div>
 				<div className="row" style={{ marginTop: "10px", marginBottom: "20px" }}>

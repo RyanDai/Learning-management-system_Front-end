@@ -20,15 +20,15 @@ body{
 	border-radius: 10px;
 	margin: 200px auto;
 	padding: 20px 10px;
-	-webkit-box-shadow: 0 16px 28px 0 rgba(14,11,22, 0.22), 0 25px 55px 0 rgba(14,11,22, 0.21);
-	-moz-box-shadow: 0 16px 28px 0 rgba(14,11,22, 0.22), 0 25px 55px 0 rgba(14,11,22, 0.21);
-	box-shadow: 0 16px 28px 0 rgba(14,11,22, 0.22), 0 25px 55px 0 rgba(14,11,22, 0.21);
+	-webkit-box-shadow: 0 32px 56px 0 rgba(14,11,22, 0.22), 0 55px 110px 0 rgba(14,11,22, 0.21);
+	-moz-box-shadow: 0 32px 56px 0 rgba(14,11,22, 0.22), 0 55px 110px 0 rgba(14,11,22, 0.21);
+	box-shadow: 0 32px 56px 0 rgba(14,11,22, 0.22), 0 55px 110px 0 rgba(14,11,22, 0.21);
 }
 #dash-wrapper{
 	background: url('../img/school-pic.png');
-	background-position: center;
 	background-repeat: no-repeat;
-	background-size: cover;
+	background-attachment: fixed;
+	background-position: center;
 }
 
 .shadow-lg {
@@ -68,6 +68,14 @@ body{
 	background-image: -moz-linear-gradient(left, #f0f0f0, #000000, #f0f0f0);
 	background-image: -ms-linear-gradient(left, #f0f0f0, #000000, #f0f0f0);
 	background-image: -o-linear-gradient(left, #f0f0f0, #000000, #f0f0f0);
+}
+
+#main-body i{
+	color:blue;
+}
+
+#main-body i:hover{
+	color:#DD403A;
 }
 /*black: #0E0B16 , 14,11,22*/
 /*PINK:#A239CA* , 162,57,202/

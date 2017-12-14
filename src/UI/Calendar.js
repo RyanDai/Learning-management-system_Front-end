@@ -63,7 +63,7 @@ export default class Calendar extends Component {
 
     render() {
         return (
-            <Highlight>
+            <div className="page-wrapper">
                 <div className="container">
                     <h1 style={{ color: "white" }}>Calendar</h1>
                 </div>
@@ -88,7 +88,7 @@ export default class Calendar extends Component {
 
                 </div>
 
-            </Highlight>
+            </div>
 
         )
 
