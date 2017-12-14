@@ -128,6 +128,14 @@ export default class StudentDetailView extends Component {
 
 	}
 
+    handleEnrolResponse=(enrol)=>{
+        this.loadLecturer();
+        this.setState({
+            showToaster: true,
+            toaster: enrol?`Enrol course succeeded`:`Drop course succeeded`
+        });
+    };
+
 	handleErrorResponse = (error) => {
 		this.setState({ isLoading: false });
 		Dialog(false, error);
@@ -167,8 +175,8 @@ export default class StudentDetailView extends Component {
 							<h2>Learning Course</h2>
 						</div>
 						<div className="col-sm-6" style={{ display: "inherit" }}>
-							<Enrolment enrolment id={student.ID} onSuccess={this.loadStudent} onError={error => this.handleErrorResponse(error)} />
-							<Dropcourse enrolment id={student.ID} courses={student.Enrollments} onSuccess={this.loadStudent} onError={error => this.handleErrorResponse(error)} />
+							<Enrolment enrolment id={student.ID} onSuccess={this.handleEnrolResponse(true)} onError={error => this.handleErrorResponse(error)} />
+							<Dropcourse enrolment id={student.ID} courses={student.Enrollments} onSuccess={this.handleEnrolResponse(false)} onError={error => this.handleErrorResponse(error)} />
 						</div>
 					</div>
 
