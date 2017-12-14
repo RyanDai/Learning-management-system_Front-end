@@ -5,6 +5,7 @@ import ErrorMsg from '../Utils/ErrorMsg';
 import Request from '../Utils/Request';
 import Button from '../UI/Button';
 import Highlight from './Highlight';
+import Dialog from '../Utils/Dialog';
 
 export default class MarkStudent extends Component {
   constructor(props) {
@@ -78,6 +79,7 @@ export default class MarkStudent extends Component {
     Request("POST", `/api/score/${sID}/${cID}`, Marks)
       // axios.put(`/api/student/${student.ID}`, student)
       .then(response => {
+        Dialog(true, `Score is saved`)
         this.setState({ isEditing: false, isLoading: false });
       })
       .catch(error => {

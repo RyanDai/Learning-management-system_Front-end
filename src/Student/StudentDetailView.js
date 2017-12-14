@@ -188,7 +188,7 @@ export default class StudentDetailView extends Component {
 					<div className="row" style={{ marginTop: "20px" }}>
 						<Button primary onClick={() => { this.setState({ showMark: true }) }}>
 							Show Score
-            			</Button>
+            </Button>
 					</div>
 
 					<div className="row" style={{ marginTop: "20px" }}>
