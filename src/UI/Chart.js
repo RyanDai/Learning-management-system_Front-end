@@ -262,7 +262,6 @@ export default class Chart extends Component {
 	renderButton() {
 		return (
 			<div>
-				<h1>Student score</h1>
 				<div className="row" style={{ marginTop: "20px" }}>
 					<Button primary onClick={() => {
 						this.setState(
@@ -295,6 +294,8 @@ export default class Chart extends Component {
 
 	renderTable() {
 		return (
+			<div>
+			<h1>Student score</h1>
 			<Card
 				title="Academic Transcript"
 				category="Student scores"
@@ -342,6 +343,7 @@ export default class Chart extends Component {
 					</Table>
 				}
 			/>
+		</div>
 		)
 	}
 
@@ -389,12 +391,11 @@ export default class Chart extends Component {
 		return (
 			<Highlight id="main-body">
 
-				{this.renderButton()}
-				{this.renderTable()}
-				{
-					isLineChart ? this.renderLineChart() : this.renderBarChart()
-				}
 
+				{this.renderTable()}
+				{isLineChart ? this.renderLineChart() : null}
+				{isBarChart ? this.renderBarChart() : null}
+				{this.renderButton()}
 
 			</Highlight>
 		)
