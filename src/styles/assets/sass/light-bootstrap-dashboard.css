@@ -1056,7 +1056,7 @@ div.dtr-modal {
 .ct-label {
   fill: rgba(0, 0, 0, 0.4);
   color: rgba(0, 0, 0, 0.4);
-  font-size: 1.3rem;
+  font-size: 0.8rem;
   line-height: 1; }
 
 .ct-chart-line .ct-label,
@@ -3086,7 +3086,7 @@ button.rbc-input::-moz-focus-inner {
 .rbc-date-cell > a,
 .rbc-date-cell > a:active,
 .rbc-date-cell > a:visited {
-  color: inherit;
+  color: grey;
   text-decoration: none; }
 
 .rbc-row-bg {

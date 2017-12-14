@@ -13,6 +13,8 @@ import 'react-select/dist/react-select.css';
 import { Spinner } from '../UI/Spinner';
 import ErrorMsg from '../Utils/ErrorMsg';
 import Request from '../Utils/Request';
+import Dialog from '../Utils/Dialog';
+import Toast, { showToast } from '../UI/Toast';
 
 export default class StudentDetailView extends Component {
 	constructor(props) {
@@ -22,6 +24,8 @@ export default class StudentDetailView extends Component {
 			showError: false,
 			error: null,
 			showMark: false,
+      showToaster: false,
+			toaster: "",
 			student: {
 				ID: 0,
 				FirstName: "",
@@ -71,6 +75,7 @@ export default class StudentDetailView extends Component {
 		Request("DELETE", `/api/student/${student.ID}`, null)
 			// axios.delete(`/api/student/${student.ID}`)
 			.then(() => {
+        Dialog(true, `Student [${student.FirstName} ${student.LastName}] has been deleted`)
 				this.props.history.push('/students');
 				this.setState({ isLoading: false })
 			});
@@ -94,6 +99,10 @@ export default class StudentDetailView extends Component {
 			});
 	}
 
+  handleToaster = () => {
+		this.setState({ showToaster: false });
+	}
+
 	componentWillMount() {
 		if (this.isNew()) {
 			this.setState({ isEditing: true });
@@ -114,12 +123,11 @@ export default class StudentDetailView extends Component {
 		}
 	}
 
-	handleErrorResponse = (error) => {
+  handleErrorResponse = (error) => {
 		this.setState({ isLoading: false });
-		const errorMsg = <ErrorMsg error={error} />;
-		this.displayDialog(errorMsg);
+		Dialog(false, error);
 		if (error.response.status === 401) {
-			this.setState({ redirect: true })
+			this.props.history.push('/login');
 		}
 	}
 
@@ -232,7 +240,9 @@ export default class StudentDetailView extends Component {
 			this.props.history.push('/students');
 		} else {
 			this.setState({
-				isEditing: false
+				isEditing: false,
+        showToaster: true,
+				toaster: "Edit action has been cancelled"
 			});
 			this.loadStudent();
 		}
@@ -247,13 +257,19 @@ export default class StudentDetailView extends Component {
 			Request("POST", `/api/student`, student)
 				// axios.post('/api/student', student)
 				.then(response => {
+          Dialog(true, `Student [${student.FirstName} ${student.LastName}] has been created`);
 					this.props.history.push('/students');
 				});
 		} else {
 			Request("PUT", `/api/student/${student.ID}`, student)
 				// axios.put(`/api/student/${student.ID}`, student)
 				.then(response => {
-					this.setState({ isEditing: false, isLoading: false });
+					this.setState({
+            isEditing: false,
+            isLoading: false,
+            showToaster: true,
+						toaster: `Student [${student.FirstName} ${student.LastName}] has bee updated`
+           });
 				})
 				.catch(error => {
 					this.handleErrorResponse(error);
@@ -415,19 +431,22 @@ export default class StudentDetailView extends Component {
 	}
 
 	render() {
-		const { isLoading, isEditing, showMark } = this.state;
+		const { isLoading, isEditing, showMark, showToaster, toaster } = this.state;
 		if (isLoading)
 			return <Spinner />;
 
-		if (showMark)
-			return this.renderChart()
+    if(showMark)
+      return this.renderChart();
 
-		if (isEditing === true) {
-			return this.renderForm()
-		} else {
-			return this.renderDisplay()
+    return(
+      <div>
+        {showToaster && <Toast Msg={toaster} onKill={this.handleToaster} />}
 
-		}
+        {isEditing ?
+          this.renderForm() : this.renderDisplay()}
+
+      </div>
+)
 
 	}
 }

@@ -67,9 +67,9 @@ export default class PieChart extends Component {
 
   render() {
     const { total, male } = this.state;
-    const maleRate = male / total * 100;
+    const maleRate = (male / total * 100).toFixed(1);
     const female = total - male;
-    const femaleRate = (total - male) / total * 100;
+    const femaleRate = ((total - male) / total * 100).toFixed(1);
 
     const publicChart = {
       type: "Pie",
@@ -80,9 +80,7 @@ export default class PieChart extends Component {
     }
 
     return (
-      <div className={"dash-component-wrapper"}>
         <Card
-          title="Sex Rate Chart"
           content={
             <ChartistGraph
               data={publicChart.data}
@@ -90,7 +88,7 @@ export default class PieChart extends Component {
             />
           }
         />
-      </div>
+
     )
   }
 }
