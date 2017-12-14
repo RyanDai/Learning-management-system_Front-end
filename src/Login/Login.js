@@ -109,9 +109,9 @@ export default class Login extends Component {
                             errorText={pwdError}
                         />
                         <br />
-                        <Button onClick={this.validation}>
+                        <button className={"login-btn"} onClick={this.validation}>
                             Log in <i className="fa fa-fw fa-chevron-right" />
-                        </Button>
+                        </button>
                     </div>
                 </MuiThemeProvider>
             </div>
