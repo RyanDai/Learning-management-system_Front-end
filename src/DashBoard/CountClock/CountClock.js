@@ -66,7 +66,9 @@ export default class CountClock extends Component {
     render() {
         return (
             <div>
-                <a onClick={this.changeTime}><i className="fa fa-clock-o" aria-hidden="true" /></a>
+                <div style={{textAlign:"right"}}>
+                <a  onClick={this.changeTime}><i className="fa fa-clock-o" aria-hidden="true" /></a>
+                </div>
                 <div className="countdown" id="js-countdown">
                     <div className="countdown__item countdown__item--large">
                         <div className="countdown__timer js-countdown-days" id={"cd_day"} aria-labelledby="day-countdown">
