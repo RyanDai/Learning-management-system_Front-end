@@ -3,8 +3,8 @@ import Clock from '../Utils/Clock';
 import axios from 'axios';
 import CityWeather from '../Utils/Weather';
 
-const CONDITION_BASE_URL = 'http://api.wunderground.com/api/f029e46fd0232d12/geolookup/conditions/q/Australia/';
-const FORECAST_BASE_URL = 'http://api.wunderground.com/api/f029e46fd0232d12/geolookup/forecast10day/q/Australia/';
+const CONDITION_BASE_URL = 'https://api.wunderground.com/api/f029e46fd0232d12/geolookup/conditions/q/Australia/';
+const FORECAST_BASE_URL = 'https://api.wunderground.com/api/f029e46fd0232d12/geolookup/forecast10day/q/Australia/';
 
 export default class Weather extends Component {
     constructor(props) {

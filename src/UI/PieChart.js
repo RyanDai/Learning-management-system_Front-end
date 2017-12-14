@@ -80,6 +80,7 @@ export default class PieChart extends Component {
     }
 
     return(
+      <div className={"dash-component-wrapper"}>
       <Card
           title="Sex Rate Chart"
           content={
@@ -89,6 +90,7 @@ export default class PieChart extends Component {
               />
           }
       />
+      </div>
     )
   }
 }
