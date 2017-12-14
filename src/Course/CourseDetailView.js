@@ -16,6 +16,7 @@ import DatePicker from 'material-ui/DatePicker';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import TextField from 'material-ui/TextField';
 
 export default class CourseDetailView extends Component {
 	constructor(props) {
@@ -247,40 +248,50 @@ export default class CourseDetailView extends Component {
 		return (
 			<Highlight>
 				<MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-					<form onSubmit={this.handleSubmit}>
-						<h1 className="name">Course Details</h1>
+					<fieldset>
+						<legend>Course Details</legend>
 						<Grid>
 							<Row>
-								<Col xs={12} sm={6}>
-									<label>Name</label>
-									<input
-										type="text"
-										className="form-control"
-										placeholder="Name"
-										value={course.Name || ''}
-										name="Name"
-										onChange={this.handleInputChange}
-									/>
-									<label>Course Code</label>
-									<input
-										type="text"
-										className="form-control"
-										placeholder="Code"
-										value={course.CourseCode || ''}
-										name="CourseCode"
-										onChange={this.handleInputChange}
+								<Col xs={12} sm={3}>
+									<TextField
+										hintText="Course Name"
+										floatingLabelText="Course Name"
+										defaultValue={course.Name}
+										fullWidth={true}
+										name={"Name"}
+										onChange={event => this.handleInputChange}
+
 									/>
 								</Col>
+								<Col xs={12} sm={3}>
+								</Col>
+								<Col xs={12} sm={3}>
+									<TextField
+										hintText="Course Code"
+										floatingLabelText="Course Code"
+										defaultValue={course.CourseCode}
+										fullWidth={true}
+										name={"CourseCode"}
+										onChange={event => this.handleInputChange}
+
+									/>
+								</Col>
+								<Col xs={12} sm={3}>
+								</Col>
+							</Row>
+							<Row>
 								<Col xs={12} sm={6}>
-									<label>Start Time</label>
 									<DatePicker
 										hintText="Start Time"
+										floatingLabelText="Start Time"
 										defaultDate={new Date(this.state.course.StartTime)}
 										onChange={this.handleStartTimeChange}
 									/>
-									<label>End Time</label>
+								</Col>
+								<Col xs={12} sm={6}>
 									<DatePicker
 										hintText="End Time"
+										floatingLabelText="End Time"
 										defaultDate={new Date(this.state.course.EndTime)}
 										onChange={this.handleEndTimeChange}
 									/>
@@ -288,27 +299,29 @@ export default class CourseDetailView extends Component {
 							</Row>
 							<Row>
 								<Col xs={12} sm={12}>
-									<label>Description</label>
-									<input
-										type="text"
-										className="form-control"
-										placeholder="Description"
-										value={course.Description || ''}
-										name="Description"
-										onChange={this.handleInputChange}
+									<TextField
+										hintText="Description"
+										floatingLabelText="Description"
+										defaultValue={course.Description}
+										fullWidth={true}
+										multiLine={true}
+										rows={3}
+										name={"Description"}
+										onChange={event => this.handleInputChange}
+
 									/>
 								</Col>
 							</Row>
 						</Grid>
 						<div className="form-group row" style={{ marginTop: "20px" }}>
-							<Button primary type="submit">
+							<Button primary type="submit" onClick={this.handleSubmit}>
 								Save
 								</Button>
 							<Button danger onClick={() => this.handleCancel()}>
 								Cancel
 								</Button>
 						</div>
-					</form>
+					</fieldset>
 				</MuiThemeProvider>
 			</Highlight>
 		)
