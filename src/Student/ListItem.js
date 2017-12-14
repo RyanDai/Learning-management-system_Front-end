@@ -16,7 +16,7 @@ function Item(props) {
 export default function ListItem(props) {
 	// const students = props.students;
 	return (
-		<ul className="list-group">
+		<ul className="list-group people-list">
 			{props.students.filter(
 				(l) =>
 					(props.search === "") || (l.FirstName.indexOf(props.search) !== -1) || (l.LastName.indexOf(props.search) !== -1)

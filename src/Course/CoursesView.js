@@ -53,7 +53,7 @@ class CoursesView extends Component {
 						<input style={{ float: "right", margin: "5px auto" }} onChange={this.handleFilter} placeholder="Search by name" />
 					</div>
 				</div>
-				<div className="row" style={{ margin: "10px auto" }}>
+				<div className="row people-list" style={{ margin: "10px auto" }}>
 					{this.state.course.filter(
 						(c) =>
 							(key === "") || (c.CourseCode.indexOf(key) !== -1) || (c.Name.indexOf(key) !== -1)

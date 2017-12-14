@@ -15,7 +15,7 @@ function Lecture(props) {
 
 export default function LectureList(props) {
     return (
-        <ul className="list-group">
+        <ul className="list-group people-list">
             {
                 props.ls.filter(
                     (l) =>
