@@ -25,7 +25,7 @@ export default class App extends Component {
                     newestOnTop
                     closeOnClick
                     pauseOnHover
-                    className={"text-center"}
+                    className={"text-center toaster"}
                 />
             </div>
         );
