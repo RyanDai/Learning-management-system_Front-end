@@ -8,6 +8,7 @@ import CountDown from "./CountDown";
 import Request from "../Utils/Request";
 import DashCard from './DashCard';
 import Weather from "./Weather";
+import { Link } from 'react-router-dom';
 
 export default class DashBoard extends React.Component {
 	constructor(props) {
@@ -66,8 +67,11 @@ export default class DashBoard extends React.Component {
 								<Col xs={6} lg={6}><CountDown /></Col>
 								<Col xs={6} lg={6}>
 									<div className={"dash-component-wrapper-pie"}>
-										<h1>Calendar</h1>
+										<h1>Calendar &nbsp;
+                    <Link className="calendarIcon" to="/calendar"><i className="fa fa-calendar" aria-hidden="true" /></Link>
+                  </h1>
 										<Calendar style={{ margin: "0 auto"}} />
+
 									</div>
 								</Col>
 							</Row>
