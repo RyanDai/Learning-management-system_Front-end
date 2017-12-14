@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactAnimatedWeather from 'react-animated-weather';
+import { Grid, Row, Col } from 'react-bootstrap';
 
-export default function CityCondition({ location, icon, temp, humidity, UV }) {
+export default function CityCondition({ location, icon, temp, humidity, UV , weatherr}) {
     let weather = "CLEAR_DAY";
     let color = "#ffad32";
     switch (icon) {
@@ -40,31 +41,44 @@ export default function CityCondition({ location, icon, temp, humidity, UV }) {
 
     return (
         <div style={{ padding: "20px" }}>
-            <div id="weather" style={{ textAlign: "center" }}>
-                <ReactAnimatedWeather
-                    icon={weather}
-                    color={color}
-                    size={100}
-                    animate={true}
-                />
-            </div>
-            <div id="location">
-                <span><i className="fa fa-map-marker" aria-hidden="true" /></span>
-                <span> {location}</span>
-            </div>
+            <Grid>
+                <Row>
+                    <Col lg={6} md={6} sm={12} xs={12}>
+                        <div id="weather" style={{ textAlign: "center" }}>
+                            <ReactAnimatedWeather
+                                icon={weather}
+                                color={color}
+                                size={120}
+                                animate={true}
+                            />
+                        </div>
+                    </Col>
+                    <Col lg={6} md={6} sm={12} xs={12}>
+                        <div id="location">
+                            <span><i className="fa fa-map-marker" aria-hidden="true" /></span>
+                            <span> {location}</span>
+                        </div>
+                        <div id="weather">
+                            <span><i className="fa fa-caret-square-o-right" aria-hidden="true" /></span>
+                            <span> {weatherr.toUpperCase()}</span>
+                        </div>
 
-            <div id="temperature">
-                <span><i className="fa fa-thermometer-empty" aria-hidden="true" /></span>
-                <span> {temp}</span>
-            </div>
-            <div id="humidity">
-                <span><i className="fa fa-tint" aria-hidden="true" /></span>
-                <span> {humidity}</span>
-            </div>
-            <div id="uv">
-                <span><i className="fa fa-sun-o" aria-hidden="true" /></span>
-                <span> {UV}</span>
-            </div>
+
+                        <div id="temperature">
+                            <span><i className="fa fa-thermometer-empty" aria-hidden="true" /></span>
+                            <span> {temp} °C</span>
+                        </div>
+                        <div id="humidity">
+                            <span><i className="fa fa-tint" aria-hidden="true" /></span>
+                            <span> {humidity}</span>
+                        </div>
+                        <div id="uv">
+                            <span><i className="fa fa-sun-o" aria-hidden="true" /></span>
+                            <span> {UV}</span>
+                        </div>
+                    </Col>
+                </Row>
+            </Grid>
         </div>
     )
 }

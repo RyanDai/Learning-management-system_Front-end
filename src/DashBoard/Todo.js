@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import Button from "../UI/Button";
 import TodoList from "./TodoList";
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TextField from 'material-ui/TextField';
 import { Grid, Row, Col } from 'react-bootstrap';
 import Request from '../Utils/Request';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 export default class Todo extends Component {
     constructor(props) {
@@ -129,7 +131,7 @@ export default class Todo extends Component {
     }
     render() {
         return (
-            <MuiThemeProvider>
+            <MuiThemeProvider >
                 <div className={"todo-wrapper dash-component-wrapper"}>
                     <Grid>
                         <Row>
