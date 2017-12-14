@@ -65,9 +65,9 @@ export default class DashBoard extends React.Component {
 							<Row className="show-grid">
 								<Col xs={6} lg={6}><CountDown /></Col>
 								<Col xs={6} lg={6}>
-									<div className={"dash-component-wrapper"}>
+									<div className={"dash-component-wrapper-pie"}>
 										<h1>Calendar</h1>
-										<Calendar style={{ margin: "0 auto" }} />
+										<Calendar style={{ margin: "0 auto"}} />
 									</div>
 								</Col>
 							</Row>
