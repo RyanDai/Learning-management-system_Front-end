@@ -4,6 +4,7 @@
 	background-color: white;
 	border-radius: 10px;
 	margin: 10px 0 10px 0;
+	transition: box-shadow 1s;
 }
 
 .course-card-name {
@@ -32,5 +33,5 @@ a:hover {
 }
 
 a:hover .course-card {
-	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.16), 0 5px 10px rgba(0, 0, 0, 0.23);
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.6);
 }

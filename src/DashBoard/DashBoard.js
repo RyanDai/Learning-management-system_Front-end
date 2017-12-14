@@ -54,11 +54,11 @@ export default class DashBoard extends React.Component {
 						<Col xs={12} sm={12} md={12} lg={8}>
 							<Row className="show-grid">
 								<Col xs={6} lg={6}>
-                  <div className={"dash-component-wrapper"}>
-                    <h1>Sex Rate Chart</h1>
-                    <PieChart />
-                  </div>
-                </Col>
+									<div className={"dash-component-wrapper"}>
+										<h1>Sex Rate</h1>
+										<PieChart />
+									</div>
+								</Col>
 								<Col xs={6} lg={6}><Weather /></Col>
 							</Row>
 
@@ -67,7 +67,7 @@ export default class DashBoard extends React.Component {
 								<Col xs={6} lg={6}>
 									<div className={"dash-component-wrapper-pie"}>
 										<h1>Calendar</h1>
-										<Calendar style={{ margin: "0 auto"}} />
+										<Calendar style={{ margin: "0 auto" }} />
 									</div>
 								</Col>
 							</Row>

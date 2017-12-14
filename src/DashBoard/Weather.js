@@ -18,7 +18,7 @@ export default class Weather extends Component {
             temp: "",
             humidity: "",
             forecastData: {},
-            weather:""
+            weather: ""
         }
     }
 
@@ -47,7 +47,7 @@ export default class Weather extends Component {
             icon: data.icon_url,
             temp: data.temp_c,
             humidity: data.relative_humidity,
-            weather:data.icon
+            weather: data.icon
         })
     }
 
@@ -67,8 +67,8 @@ export default class Weather extends Component {
         const { UV, location, icon, temp, humidity, weather } = this.state;
         return (
             <div className={"dash-component-wrapper"}>
-                <Clock/>
-                <div className="divider"/>
+                <Clock />
+                <div className="divider" style={{ marginBottom: "5px" }} />
                 <CityWeather UV={UV} location={location} icon={icon} temp={temp} weatherr={weather} humidity={humidity} />
             </div>
         )
