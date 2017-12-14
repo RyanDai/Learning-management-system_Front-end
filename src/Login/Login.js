@@ -9,7 +9,7 @@ import Dialog from '../Utils/Dialog';
 import { Spinner } from '../UI/Spinner';
 import Decoder from 'jwt-decode';
 import '../styles/login.css';
-import Logo from '../UI/Logo';
+// import Logo from '../UI/Logo';
 
 export default class Login extends Component {
     constructor(props) {
@@ -89,7 +89,7 @@ export default class Login extends Component {
                     <div className={"text-center"}>
                         <h3>McDowall Management</h3>
                         <br />
-                        <Logo />
+                        <img src={require('../img/school-logo.png')} height="150px" width="150px" alt="logo" />
                         <TextField
                             hintText="john.doe@example.com"
                             floatingLabelText="Email"
