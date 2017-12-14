@@ -128,17 +128,6 @@ export default class StudentDetailView extends Component {
 
 	}
 
-	displayDialog = (error) => {
-		this.setState({ showError: true, error: error });
-	}
-
-	hideDialog = () => {
-		this.setState({ showError: false });
-		if (this.state.redirect) {
-			this.props.history.push('/login');
-		}
-	}
-
 	handleErrorResponse = (error) => {
 		this.setState({ isLoading: false });
 		Dialog(false, error);
@@ -178,8 +167,8 @@ export default class StudentDetailView extends Component {
 							<h2>Learning Course</h2>
 						</div>
 						<div className="col-sm-6" style={{ display: "inherit" }}>
-							<Enrolment enrolment id={student.ID} onSuccess={this.loadStudent} onError={error => this.displayDialog(error)} />
-							<Dropcourse enrolment id={student.ID} courses={student.Enrollments} onSuccess={this.loadStudent} onError={error => this.displayDialog(error)} />
+							<Enrolment enrolment id={student.ID} onSuccess={this.loadStudent} onError={error => this.handleErrorResponse(error)} />
+							<Dropcourse enrolment id={student.ID} courses={student.Enrollments} onSuccess={this.loadStudent} onError={error => this.handleErrorResponse(error)} />
 						</div>
 					</div>
 
