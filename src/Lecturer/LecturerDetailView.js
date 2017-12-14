@@ -263,7 +263,7 @@ export default class LecturerDetailView extends Component {
 	renderDisplay() {
 		const { lecturer } = this.state;
 		return (
-			<Highlight id="main-body">
+			<Highlight>
 				<h1 className="name">{lecturer.FirstName} &nbsp; {lecturer.LastName}</h1>
 				<div className="row">
 					<Gravatar email={lecturer.Email} size={150} className="shadow-sm" />

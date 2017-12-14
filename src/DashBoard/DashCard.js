@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, Row, Col, Clearfix } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import StatsCard from '../component/Card/StatsCard.jsx';
 
 
 export default function DashCard({ student, lecturer, number }) {
@@ -8,36 +9,28 @@ export default function DashCard({ student, lecturer, number }) {
 
     let text = 'Courses';
     let to = "/courses";
-    let icon = <img src={require('../img/course.png')} height="80px" width="80px" alt="course" />;
+    let icon = <img src={require('../img/course.png')} height="100px" width="100px" alt="course" />;
     if (student) {
         text = 'Students';
         to = "/students";
-        icon = <img src={require('../img/student.png')} height="80px" width="80px" alt="student" />;
+        icon = <img src={require('../img/student.png')} height="100px" width="100px" alt="student" />;
     }
     if (lecturer) {
         text = 'Lecturers';
         to = "/lecturers"
-        icon = <img src={require('../img/lecturer.png')} height="80px" width="80px" alt="lecturer" />;
+        icon = <img src={require('../img/lecturer.png')} height="100px" width="100px" alt="lecturer" />;
     }
 
     // const title = `Total number of ${text} are:`;
     return (
         <div className={"dash-component-wrapper"}>
-            <Grid>
-                <Row>
-                    <Col xs={12} sm={12} md={12} lg={6}>
-                        {icon}
-                    </Col>
-                    <Col xs={12} sm={12} md={12} lg={6}>
-                        <h4>{text}</h4>
-                        <p>{number} in total</p>
-                    </Col>
-                </Row>
-                <Row>
-                    <Link to={to}>View in details</Link>
-                </Row>
-            </Grid>
-
+            <StatsCard
+                bigIcon={icon}
+                statsText={text + ":"}
+                statsValue={number}
+                statsIcon={<i className="fa fa-folder-open"></i>}
+                statsIconText={<Link to={to}>View in details</Link>}
+            />
         </div>
     )
 }
