@@ -76,10 +76,10 @@ export default class TopNav extends Component {
 							<Link className="nav-link" to="/courses"><i className="fa fa-book" aria-hidden="true" /> Courses</Link>
 						</li>
 						<li className="nav-item">
-							<Link className="nav-link" to="/lecturers"><i className="fa fa-user-secret" aria-hidden="true" /> Lectures</Link>
+							<Link className="nav-link" to="/students"><i className="fa fa-graduation-cap" aria-hidden="true" /> Students</Link>
 						</li>
 						<li className="nav-item">
-							<Link className="nav-link" to="/students"><i className="fa fa-graduation-cap" aria-hidden="true" /> Students</Link>
+							<Link className="nav-link" to="/lecturers"><i className="fa fa-user-secret" aria-hidden="true" /> Lectures</Link>
 						</li>
 						<li className="nav-item">
 							<Link className="nav-link" to="/calendar"><i className="fa fa-calendar" aria-hidden="true" /> Calendar</Link>
