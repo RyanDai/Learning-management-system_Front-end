@@ -53,7 +53,12 @@ export default class DashBoard extends React.Component {
 						<Col xs={12} sm={12} md={12} lg={4}><Todo /></Col>
 						<Col xs={12} sm={12} md={12} lg={8}>
 							<Row className="show-grid">
-								<Col xs={6} lg={6}><PieChart /></Col>
+								<Col xs={6} lg={6}>
+                  <div className={"dash-component-wrapper"}>
+                    <h1>Sex Rate Chart</h1>
+                    <PieChart />
+                  </div>
+                </Col>
 								<Col xs={6} lg={6}><Weather /></Col>
 							</Row>
 
