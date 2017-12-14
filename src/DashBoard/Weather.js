@@ -6,6 +6,7 @@ import CityWeather from '../Utils/Weather';
 const CONDITION_BASE_URL = 'https://api.wunderground.com/api/f029e46fd0232d12/geolookup/conditions/q/Australia/';
 const FORECAST_BASE_URL = 'https://api.wunderground.com/api/f029e46fd0232d12/geolookup/forecast10day/q/Australia/';
 
+
 export default class Weather extends Component {
     constructor(props) {
         super(props);
@@ -17,6 +18,7 @@ export default class Weather extends Component {
             temp: "",
             humidity: "",
             forecastData: {},
+            weather:""
         }
     }
 
@@ -41,10 +43,11 @@ export default class Weather extends Component {
     filterData = (data) => {
         this.setState({
             UV: data.UV,
-            location: data.display_location.full,
+            location: data.display_location.city,
             icon: data.icon_url,
             temp: data.temp_c,
-            humidity: data.relative_humidity
+            humidity: data.relative_humidity,
+            weather:data.icon
         })
     }
 
@@ -61,11 +64,12 @@ export default class Weather extends Component {
 
 
     render() {
-        const { UV, location, icon, temp, humidity } = this.state;
+        const { UV, location, icon, temp, humidity, weather } = this.state;
         return (
             <div className={"dash-component-wrapper"}>
-                <Clock />
-                <CityWeather UV={UV} location={location} icon={icon} temp={temp} humidity={humidity} />
+                <Clock/>
+                <div className="divider"/>
+                <CityWeather UV={UV} location={location} icon={icon} temp={temp} weatherr={weather} humidity={humidity} />
             </div>
         )
     }

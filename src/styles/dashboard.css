@@ -1,8 +1,13 @@
 .dash-component-wrapper {
-    background: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.9);
     color: black;
     margin: 10px auto;
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 4px 7px 0 rgba(255, 255, 255, 0.3);
+}
+
+.clock-container{
+    margin:8% auto !important;
+    width:50%;
 }

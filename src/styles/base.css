@@ -60,6 +60,15 @@ body{
 .btn-danger {
 	background: #DD403A;
 }
+
+.divider{
+	border: 0;
+	height: 1px;
+	background-image: -webkit-linear-gradient(left, #f0f0f0, #000000, #f0f0f0);
+	background-image: -moz-linear-gradient(left, #f0f0f0, #000000, #f0f0f0);
+	background-image: -ms-linear-gradient(left, #f0f0f0, #000000, #f0f0f0);
+	background-image: -o-linear-gradient(left, #f0f0f0, #000000, #f0f0f0);
+}
 /*.btn {*/
 	/*background: #4717F6;*/
 	/*background-image: -webkit-linear-gradient(top, #4717F6, #18007a);*/
