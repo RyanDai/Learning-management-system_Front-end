@@ -15,6 +15,8 @@ import ErrorMsg from '../Utils/ErrorMsg';
 import Request from '../Utils/Request';
 import Dialog from '../Utils/Dialog';
 import Toast, { showToast } from '../UI/Toast';
+import { Grid, Row, Col } from 'react-bootstrap';
+import Gravatar from 'react-gravatar';
 
 export default class StudentDetailView extends Component {
 	constructor(props) {
@@ -24,7 +26,7 @@ export default class StudentDetailView extends Component {
 			showError: false,
 			error: null,
 			showMark: false,
-      showToaster: false,
+			showToaster: false,
 			toaster: "",
 			student: {
 				ID: 0,
@@ -75,7 +77,7 @@ export default class StudentDetailView extends Component {
 		Request("DELETE", `/api/student/${student.ID}`, null)
 			// axios.delete(`/api/student/${student.ID}`)
 			.then(() => {
-        Dialog(true, `Student [${student.FirstName} ${student.LastName}] has been deleted`)
+				Dialog(true, `Student [${student.FirstName} ${student.LastName}] has been deleted`)
 				this.props.history.push('/students');
 				this.setState({ isLoading: false })
 			});
@@ -99,7 +101,7 @@ export default class StudentDetailView extends Component {
 			});
 	}
 
-  handleToaster = () => {
+	handleToaster = () => {
 		this.setState({ showToaster: false });
 	}
 
@@ -123,7 +125,7 @@ export default class StudentDetailView extends Component {
 		}
 	}
 
-  handleErrorResponse = (error) => {
+	handleErrorResponse = (error) => {
 		this.setState({ isLoading: false });
 		Dialog(false, error);
 		if (error.response.status === 401) {
@@ -132,60 +134,62 @@ export default class StudentDetailView extends Component {
 	}
 
 	renderDisplay() {
-		const { showError, student, error } = this.state;
+		const { student } = this.state;
 
 		return (
-			<Highlight id="main-body">
-				{showError && <Modal btnClick={this.hideDialog}>
-					<div>{error}</div>
-				</Modal>}
-				<h1 className="name">{student.FirstName} {student.LastName}</h1>
-				<div>
-					<div className="col-sm-6" style={{ marginTop: "20px" }}>
-						<p>Gender: {student.Sex}</p>
-						<p>Phone: {student.Phone}</p>
-						<p>Email: {student.Email}</p>
-					</div>
+			<Highlight>
 
-					<hr className="my-4"></hr>
+				<h1 className="name">{student.FirstName} &nbsp; {student.LastName}</h1>
+				<div>
+					<div className="row">
+						<Gravatar email={student.Email} size={150} className="shadow-sm" />
+						<ul className="fa-ul">
+							<li><i className="fa-li fa fa-male" aria-hidden="true" />{student.Sex}</li>
+							<li><i className="fa-li fa fa-envelope" aria-hidden="true" />{student.Email}</li>
+							<li><i className="fa-li fa fa-phone" aria-hidden="true" />{student.Phone}</li>
+							<li><i className="fa-li fa fa-home" aria-hidden="true" />{student.Address.City}.{student.Address.Country}</li>
+						</ul>
+
+					</div>
 
 					<div className="row" style={{ marginTop: "20px" }}>
-						<Enrolment enrolment id={student.ID} onSuccess={this.loadStudent} onError={error => this.displayDialog(error)} />
-						<Dropcourse enrolment id={student.ID} courses={student.Enrollments} onSuccess={this.loadStudent} onError={error => this.displayDialog(error)} />
+						<div className="col-sm-6">
+							<h2>Learning Course</h2>
+						</div>
+						<div className="col-sm-6" style={{ display: "inherit" }}>
+							<Enrolment enrolment id={student.ID} onSuccess={this.loadStudent} onError={error => this.displayDialog(error)} />
+							<Dropcourse enrolment id={student.ID} courses={student.Enrollments} onSuccess={this.loadStudent} onError={error => this.displayDialog(error)} />
+						</div>
 					</div>
 
-					<hr className="my-4"></hr>
 
 					<div className="row" style={{ marginTop: "10px", marginBottom: "20px" }}>
 						<Courselist course={student.Enrollments} />
 					</div>
 
-					<hr className="my-4"></hr>
+					<div className="col-10" style={{ margin: "20px auto" }}>
 
-					{this.changeEnrollmentsToArray()}
+						{this.changeEnrollmentsToArray()}
 
-					<Select
-						placeholder="Select a course to view score"
-						name="singleSelect"
-						value={this.state.chosenCourse}
-						options={this.state.courseList}
-						onChange={(value) => {
-							if (value == undefined) {
-								this.setState({ chosenCourse: value })
-							} else {
-								this.setState({ chosenCourse: value.value })
-							}
-
-						}}
-					/>
-
+						<Select
+							placeholder="Select a course to view score"
+							name="singleSelect"
+							value={this.state.chosenCourse}
+							options={this.state.courseList}
+							onChange={(value) => {
+								if (value == undefined) {
+									this.setState({ chosenCourse: value })
+								} else {
+									this.setState({ chosenCourse: value.value })
+								}
+							}}
+						/>
+					</div>
 					<div className="row" style={{ marginTop: "20px" }}>
 						<Button primary onClick={() => { this.setState({ showMark: true }) }}>
 							Show Score
-            			</Button>
+            </Button>
 					</div>
-
-					<hr className="my-4"></hr>
 
 					<div className="row" style={{ marginTop: "20px" }}>
 						<Button primary onClick={() => { this.setState({ isEditing: true }) }}>
@@ -241,7 +245,7 @@ export default class StudentDetailView extends Component {
 		} else {
 			this.setState({
 				isEditing: false,
-        showToaster: true,
+				showToaster: true,
 				toaster: "Edit action has been cancelled"
 			});
 			this.loadStudent();
@@ -257,7 +261,7 @@ export default class StudentDetailView extends Component {
 			Request("POST", `/api/student`, student)
 				// axios.post('/api/student', student)
 				.then(response => {
-          Dialog(true, `Student [${student.FirstName} ${student.LastName}] has been created`);
+					Dialog(true, `Student [${student.FirstName} ${student.LastName}] has been created`);
 					this.props.history.push('/students');
 				});
 		} else {
@@ -265,11 +269,11 @@ export default class StudentDetailView extends Component {
 				// axios.put(`/api/student/${student.ID}`, student)
 				.then(response => {
 					this.setState({
-            isEditing: false,
-            isLoading: false,
-            showToaster: true,
+						isEditing: false,
+						isLoading: false,
+						showToaster: true,
 						toaster: `Student [${student.FirstName} ${student.LastName}] has bee updated`
-           });
+					});
 				})
 				.catch(error => {
 					this.handleErrorResponse(error);
@@ -312,121 +316,140 @@ export default class StudentDetailView extends Component {
 	renderForm() {
 		const { student } = this.state;
 		return (
-			<Highlight id="main-body">
+			<Highlight>
 				<form onSubmit={(e) => this.handleSubmit(e)}>
-					<div className="form-group">
-						<div className="form-group">
-							<label>Sex</label>
-							<div>
-								<select className="custom-select" name={"Sex"} defaultValue={student.Sex} onChange={e => this.handleInputChange(e, "p")}>
-									<option value="Male">Male</option>
-									<option value="Female">Female</option>
-								</select>
+
+					<fieldset>
+						<legend>Personal Details</legend>
+						<Row>
+							<Col lg={12} md={12}>
+								<div className="form-group">
+									<label>Sex</label>
+									<div>
+										<select className="custom-select" name={"Sex"} defaultValue={student.Sex} onChange={e => this.handleInputChange(e, "p")}>
+											<option value="Male">Male</option>
+											<option value="Female">Female</option>
+										</select>
+									</div>
+								</div>
+							</Col>
+							<Col lg={6} md={6}>
+								<div className="form-group">
+									<label>FirstName</label>
+									<input
+										type="text"
+										className="form-control"
+										placeholder="FirstName"
+										value={student.FirstName || ''}
+										name="FirstName"
+										onChange={e => this.handleInputChange(e, "p")}
+									/>
+								</div>
+							</Col>
+							<Col lg={6} md={6}>
+								<div className="form-group">
+									<label>LastName</label>
+									<input
+										type="text"
+										className="form-control"
+										placeholder="LastName"
+										value={this.state.student.LastName || ''}
+										name="LastName"
+										onChange={e => this.handleInputChange(e, "p")}
+									/>
+								</div>
+							</Col>
+						</Row>
+						<Row>
+							<Col lg={6} md={6}>
+								<div className="form-group">
+									<label>Email</label>
+									<input
+										type="text"
+										className="form-control"
+										placeholder="Email"
+										value={this.state.student.Email || ''}
+										name="Email"
+										onChange={e => this.handleInputChange(e, "p")}
+									/>
+								</div>
+							</Col>
+							<Col lg={6} md={6}>
+								<div className="form-group">
+									<label>Phone</label>
+									<input
+										type="text"
+										className="form-control"
+										placeholder="Phone"
+										value={this.state.student.Phone || ''}
+										name="Phone"
+										onChange={e => this.handleInputChange(e, "p")}
+									/>
+								</div>
+							</Col>
+						</Row>
+					</fieldset>
+
+					<fieldset>
+						<legend>Address Details</legend>
+
+						<div className="form-group row">
+							<label className="col-sm-2 col-form-label" htmlFor="textinput">Line 1</label>
+							<div className="col-sm-10">
+								<input type="text" value={'' || student.Address.Line1} placeholder="Address Line 1"
+									className="form-control" name="Line1" onChange={e => this.handleInputChange(e, "a")} required />
 							</div>
 						</div>
-						<div className="form-group">
-							<label>FirstName</label>
-							<input
-								type="text"
-								className="form-control"
-								placeholder="FirstName"
-								value={student.FirstName || ''}
-								name="FirstName"
-								onChange={e => this.handleInputChange(e, "p")}
-							/>
-						</div>
-						<div className="form-group">
-							<label>LastName</label>
-							<input
-								type="text"
-								className="form-control"
-								placeholder="LastName"
-								value={this.state.student.LastName || ''}
-								name="LastName"
-								onChange={e => this.handleInputChange(e, "p")}
-							/>
-						</div>
-						<div className="form-group">
-							<label>Email</label>
-							<input
-								type="text"
-								className="form-control"
-								placeholder="Email"
-								value={this.state.student.Email || ''}
-								name="Email"
-								onChange={e => this.handleInputChange(e, "p")}
-							/>
-						</div>
-						<div className="form-group">
-							<label>Phone</label>
-							<input
-								type="text"
-								className="form-control"
-								placeholder="Phone"
-								value={this.state.student.Phone || ''}
-								name="Phone"
-								onChange={e => this.handleInputChange(e, "p")}
-							/>
+
+						<div className="form-group row">
+							<label className="col-sm-2 col-form-label" htmlFor="textinput">Line 2</label>
+							<div className="col-sm-10">
+								<input type="text" value={'' || student.Address.Line2} placeholder="Address Line 2"
+									className="form-control" name="Line2" onChange={e => this.handleInputChange(e, "a")} />
+							</div>
 						</div>
 
-						<fieldset>
-							<legend>Address Details</legend>
-							<div className="form-group row">
-								<label className="col-sm-2 col-form-label" htmlFor="textinput">Line 1</label>
-								<div className="col-sm-10">
-									<input type="text" value={'' || student.Address.Line1} placeholder="Address Line 1"
-										className="form-control" name="Line1" onChange={e => this.handleInputChange(e, "a")} required />
-								</div>
+						<div className="form-group row">
+							<label className="col-sm-2 col-form-label" htmlFor="textinput">State</label>
+							<div className="col-sm-4">
+								<input type="text" value={'' || student.Address.State} placeholder="State"
+									className="form-control" name="State" onChange={e => this.handleInputChange(e, "a")} required />
 							</div>
-
-							<div className="form-group row">
-								<label className="col-sm-2 col-form-label" htmlFor="textinput">Line 2</label>
-								<div className="col-sm-10">
-									<input type="text" value={'' || student.Address.Line2} placeholder="Address Line 2"
-										className="form-control" name="Line2" onChange={e => this.handleInputChange(e, "a")} />
-								</div>
+							<label className="col-sm-2 col-form-label" htmlFor="textinput">City</label>
+							<div className="col-sm-4">
+								<input type="text" value={'' || student.Address.City} placeholder="City"
+									className="form-control" name="City" onChange={e => this.handleInputChange(e, "a")} required />
 							</div>
+						</div>
 
-							<div className="form-group row">
-								<label className="col-sm-2 col-form-label" htmlFor="textinput">State</label>
-								<div className="col-sm-4">
-									<input type="text" value={'' || student.Address.State} placeholder="State"
-										className="form-control" name="State" onChange={e => this.handleInputChange(e, "a")} required />
-								</div>
-								<label className="col-sm-2 col-form-label" htmlFor="textinput">City</label>
-								<div className="col-sm-4">
-									<input type="text" value={'' || student.Address.City} placeholder="City"
-										className="form-control" name="City" onChange={e => this.handleInputChange(e, "a")} required />
-								</div>
+						<div className="form-group row">
+							<label className="col-sm-2 col-form-label" htmlFor="textinput">Postcode</label>
+							<div className="col-sm-4">
+								<input type="text" value={'' || student.Address.PostCode} placeholder="Post Code"
+									className="form-control" pattern="\d+"
+									name="PostCode" onChange={e => this.handleInputChange(e, "a")} required />
 							</div>
-
-							<div className="form-group row">
-								<label className="col-sm-2 col-form-label" htmlFor="textinput">Postcode</label>
-								<div className="col-sm-4">
-									<input type="text" value={'' || student.Address.PostCode} placeholder="Post Code"
-										className="form-control" pattern="\d+"
-										name="PostCode" onChange={e => this.handleInputChange(e, "a")} required />
-								</div>
-								<label className="col-sm-2 col-form-label" htmlFor="textinput">Country</label>
-								<div className="col-sm-4">
-									<input type="text" value={'' || student.Address.Country} placeholder="Country"
-										className="form-control" name="Country" onChange={e => this.handleInputChange(e, "a")} required />
-								</div>
+							<label className="col-sm-2 col-form-label" htmlFor="textinput">Country</label>
+							<div className="col-sm-4">
+								<input type="text" value={'' || student.Address.Country} placeholder="Country"
+									className="form-control" name="Country" onChange={e => this.handleInputChange(e, "a")} required />
 							</div>
+						</div>
 
-						</fieldset>
-					</div>
+					</fieldset>
+
+
 
 					<div className="form-group row">
 						<Button primary type="submit" onClick={e => this.handleSubmit(e)}>
 							Save
-          </Button>
+         				</Button>
 						<Button danger onClick={() => this.handleCancel()}>
 							Cancel
-          </Button>
+          				</Button>
 					</div>
 				</form>
-			</Highlight>
+			</Highlight >
 		)
 	}
 
@@ -435,18 +458,18 @@ export default class StudentDetailView extends Component {
 		if (isLoading)
 			return <Spinner />;
 
-    if(showMark)
-      return this.renderChart();
+		if (showMark)
+			return this.renderChart();
 
-    return(
-      <div>
-        {showToaster && <Toast Msg={toaster} onKill={this.handleToaster} />}
+		return (
+			<div>
+				{showToaster && <Toast Msg={toaster} onKill={this.handleToaster} />}
 
-        {isEditing ?
-          this.renderForm() : this.renderDisplay()}
+				{isEditing ?
+					this.renderForm() : this.renderDisplay()}
 
-      </div>
-)
+			</div>
+		)
 
 	}
 }
