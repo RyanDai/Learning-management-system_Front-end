@@ -134,9 +134,7 @@ export default class LecturerDetailView extends Component {
 		const { id } = this.props.match.params;
 		this.setState({ isLoading: true });
 		Request("GET", `/api/lecturer/${id}`, null)
-			// axios.get(`/api/lecturer/${id}`)
 			.then(response => {
-				console.log(response);
 				this.setState({
 					lecturer: response.data,
 					isLoading: false
@@ -151,7 +149,6 @@ export default class LecturerDetailView extends Component {
 		const target = event.target;
 		const value = target.type === 'checkbox' ? target.checked : target.value;
 		const name = target.name;
-		console.log(name, value);
 
 		if (field === "p") {
 			this.setState({

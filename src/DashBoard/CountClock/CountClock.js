@@ -5,25 +5,32 @@ import Request from '../../Utils/Request';
 import { confirmAlert } from 'react-confirm-alert';
 import DatePicker from 'material-ui/DatePicker';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {ErrorToast} from "../../UI/Toast";
 
 export default class CountClock extends Component {
     constructor(props) {
         super(props);
         this.state = {
             StartTime: '2017-09-19',
-            EndTime: '2017-12-19'
+            EndTime: '2017-12-19',
+            showToaster: false,
+            toaster: "",
         }
     }
 
     componentDidMount() {
         Request("GET", "/api/dash/time")
             .then(r => {
-                console.log(r.data);
+                // console.log(r.data);
                 this.setState({ ...r.data })
                 startCountDown(this.state.EndTime);
             }
             ).catch(r => {
-                console.log(r);
+                this.setState({
+                    isEditing: false,
+                    showToaster: true,
+                    toaster: "Countdown - Fail to get count down time"
+                });
             })
     }
 
@@ -32,23 +39,29 @@ export default class CountClock extends Component {
         stopCountDown();
         Request("PUT", "/api/dash/time", { StartTime, EndTime })
             .then(r => console.log(r))
-            .catch(e => console.log(e))
+            .catch(e =>
+                this.setState({
+                    isEditing: false,
+                    showToaster: true,
+                    toaster: "Countdown - Fail to update count down time"
+                })
+            )
         startCountDown(EndTime);
 
-    }
+    };
 
     handleTimeChange = (event, date) => {
         this.setState({
             EndTime: this.convertDate(date.toLocaleString().substring(0, 10))
         });
-    }
+    };
 
     convertDate = (date) => {
         let d = date.split("/");
         let result = "";
         result += d[2] + "-" + d[1] + "-" + d[0];
         return result;
-    }
+    };
 
     changeTime = () => {
         confirmAlert({
@@ -61,11 +74,17 @@ export default class CountClock extends Component {
             cancelLabel: 'Cancel',                             // Text button cancel
             onConfirm: this.requestTimeChange,     // Action after Cancel
         })
-    }
+    };
+
+    handleToaster = () => {
+        this.setState({ showToaster: false });
+    };
 
     render() {
+        const{showToaster, toaster} = this.state;
         return (
             <div>
+                {showToaster && <ErrorToast Msg={toaster} onKill={this.handleToaster} />}
                 <div style={{textAlign:"right"}}>
                 <a  onClick={this.changeTime}><i className="fa fa-clock-o" aria-hidden="true" /></a>
                 </div>
