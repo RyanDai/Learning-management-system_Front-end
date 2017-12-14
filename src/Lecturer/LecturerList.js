@@ -19,7 +19,7 @@ export default function LectureList(props) {
             {
                 props.ls.filter(
                     (l) =>
-                        (props.search === "") || (l.FirstName.indexOf(props.search) !== -1) || (l.LastName.indexOf(props.search) !== -1)
+                        (props.search === "") || (l.FirstName.toUpperCase().indexOf(props.search.toUpperCase()) !== -1) || (l.LastName.toUpperCase().indexOf(props.search.toUpperCase()) !== -1)
                 ).map(
                     (lecturer) => <Lecture key={`${lecturer.ID}`} lecturer={lecturer} />)
             }

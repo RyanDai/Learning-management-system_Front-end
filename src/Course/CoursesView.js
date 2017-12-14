@@ -56,7 +56,7 @@ class CoursesView extends Component {
 				<div className="row people-list" style={{ margin: "10px auto" }}>
 					{this.state.course.filter(
 						(c) =>
-							(key === "") || (c.CourseCode.indexOf(key) !== -1) || (c.Name.indexOf(key) !== -1)
+							(key === "") || (c.CourseCode.toUpperCase().indexOf(key.toUpperCase()) !== -1) || (c.Name.toUpperCase().indexOf(key.toUpperCase()) !== -1)
 					).map(
 						course => <CourseCard course={course} key={course.ID} />
 						)}
