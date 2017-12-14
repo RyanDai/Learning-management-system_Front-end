@@ -11,3 +11,8 @@
     margin:8% auto !important;
     width:50%;
 }
+
+.dash-component-wrapper h1 {
+    margin:0 auto;
+    text-align: center;
+}
