@@ -4675,10 +4675,6 @@ input:focus {
   -ms-transition: all 60ms ease-in;
   transition: all 60ms ease-in; }
 
-.fa {
-  width: 18px;
-  text-align: center;
-  color: grey;}
 
 .margin-top {
   margin-top: 50px; }

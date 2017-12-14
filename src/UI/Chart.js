@@ -389,7 +389,7 @@ export default class Chart extends Component {
 
 
 		return (
-			<Highlight id="main-body">
+			<Highlight id="main-body" className={"text-center"}>
 
 
 				{this.renderTable()}

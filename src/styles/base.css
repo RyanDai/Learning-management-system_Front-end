@@ -69,6 +69,14 @@ body{
 	background-image: -ms-linear-gradient(left, #f0f0f0, #000000, #f0f0f0);
 	background-image: -o-linear-gradient(left, #f0f0f0, #000000, #f0f0f0);
 }
+
+#main-body i{
+	color:blue;
+}
+
+#main-body i:hover{
+	color:#DD403A;
+}
 /*black: #0E0B16 , 14,11,22*/
 /*PINK:#A239CA* , 162,57,202/
 /*PURPLE:#4717F6, 71,23,246*/
