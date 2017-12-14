@@ -18,9 +18,9 @@ export default function ListItem(props) {
 	return (
 		<ul className="list-group">
 			{props.students.filter(
-                (l)=>
-                    (props.search === "") || (l.FirstName.indexOf(props.search) !== -1) || (l.LastName.indexOf(props.search) !== -1)
-            ).map((student, i) => <Item key={i} student={student} />)}
+				(l) =>
+					(props.search === "") || (l.FirstName.indexOf(props.search) !== -1) || (l.LastName.indexOf(props.search) !== -1)
+			).map((student, i) => <Item key={i} student={student} />)}
 		</ul>
 	)
 }

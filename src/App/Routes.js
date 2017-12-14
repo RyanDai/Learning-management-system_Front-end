@@ -8,7 +8,7 @@ import StudentView from '../Student/StudentView';
 import StudentDetailView from '../Student/StudentDetailView';
 import Register from "../Login/Register";
 import Signin from '../Login/Login';
-import {Auth} from '../Utils/Auth';
+import { Auth } from '../Utils/Auth';
 import DashBoard from "../DashBoard/DashBoard";
 import Calendar from '../UI/Calendar';
 
@@ -27,10 +27,10 @@ export default () => ((
     </div>
 ));
 
-const ProtectedRoute = ({component:ProtectedComponent, ...rest}) =>
+const ProtectedRoute = ({ component: ProtectedComponent, ...rest }) =>
     <Route {...rest} render={props => (
         Auth.loggedIn() ? <ProtectedComponent {...props} /> :
             <Redirect to={{
-                pathname:'/login', state:{from:props.location}
+                pathname: '/login', state: { from: props.location }
             }} />
-    ) } />
+    )} />

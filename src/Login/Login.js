@@ -15,17 +15,17 @@ export default class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            account:{
-                Email:"",
-                Password:""
+            account: {
+                Email: "",
+                Password: ""
             },
-            emailError:null,
-            pwdError:null,
-            isLoading:false,
+            emailError: null,
+            pwdError: null,
+            isLoading: false,
         }
     }
 
-    handleInputChange=(event) => {
+    handleInputChange = (event) => {
         const target = event.target;
         const name = target.name;
         const value = target.value;
@@ -38,21 +38,21 @@ export default class Login extends Component {
         })
     }
 
-    validation=()=>{
-        const {Email, Password} = this.state.account;
+    validation = () => {
+        const { Email, Password } = this.state.account;
 
         const check = /.*\S.*/;
-        check.test(Email) === false ? this.setState({ emailError: (<p>Email cannot be empty</p>) }):this.setState({ emailError: null });
+        check.test(Email) === false ? this.setState({ emailError: (<p>Email cannot be empty</p>) }) : this.setState({ emailError: null });
 
-        check.test(Password) === false ? this.setState({ pwdError: (<p>Password cannot be empty</p>) }):this.setState({ pwdError: null });
+        check.test(Password) === false ? this.setState({ pwdError: (<p>Password cannot be empty</p>) }) : this.setState({ pwdError: null });
 
-        const valid = check.test(Email)&&check.test(Password);
-        if(valid) {
+        const valid = check.test(Email) && check.test(Password);
+        if (valid) {
             this.login();
         }
     }
 
-    login=()=>{
+    login = () => {
         this.setState({ isLoading: true });
         axios.post(`/api/user/login`, this.state.account)
             .then(response => {
@@ -79,23 +79,23 @@ export default class Login extends Component {
         }
     }
 
-    render(){
-        const {emailError, pwdError, isLoading} = this.state;
+    render() {
+        const { emailError, pwdError, isLoading } = this.state;
         if (isLoading)
             return <Spinner />;
-        return(
+        return (
             <div className={"login-div"}>
                 <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
                     <div className={"text-center"}>
                         <h3>McDowall Management</h3>
-                        <br/>
-                        <Logo/>
+                        <br />
+                        <Logo />
                         <TextField
                             hintText="john.doe@example.com"
                             floatingLabelText="Email"
                             fullWidth={true}
                             name={"Email"}
-                            onChange={ event=>this.handleInputChange(event) }
+                            onChange={event => this.handleInputChange(event)}
                             errorText={emailError}
                         />
                         <TextField
@@ -104,13 +104,13 @@ export default class Login extends Component {
                             fullWidth={true}
                             name={"Password"}
                             type={"password"}
-                            onChange={ event=>this.handleInputChange(event) }
+                            onChange={event => this.handleInputChange(event)}
                             onKeyPress={this._handleKeyPress}
                             errorText={pwdError}
                         />
-                        <br/>
+                        <br />
                         <Button onClick={this.validation}>
-                            Log in <i className="fa fa-fw fa-chevron-right"/>
+                            Log in <i className="fa fa-fw fa-chevron-right" />
                         </Button>
                     </div>
                 </MuiThemeProvider>

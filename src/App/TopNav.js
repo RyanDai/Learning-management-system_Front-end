@@ -61,7 +61,7 @@ export default class TopNav extends Component {
 	render() {
 		return (
 			<nav className="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-				<Link className="navbar-brand" to="/"><Logo/> McDowall LMS</Link>
+				<Link className="navbar-brand" to="/"><Logo /> McDowall LMS</Link>
 				<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
 					aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 					<span className="navbar-toggler-icon"></span>

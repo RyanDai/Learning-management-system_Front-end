@@ -1,19 +1,23 @@
 import React, { Component } from 'react';
 // import axios from 'axios';
-import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import Button from '../UI/Button';
 import { Spinner } from '../UI/Spinner';
 import Highlight from '../UI/Highlight';
 import Teachinglist from '../UI/Teachinglist';
 import Studentlist from '../UI/Studentlist';
-import ErrorMsg from '../Utils/ErrorMsg';
 import Request from '../Utils/Request';
+import Dialog from '../Utils/Dialog';
+import Toast from '../UI/Toast';
+import swal from 'sweetalert2';
+import { Grid, Row, Col } from 'react-bootstrap';
 import MarkStudent from '../UI/MarkStudent';
 import DatePicker from 'material-ui/DatePicker';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-class CourseDetailView extends Component {
+export default class CourseDetailView extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -21,9 +25,9 @@ class CourseDetailView extends Component {
 			isEditing: false,
 			isSaving: false,
 			isMarking: false,
+			showToaster: false,
 			sID: 0,
 			cID: 0,
-			error: null,
 			course: {
 				Name: "",
 				CourseCode: "",
@@ -32,6 +36,7 @@ class CourseDetailView extends Component {
 				EndTime: "2017-01-01",
 			},
 		};
+		console.log(getMuiTheme(darkBaseTheme));
 	}
 
 	isNew() {
@@ -47,23 +52,11 @@ class CourseDetailView extends Component {
 		this.loadCourse()
 	}
 
-	displayDialog = (error) => {
-		this.setState({ showError: true, error: error });
-	}
-
-	hideDialog = () => {
-		this.setState({ showError: false });
-		if (this.state.redirect) {
-			this.props.history.push('/login');
-		}
-	}
-
 	handleErrorResponse = (error) => {
 		this.setState({ isLoading: false });
-		const errorMsg = <ErrorMsg error={error} />;
-		this.displayDialog(errorMsg);
+		Dialog(false, error);
 		if (error.response.status === 401) {
-			this.setState({ redirect: true })
+			this.props.history.push('/login');
 		}
 	}
 
@@ -125,18 +118,23 @@ class CourseDetailView extends Component {
 
 		this.setState({ isLoading: true });
 		const { course } = this.state;
-
-		if (this.props.match.params.id === 'create') {
+		if (this.isNew()) {
 			Request("POST", `/api/course`, course)
 				// axios.post('/api/course', course)
 				.then(response => {
+					Dialog(true, `course ${course.Name} has been created`);
 					this.props.history.push('/courses');
 				});
 		} else {
 			Request("PUT", `/api/course/${course.ID}`, course)
 				// axios.put(`/api/course/${course.ID}`, course)
 				.then(response => {
-					this.setState({ isEditing: false, isLoading: false });
+					this.setState({
+						isEditing: false,
+						isLoading: false,
+						showToaster: true,
+						toaster: `course ${course.Name} has bee updated`
+					});
 				})
 				.catch(error => {
 					this.handleErrorResponse(error);
@@ -150,6 +148,8 @@ class CourseDetailView extends Component {
 		} else {
 			this.setState({
 				isEditing: false,
+				showToaster: true,
+				toaster: "Edit action has been cancelled"
 			});
 			this.loadCourse();
 		}
@@ -157,13 +157,20 @@ class CourseDetailView extends Component {
 
 	confirmDelete = () => {
 		const { course } = this.state;
-		confirmAlert({
-			title: 'Really?',                        // Title dialog
-			message: 'Are you sure to delete:',               // Message dialog
-			childrenElement: () => (<div className="dialog-content">{course.Name}</div>),       // Custom UI or Component
-			confirmLabel: 'Confirm',                           // Text button confirm
-			cancelLabel: 'Cancel',                             // Text button cancel
-			onConfirm: this.handleDelete,     // Action after Cancel
+		swal({
+			title: 'Are you sure?',
+			html: `You are deleting <b>${course.Name}</b></br>You won't be able to revert this!`,
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#4717F6',
+			cancelButtonColor: '#A239CA',
+			confirmButtonText: 'Delete',
+			animation: false,
+			customClass: 'animated pulse'
+		}).then((result) => {
+			if (result.value) {
+				this.handleDelete();
+			}
 		})
 	}
 
@@ -173,6 +180,7 @@ class CourseDetailView extends Component {
 		Request("DELETE", `/api/course/${course.ID}`, null)
 			// axios.delete(`/api/course/${course.ID}`)
 			.then(() => {
+				Dialog(true, `Lecturer ${course.Name} has been deleted`)
 				this.props.history.push('/courses');
 			})
 			.catch(error => {
@@ -198,35 +206,37 @@ class CourseDetailView extends Component {
 		return (
 			<Highlight>
 				<h1 className="name">{course.Name}</h1>
-				<div className="row">
-					<div className="col-sm-6">
-						<h2>Course Code:</h2>
-						<div style={{ textAlign: "center" }}>{course.CourseCode}</div>
-						<div style={{ textAlign: "center" }}>{course.StartTime} - {course.EndTime}</div>
-					</div>
-					<div className="col-sm-6">
-						<h2>Description:</h2>
-						<p style={{ margin: "0 20px" }}>{course.Description}</p>
-					</div>
-				</div>
-				<div className="row" style={{ marginTop: "20px" }}>
-					<div className="col-sm-6">
-						<h2>Lecturer:</h2>
-						<Teachinglist lecturer={course.Teaching} />
-					</div>
-					<div className="col-sm-6">
-						<h2>Student:</h2>
-						<Studentlist student={course.Enrollments} courseID={course.ID} giveScore={(sID, cID) => this.giveScore(sID, cID)} />
-					</div>
-				</div>
-				<div className="row" style={{ marginTop: "20px" }}>
-					<Button primary onClick={() => this.setState({ isEditing: true })}>
-						Edit
+				<Grid>
+					<Row>
+						<Col sm={6}>
+							<h2>Course Code:</h2>
+							<div style={{ textAlign: "center" }}>{course.CourseCode}</div>
+							<div style={{ textAlign: "center" }}>{course.StartTime} - {course.EndTime}</div>
+						</Col>
+						<Col sm={6}>
+							<h2>Description:</h2>
+							<p style={{ margin: "0 20px" }}>{course.Description}</p>
+						</Col>
+					</Row>
+					<Row style={{ marginTop: "20px" }}>
+						<Col sm={6}>
+							<h2>Lecturer:</h2>
+							<Teachinglist lecturer={course.Teaching} />
+						</Col>
+						<Col sm={6}>
+							<h2>Student:</h2>
+							<Studentlist student={course.Enrollments} courseID={course.ID} giveScore={(sID, cID) => this.giveScore(sID, cID)} />
+						</Col>
+					</Row>
+					<Row style={{ marginTop: "20px" }}>
+						<Button primary onClick={() => this.setState({ isEditing: true })}>
+							Edit
 					</Button>
-					<Button danger onClick={this.confirmDelete}>
-						Delete
+						<Button danger onClick={this.confirmDelete}>
+							Delete
 					</Button>
-				</div>
+					</Row>
+				</Grid>
 			</Highlight>
 		);
 	}
@@ -235,63 +245,77 @@ class CourseDetailView extends Component {
 		const { course } = this.state;
 
 		return (
-			<form onSubmit={this.handleSubmit}>
-				<div className="highlight shadow-lg">
-					<label>Name</label>
-					<input
-						type="text"
-						className="form-control"
-						placeholder="Name"
-						value={course.Name || ''}
-						name="Name"
-						onChange={this.handleInputChange}
-					/>
-					<label>Course Code</label>
-					<input
-						type="text"
-						className="form-control"
-						placeholder="Code"
-						value={course.CourseCode || ''}
-						name="CourseCode"
-						onChange={this.handleInputChange}
-					/>
-					<label>Description</label>
-					<input
-						type="text"
-						className="form-control"
-						placeholder="Description"
-						value={course.Description || ''}
-						name="Description"
-						onChange={this.handleInputChange}
-					/>
-					<label>Start Time</label>
-					<DatePicker
-						hintText="Start Time"
-						defaultDate={new Date(this.state.course.StartTime)}
-						onChange={this.handleStartTimeChange}
-						style={{ backgroundColor: "white" }} />
-
-					<label>End Time</label>
-					<DatePicker
-						hintText="End Time"
-						defaultDate={new Date(this.state.course.EndTime)}
-						onChange={this.handleEndTimeChange}
-						style={{ backgroundColor: "white" }} />
-					<div className="form-group row" style={{ marginTop: "20px" }}>
-						<Button primary type="submit">
-							Save
-						</Button>
-						<Button danger onClick={() => this.handleCancel()}>
-							Cancel
-						</Button>
-					</div>
-				</div>
-			</form>
+			<Highlight>
+				<MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+					<form onSubmit={this.handleSubmit}>
+						<h1 className="name">Course Details</h1>
+						<Grid>
+							<Row>
+								<Col xs={12} sm={6}>
+									<label>Name</label>
+									<input
+										type="text"
+										className="form-control"
+										placeholder="Name"
+										value={course.Name || ''}
+										name="Name"
+										onChange={this.handleInputChange}
+									/>
+									<label>Course Code</label>
+									<input
+										type="text"
+										className="form-control"
+										placeholder="Code"
+										value={course.CourseCode || ''}
+										name="CourseCode"
+										onChange={this.handleInputChange}
+									/>
+								</Col>
+								<Col xs={12} sm={6}>
+									<label>Start Time</label>
+									<DatePicker
+										hintText="Start Time"
+										defaultDate={new Date(this.state.course.StartTime)}
+										onChange={this.handleStartTimeChange}
+									/>
+									<label>End Time</label>
+									<DatePicker
+										hintText="End Time"
+										defaultDate={new Date(this.state.course.EndTime)}
+										onChange={this.handleEndTimeChange}
+									/>
+								</Col>
+							</Row>
+							<Row>
+								<Col xs={12} sm={12}>
+									<label>Description</label>
+									<input
+										type="text"
+										className="form-control"
+										placeholder="Description"
+										value={course.Description || ''}
+										name="Description"
+										onChange={this.handleInputChange}
+									/>
+								</Col>
+							</Row>
+						</Grid>
+						<div className="form-group row" style={{ marginTop: "20px" }}>
+							<Button primary type="submit">
+								Save
+								</Button>
+							<Button danger onClick={() => this.handleCancel()}>
+								Cancel
+								</Button>
+						</div>
+					</form>
+				</MuiThemeProvider>
+			</Highlight>
 		)
 	}
 
 	render() {
-		const { isLoading, isEditing, course, isMarking, sID, cID } = this.state;
+		const { showToaster, toaster, isLoading, isEditing, course, isMarking, sID, cID } = this.state;
 		if (isLoading) {
 			return <Spinner />;
 		}
@@ -302,11 +326,10 @@ class CourseDetailView extends Component {
 
 		return (
 			<MuiThemeProvider>
+				{showToaster && <Toast Msg={toaster} onKill={this.handleToaster} />}
 				{isEditing ?
 					this.renderForm(course) : this.renderDisplay(course)}
 			</MuiThemeProvider>
 		)
 	}
 }
-
-export default CourseDetailView;

@@ -134,7 +134,7 @@ export default class Register extends Component {
                 <br />
                 <div className={"text-center"}>
                     <button onClick={this.validation}>
-                        REGISTER <i className="fa fa-fw fa-user-plus"/>
+                        REGISTER <i className="fa fa-fw fa-user-plus" />
                     </button>
                 </div>
             </div>
@@ -163,7 +163,7 @@ export default class Register extends Component {
                     timer: 2000
                 }).then(
                     this.props.history.push('/#')
-                )
+                    )
             })
             .catch(error => {
                 this.setState({ isLoading: false });
@@ -174,7 +174,7 @@ export default class Register extends Component {
     renderVerification = () => {
         return (
             <div className={"text-center"}>
-                <h3>Almost done <i class="fa fa-smile-o" aria-hidden="true"/></h3>
+                <h3>Almost done <i class="fa fa-smile-o" aria-hidden="true" /></h3>
                 <Button danger onClick={this.requestVerify}>
                     Request verification code
                 </Button>

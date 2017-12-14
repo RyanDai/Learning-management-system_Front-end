@@ -39,8 +39,8 @@ export default function CityCondition({ location, icon, temp, humidity, UV }) {
     }
 
     return (
-        <div style={{padding: "20px"}}>
-            <div id="weather"  style={{textAlign: "center"}}>
+        <div style={{ padding: "20px" }}>
+            <div id="weather" style={{ textAlign: "center" }}>
                 <ReactAnimatedWeather
                     icon={weather}
                     color={color}

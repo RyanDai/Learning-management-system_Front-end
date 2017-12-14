@@ -7,14 +7,14 @@ export default class App extends Component {
 
     notify = () => toast(this.props.Msg, {
         className: 'dark-toast',
-        onClose:this.props.onKill
+        onClose: this.props.onKill
     });
 
     componentDidMount() {
         this.notify();
     }
 
-    render(){
+    render() {
         return (
             <div id={"toast-wrap"}>
                 <ToastContainer

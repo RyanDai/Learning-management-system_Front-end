@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import Button from './Button';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import ErrorMsg from '../Utils/ErrorMsg';
+// import ErrorMsg from '../Utils/ErrorMsg';
 import Request from "../Utils/Request";
-import swal from 'sweetalert2';
+// import swal from 'sweetalert2';
 function Course(props) {
 	const course = props.course;
 	return (
@@ -21,19 +21,20 @@ export default class Dropcourse extends Component {
 		}
 	}
 
-	content=()=>{
-        const courses = this.props.courses;
+	content = () => {
+		const courses = this.props.courses;
 		return (
-		<div className="dialog-content">
-			<select className="custom-select" onChange={(e) => this.setState({ courseID: e.target.value })}>
-				<option value="0">Open this select menu</option>
-                {
-                    courses.map(
-                        (course) => <Course key={`${course.Course.ID}`} course={course.Course} />)
-                }
-			</select>
-		</div>
-	)}
+			<div className="dialog-content">
+				<select className="custom-select" onChange={(e) => this.setState({ courseID: e.target.value })}>
+					<option value="0">Open this select menu</option>
+					{
+						courses.map(
+							(course) => <Course key={`${course.Course.ID}`} course={course.Course} />)
+					}
+				</select>
+			</div>
+		)
+	}
 	handleDrop = () => {
 		const courses = this.props.courses;
 		console.log(courses);

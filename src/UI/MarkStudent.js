@@ -1,46 +1,46 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import { Spinner } from '../UI/Spinner';
 import ErrorMsg from '../Utils/ErrorMsg';
 import Request from '../Utils/Request';
 import Button from '../UI/Button';
 import Highlight from './Highlight';
 
-export default class MarkStudent extends Component{
-  constructor(props){
+export default class MarkStudent extends Component {
+  constructor(props) {
     super(props);
     this.state = {
-      isLoading:false,
-      sID:0,
-      cID:0,
-      Marks:{
-        A1:0,
-        A2:0,
-        A3:0
+      isLoading: false,
+      sID: 0,
+      cID: 0,
+      Marks: {
+        A1: 0,
+        A2: 0,
+        A3: 0
       }
     }
-	}
+  }
 
-  loadScore(studentID, courseID){
-		this.setState({ isLoading: true });
+  loadScore(studentID, courseID) {
+    this.setState({ isLoading: true });
     //axios.get(`/api/score/${studentID}/${courseID}`)
-		console.log(studentID+","+courseID)
-		Request("GET", `/api/score/${studentID}/${courseID}`, null)
+    console.log(studentID + "," + courseID)
+    Request("GET", `/api/score/${studentID}/${courseID}`, null)
       .then((response) => {
         this.setState({
           isLoading: false,
-          Marks:{
-            A1:response.data.Assignment1,
-  					A2:response.data.Assignment2,
-  					A3:response.data.Assignment3
+          Marks: {
+            A1: response.data.Assignment1,
+            A2: response.data.Assignment2,
+            A3: response.data.Assignment3
           }
         });
       })
       .catch((error) => {
-				console.log(error)
+        console.log(error)
         this.handleErrorResponse(error);
       });
-	}
+  }
 
   handleErrorResponse = (error) => {
     this.setState({ isLoading: false });
@@ -51,18 +51,18 @@ export default class MarkStudent extends Component{
     }
   }
 
-	displayDialog = (error) => {
+  displayDialog = (error) => {
     this.setState({ showError: true, error: error });
   }
 
   componentWillMount() {
     const studentID = this.props.sID;
-		const courseID = this.props.cID;
+    const courseID = this.props.cID;
     this.setState({
-      sID:studentID,
-      cID:courseID
+      sID: studentID,
+      cID: courseID
     });
-		this.loadScore(studentID, courseID);
+    this.loadScore(studentID, courseID);
   }
 
   handleCancel() {
@@ -82,9 +82,9 @@ export default class MarkStudent extends Component{
       })
       .catch(error => {
         this.handleErrorResponse(error);
-    });
+      });
 
-}
+  }
 
   handleInputChange = (event, field) => {
     const target = event.target;
@@ -100,57 +100,57 @@ export default class MarkStudent extends Component{
     }
   };
 
-  renderMarkForm(){
-    return(
+  renderMarkForm() {
+    return (
       <Highlight id="main-body">
         <h1>Update score</h1>
-      <form onSubmit={(e) => this.handleSubmit(e)}>
-        <div className="form-group">
+        <form onSubmit={(e) => this.handleSubmit(e)}>
           <div className="form-group">
-            <label>Assignment1</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Assignment1"
-              value={this.state.Marks.A1}
-              name="A1"
-              onChange={e => this.handleInputChange(e, "p")}
-            />
+            <div className="form-group">
+              <label>Assignment1</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Assignment1"
+                value={this.state.Marks.A1}
+                name="A1"
+                onChange={e => this.handleInputChange(e, "p")}
+              />
+            </div>
+            <div className="form-group">
+              <label>Assignment2</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Assignment2"
+                value={this.state.Marks.A2}
+                name="A2"
+                onChange={e => this.handleInputChange(e, "p")}
+              />
+            </div>
+            <div className="form-group">
+              <label>Assignment3</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Assignment3"
+                value={this.state.Marks.A3}
+                name="A3"
+                onChange={e => this.handleInputChange(e, "p")}
+              />
+            </div>
           </div>
-          <div className="form-group">
-            <label>Assignment2</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Assignment2"
-              value={this.state.Marks.A2}
-              name="A2"
-              onChange={e => this.handleInputChange(e, "p")}
-            />
-          </div>
-          <div className="form-group">
-            <label>Assignment3</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Assignment3"
-              value={this.state.Marks.A3}
-              name="A3"
-              onChange={e => this.handleInputChange(e, "p")}
-            />
-          </div>
-        </div>
 
-        <div className="form-group row">
-          <Button primary type="submit" onClick={e => this.handleSubmit(e)}>
-            Save
+          <div className="form-group row">
+            <Button primary type="submit" onClick={e => this.handleSubmit(e)}>
+              Save
             </Button>
-          <Button danger onClick={() => this.handleCancel()}>
-            Cancel
+            <Button danger onClick={() => this.handleCancel()}>
+              Cancel
             </Button>
-        </div>
-      </form>
-    </Highlight>
+          </div>
+        </form>
+      </Highlight>
     )
   }
 
