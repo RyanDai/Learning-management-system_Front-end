@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import Highlight from "../UI/Highlight";
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import TextField from 'material-ui/TextField';
 import Button from "../UI/Button";
 import axios from 'axios';
-import Modal from "../Utils/Modal";
-import ErrorMsg from '../Utils/ErrorMsg';
+import Dialog from '../Utils/Dialog';
 import swal from 'sweetalert2';
 import { Spinner } from '../UI/Spinner';
+import Toast from '../UI/Toast';
+import Decoder from 'jwt-decode';
 
 export default class Register extends Component {
     constructor(props) {
@@ -26,11 +26,10 @@ export default class Register extends Component {
             pwdError: null,
             nameError: null,
             isLoading: false,
-            showError: false,
-            error: "",
-            verification: true,
-            verificationMsg: null,
-            code: ""
+            verification: false,
+            code: "",
+            showToaster: false,
+            toaster:""
         }
     }
 
@@ -45,15 +44,11 @@ export default class Register extends Component {
                 [name]: value
             }
         })
-    }
+    };
 
-    displayDialog = (error) => {
-        this.setState({ showError: true, error: error });
-    }
-
-    hideDialog = () => {
-        this.setState({ showError: false });
-    }
+    handleToaster = () => {
+        this.setState({ showToaster: false });
+    };
 
     validation = () => {
         const { Email, Phone, Password, Name } = this.state.account;
@@ -87,8 +82,7 @@ export default class Register extends Component {
             })
             .catch(error => {
                 this.setState({ isLoading: false });
-                const errorMsg = <ErrorMsg error={error} />;
-                this.displayDialog(errorMsg);
+                Dialog(false, error);
             });
     }
 
@@ -96,7 +90,7 @@ export default class Register extends Component {
         const { emailError, phoneError, pwdError, nameError } = this.state;
         return (
             <div>
-                <h3>Create an account</h3>
+                <h3 className={"text-center"}>Create an account</h3>
                 <TextField
                     hintText="john.doe@example.com"
                     floatingLabelText="Email"
@@ -133,8 +127,8 @@ export default class Register extends Component {
                 />
                 <br />
                 <div className={"text-center"}>
-                    <button onClick={this.validation}>
-                        REGISTER <i className="fa fa-fw fa-user-plus"/>
+                    <button className={"login-btn"} onClick={this.validation}>
+                        REGISTER <i className="fa fa-fw fa-user-plus" />
                     </button>
                 </div>
             </div>
@@ -144,18 +138,22 @@ export default class Register extends Component {
     requestVerify = () => {
         axios.get(`/api/user/verification/${this.state.account.Email}`)
             .then(response => {
-                this.setState({ verificationMsg: "We've just send a message with verification code to your mobile phone!" })
+                this.setState({ toaster: "We've just send a message with verification code to your mobile phone!",
+                    showToaster:true})
             })
             .catch(error => {
                 this.setState({ isLoading: false });
-                const errorMsg = <ErrorMsg error={error} />;
-                this.displayDialog(errorMsg);
+                Dialog(false, error);
             });
     }
 
     sendCode = () => {
         axios.post(`/api/user/verification/${this.state.account.Email}/${this.state.code}`)
             .then(response => {
+                const decode = Decoder(response.data.token);
+                window.sessionStorage.token = response.data.token;
+                window.sessionStorage.name = decode.name;
+                window.sessionStorage.exp = decode.exp;
                 swal({
                     type: 'success',
                     title: 'Your account has been created',
@@ -163,22 +161,20 @@ export default class Register extends Component {
                     timer: 2000
                 }).then(
                     this.props.history.push('/#')
-                )
+                    )
             })
             .catch(error => {
                 this.setState({ isLoading: false });
-                const errorMsg = <ErrorMsg error={error} />;
-                this.displayDialog(errorMsg);
+                Dialog(false, error);
             });
     }
     renderVerification = () => {
         return (
             <div className={"text-center"}>
-                <h3>Almost done <i class="fa fa-smile-o" aria-hidden="true"/></h3>
-                <Button danger onClick={this.requestVerify}>
+                <h3>Almost done <i className="fa fa-smile-o" aria-hidden="true" /></h3>
+                <Button danger className={"login-btn"} onClick={this.requestVerify}>
                     Request verification code
                 </Button>
-                <p className={"text-center"}>{this.state.verificationMsg}</p>
                 <TextField
                     hintText="6 digit code"
                     floatingLabelText="Verification code"
@@ -186,22 +182,20 @@ export default class Register extends Component {
                     onChange={event => this.setState({ code: event.target.value })}
                 />
                 <br />
-                <Button danger onClick={this.sendCode}>
+                <button className={"login-btn"} onClick={this.sendCode}>
                     VERIFY
-                </Button>
+                </button>
             </div>
         )
     }
 
     render() {
-        const { isLoading, verification, showError, error } = this.state;
+        const { showToaster, toaster, isLoading, verification} = this.state;
         if (isLoading)
             return <Spinner />;
         return (
             <div className={"login-div"}>
-                {showError && <Modal btnClick={this.hideDialog}>
-                    <div>{error}</div>
-                </Modal>}
+                {showToaster && <Toast Msg={toaster} onKill={this.handleToaster} />}
                 <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
                     {verification === false ? this.renderRegister() : this.renderVerification()}
                 </MuiThemeProvider>

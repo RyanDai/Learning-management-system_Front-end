@@ -1,10 +1,10 @@
 import React from 'react';
 import Axios from 'axios';
-import {Auth} from "./Auth";
+import { Auth } from "./Auth";
 
 export default function Request(Type, API, Content) {
     const config = {
-        headers: {'Authorization': "bearer " + Auth.getToken()}
+        headers: { 'Authorization': "bearer " + Auth.getToken() }
     };
     switch (Type) {
         case "GET":

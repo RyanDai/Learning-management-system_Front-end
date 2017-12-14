@@ -12,11 +12,11 @@ export default class CountDown extends Component {
 
 
 
-    render(){
-        return(
+    render() {
+        return (
             <div className={"dash-component-wrapper"}>
                 <h1>Count Down</h1>
-                <CountClock/>
+                <CountClock />
             </div>
         )
     }

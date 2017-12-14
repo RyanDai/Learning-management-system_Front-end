@@ -52,21 +52,21 @@ export default class StudentDetailView extends Component {
 
 	confirmDelete = () => {
 		const { student } = this.state;
-        swal({
-            title: 'Are you sure?',
-            html: `You are deleting <b>${student.FirstName} ${student.LastName}</b></br>You won't be able to revert this!`,
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#4717F6',
-            cancelButtonColor: '#A239CA',
-            confirmButtonText: 'Delete',
-            animation: false,
-            customClass: 'animated pulse'
-        }).then((result) => {
-            if (result.value) {
-                this.handleDelete();
-            }
-        })
+		swal({
+			title: 'Are you sure?',
+			html: `You are deleting <b>${student.FirstName} ${student.LastName}</b></br>You won't be able to revert this!`,
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#4717F6',
+			cancelButtonColor: '#A239CA',
+			confirmButtonText: 'Delete',
+			animation: false,
+			customClass: 'animated pulse'
+		}).then((result) => {
+			if (result.value) {
+				this.handleDelete();
+			}
+		})
 	}
 
 	handleDelete = () => {

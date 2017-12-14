@@ -39,8 +39,8 @@ export default function CityCondition({ location, icon, temp, humidity, UV }) {
     }
 
     return (
-        <div>
-            <div id="weather" style={{ float: "right" }}>
+        <div style={{ padding: "20px" }}>
+            <div id="weather" style={{ textAlign: "center" }}>
                 <ReactAnimatedWeather
                     icon={weather}
                     color={color}
@@ -50,20 +50,20 @@ export default function CityCondition({ location, icon, temp, humidity, UV }) {
             </div>
             <div id="location">
                 <span><i className="fa fa-map-marker" aria-hidden="true" /></span>
-                <span>{location}</span>
+                <span> {location}</span>
             </div>
 
             <div id="temperature">
                 <span><i className="fa fa-thermometer-empty" aria-hidden="true" /></span>
-                <span>{temp}</span>
+                <span> {temp}</span>
             </div>
             <div id="humidity">
                 <span><i className="fa fa-tint" aria-hidden="true" /></span>
-                <span>{humidity}</span>
+                <span> {humidity}</span>
             </div>
             <div id="uv">
                 <span><i className="fa fa-sun-o" aria-hidden="true" /></span>
-                <span>{UV}</span>
+                <span> {UV}</span>
             </div>
         </div>
     )

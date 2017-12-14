@@ -9,9 +9,9 @@ import Enrolment from "../UI/Enrolment";
 import Dropcourse from "../UI/Dropcourse";
 import Request from '../Utils/Request';
 import Dialog from '../Utils/Dialog';
-import Toast, { showToast } from '../UI/Toast';
+import Toast from '../UI/Toast';
 import swal from 'sweetalert2';
-import { Grid, Row, Col, Clearfix } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -84,8 +84,8 @@ export default class LecturerDetailView extends Component {
 				LastName: "",
 				Email: "",
 				Phone: "",
-                Title: "Mr",
-                Sex: "Male",
+				Title: "Mr",
+				Sex: "Male",
 				Address: {
 					Line1: "",
 					Line2: "",
@@ -96,17 +96,17 @@ export default class LecturerDetailView extends Component {
 				},
 				Teaching: []
 			},
-			FNameError:"",
-			LNameError:"",
-			EmailError:"",
-			PhoneError:"",
-			L1Error:"",
-			StateError:"",
-			CityError:"",
-			CountryError:"",
-			PostError:""
+			FNameError: "",
+			LNameError: "",
+			EmailError: "",
+			PhoneError: "",
+			L1Error: "",
+			StateError: "",
+			CityError: "",
+			CountryError: "",
+			PostError: ""
 		}
-        console.log(getMuiTheme(darkBaseTheme));
+		console.log(getMuiTheme(darkBaseTheme));
 	}
 
 	isNew() {
@@ -151,7 +151,7 @@ export default class LecturerDetailView extends Component {
 		const target = event.target;
 		const value = target.type === 'checkbox' ? target.checked : target.value;
 		const name = target.name;
-		console.log(name,value);
+		console.log(name, value);
 
 		if (field === "p") {
 			this.setState({
@@ -173,18 +173,18 @@ export default class LecturerDetailView extends Component {
 		}
 	}
 
-    handleTitleChange = (event, index, value) => this.setState({
-        lecturer: {
-            ...this.state.lecturer,
-            ["Title"]: value
-        }
-    });
-    handleSexChange = (event, index, value) => this.setState({
-        lecturer: {
-            ...this.state.lecturer,
-            ["Sex"]: value
-        }
-    });
+	handleTitleChange = (event, index, value) => this.setState({
+		lecturer: {
+			...this.state.lecturer,
+			["Title"]: value
+		}
+	});
+	handleSexChange = (event, index, value) => this.setState({
+		lecturer: {
+			...this.state.lecturer,
+			["Sex"]: value
+		}
+	});
 
 	handleToaster = () => {
 		this.setState({ showToaster: false });
@@ -263,7 +263,7 @@ export default class LecturerDetailView extends Component {
 	renderDisplay() {
 		const { lecturer } = this.state;
 		return (
-			<Highlight id="main-body">
+			<Highlight>
 				<h1 className="name">{lecturer.FirstName} &nbsp; {lecturer.LastName}</h1>
 				<div className="row">
 					<Gravatar email={lecturer.Email} size={150} className="shadow-sm" />
@@ -299,83 +299,83 @@ export default class LecturerDetailView extends Component {
 		)
 	}
 
-    validation = () => {
-        const { Email, Phone, FirstName, LastName } = this.state.lecturer;
+	validation = () => {
+		const { Email, Phone, FirstName, LastName } = this.state.lecturer;
 
-        const {Line1,State,City,PostCode,Country} = this.state.lecturer.Address;
+		const { Line1, State, City, PostCode, Country } = this.state.lecturer.Address;
 
-        const email = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        email.test(Email) === false ? this.setState({ EmailError: (<p>Email is required and format should be john@doe.com</p>) }) : this.setState({ EmailError: null });
+		const email = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		email.test(Email) === false ? this.setState({ EmailError: (<p>Email is required and format should be john@doe.com</p>) }) : this.setState({ EmailError: null });
 
-        const phone = /\d{9,10}$/;
-        phone.test(Phone) === false ? this.setState({ PhoneError: (<p> Phone number is required</p>) }) : this.setState({ PhoneError: null });
+		const phone = /\d{9,10}$/;
+		phone.test(Phone) === false ? this.setState({ PhoneError: (<p> Phone number is required</p>) }) : this.setState({ PhoneError: null });
 
-        const name = /^[a-zA-Z]{2,}$/;
-        name.test(FirstName) === false ? this.setState({ FNameError: (<p> Name must contains at least two characters</p>) }) : this.setState({ FNameError: null });
-        name.test(LastName) === false ? this.setState({ LNameError: (<p> Name must contains at least two characters</p>) }) : this.setState({ LNameError: null });
-        name.test(Country) === false ? this.setState({ CountryError: (<p> Please provide a valid country</p>) }) : this.setState({ CountryError: null });
-        name.test(State) === false ? this.setState({ StateError: (<p> Please provide a valid state</p>) }) : this.setState({ StateError: null });
+		const name = /^[a-zA-Z]{2,}$/;
+		name.test(FirstName) === false ? this.setState({ FNameError: (<p> Name must contains at least two characters</p>) }) : this.setState({ FNameError: null });
+		name.test(LastName) === false ? this.setState({ LNameError: (<p> Name must contains at least two characters</p>) }) : this.setState({ LNameError: null });
+		name.test(Country) === false ? this.setState({ CountryError: (<p> Please provide a valid country</p>) }) : this.setState({ CountryError: null });
+		name.test(State) === false ? this.setState({ StateError: (<p> Please provide a valid state</p>) }) : this.setState({ StateError: null });
 
-        const post = /\d{3,6}$/;
-        post.test(PostCode) === false ? this.setState({ PostError: (<p> Please provide a valid postcode</p>) }) : this.setState({ PostError: null });
+		const post = /\d{3,6}$/;
+		post.test(PostCode) === false ? this.setState({ PostError: (<p> Please provide a valid postcode</p>) }) : this.setState({ PostError: null });
 
-        const line = /.+$/;
-        line.test(Line1) === false ? this.setState({ L1Error: (<p> Please provide a valid address</p>) }) : this.setState({ L1Error: null });
-        line.test(City) === false ? this.setState({ CityError: (<p> Please provide a valid city</p>) }) : this.setState({ CityError: null });
+		const line = /.+$/;
+		line.test(Line1) === false ? this.setState({ L1Error: (<p> Please provide a valid address</p>) }) : this.setState({ L1Error: null });
+		line.test(City) === false ? this.setState({ CityError: (<p> Please provide a valid city</p>) }) : this.setState({ CityError: null });
 
-        const valid = email.test(Email) && phone.test(Phone) && name.test(FirstName) && name.test(LastName)
-					&& name.test(Country) && name.test(State) && line.test(City) && post.test(PostCode) && line.test(Line1);
-        if (valid) {
-            this.handleSubmit();
-        }
-    }
+		const valid = email.test(Email) && phone.test(Phone) && name.test(FirstName) && name.test(LastName)
+			&& name.test(Country) && name.test(State) && line.test(City) && post.test(PostCode) && line.test(Line1);
+		if (valid) {
+			this.handleSubmit();
+		}
+	}
 
 	renderForm() {
-		const { FNameError, LNameError, EmailError, PhoneError, lecturer , L1Error, StateError, CityError, PostError, CountryError} = this.state;
+		const { FNameError, LNameError, EmailError, PhoneError, lecturer, L1Error, StateError, CityError, PostError, CountryError } = this.state;
 		const { Address } = this.state.lecturer;
 		return (
-			<Highlight id="main-body">
+			<Highlight>
 				<MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
 					<fieldset>
 						<legend>Personal Details</legend>
 						<Grid>
-						<Row lg={12} xs={12}>
-							<Col lg={4} md={4}>
-								<SelectField
-									floatingLabelText="Title"
-									value={lecturer.Title}
-									name={"Title"}
-									onChange={this.handleTitleChange}
-								>
-									<MenuItem value={"Mr"} primaryText="Mr" />
-									<MenuItem value={"Mrs"} primaryText="Mrs" />
-									<MenuItem value={"Professor"} primaryText="Professor" />
-									<MenuItem value={"Doctor"} primaryText="Doctor" />
-								</SelectField>
-							</Col>
-							<Col lg={4} md={4}>
-								<TextField
-									hintText="John"
-									floatingLabelText="FirstName"
-									defaultValue={lecturer.FirstName}
-									fullWidth={true}
-									name={"FirstName"}
-									onChange={event => this.handleInputChange(event,"p")}
-									errorText={FNameError}
-								/>
-							</Col>
-							<Col lg={4} md={4}>
-								<TextField
-									hintText="Doe"
-									defaultValue={lecturer.LastName}
-									floatingLabelText="LastName"
-									fullWidth={true}
-									name={"LastName"}
-									onChange={event => this.handleInputChange(event,"p")}
-									errorText={LNameError}
-								/>
-							</Col>
-						</Row>
+							<Row lg={12} xs={12}>
+								<Col lg={4} md={4}>
+									<SelectField
+										floatingLabelText="Title"
+										value={lecturer.Title}
+										name={"Title"}
+										onChange={this.handleTitleChange}
+									>
+										<MenuItem value={"Mr"} primaryText="Mr" />
+										<MenuItem value={"Mrs"} primaryText="Mrs" />
+										<MenuItem value={"Professor"} primaryText="Professor" />
+										<MenuItem value={"Doctor"} primaryText="Doctor" />
+									</SelectField>
+								</Col>
+								<Col lg={4} md={4}>
+									<TextField
+										hintText="John"
+										floatingLabelText="FirstName"
+										defaultValue={lecturer.FirstName}
+										fullWidth={true}
+										name={"FirstName"}
+										onChange={event => this.handleInputChange(event, "p")}
+										errorText={FNameError}
+									/>
+								</Col>
+								<Col lg={4} md={4}>
+									<TextField
+										hintText="Doe"
+										defaultValue={lecturer.LastName}
+										floatingLabelText="LastName"
+										fullWidth={true}
+										name={"LastName"}
+										onChange={event => this.handleInputChange(event, "p")}
+										errorText={LNameError}
+									/>
+								</Col>
+							</Row>
 							<Row lg={12} xs={12}>
 								<Col lg={4} md={4}>
 									<SelectField
@@ -395,7 +395,7 @@ export default class LecturerDetailView extends Component {
 										defaultValue={lecturer.Email}
 										fullWidth={true}
 										name={"Email"}
-										onChange={event => this.handleInputChange(event,"p")}
+										onChange={event => this.handleInputChange(event, "p")}
 										errorText={EmailError}
 									/>
 								</Col>
@@ -406,7 +406,7 @@ export default class LecturerDetailView extends Component {
 										defaultValue={lecturer.Phone}
 										fullWidth={true}
 										name={"Phone"}
-										onChange={event => this.handleInputChange(event,"p")}
+										onChange={event => this.handleInputChange(event, "p")}
 										errorText={PhoneError}
 									/>
 								</Col>
@@ -426,7 +426,7 @@ export default class LecturerDetailView extends Component {
 										defaultValue={Address.Line1}
 										fullWidth={true}
 										name={"Line1"}
-										onChange={event => this.handleInputChange(event,"a")}
+										onChange={event => this.handleInputChange(event, "a")}
 										errorText={L1Error}
 									/>
 								</Col>
@@ -439,7 +439,7 @@ export default class LecturerDetailView extends Component {
 										defaultValue={Address.Line2}
 										fullWidth={true}
 										name={"Line2"}
-										onChange={event => this.handleInputChange(event,"a")}
+										onChange={event => this.handleInputChange(event, "a")}
 									/>
 								</Col>
 							</Row>
@@ -451,7 +451,7 @@ export default class LecturerDetailView extends Component {
 										defaultValue={Address.City}
 										fullWidth={true}
 										name={"City"}
-										onChange={event => this.handleInputChange(event,"a")}
+										onChange={event => this.handleInputChange(event, "a")}
 										errorText={CityError}
 									/>
 								</Col>
@@ -462,7 +462,7 @@ export default class LecturerDetailView extends Component {
 										defaultValue={Address.PostCode}
 										fullWidth={true}
 										name={"PostCode"}
-										onChange={event => this.handleInputChange(event,"a")}
+										onChange={event => this.handleInputChange(event, "a")}
 										errorText={PostError}
 									/>
 								</Col>
@@ -475,7 +475,7 @@ export default class LecturerDetailView extends Component {
 										defaultValue={Address.State}
 										fullWidth={true}
 										name={"State"}
-										onChange={event => this.handleInputChange(event,"a")}
+										onChange={event => this.handleInputChange(event, "a")}
 										errorText={StateError}
 									/>
 								</Col>
@@ -486,7 +486,7 @@ export default class LecturerDetailView extends Component {
 										defaultValue={Address.Country}
 										fullWidth={true}
 										name={"Country"}
-										onChange={event => this.handleInputChange(event,"a")}
+										onChange={event => this.handleInputChange(event, "a")}
 										errorText={CountryError}
 									/>
 								</Col>
@@ -494,14 +494,14 @@ export default class LecturerDetailView extends Component {
 						</Grid>
 					</fieldset>
 				</MuiThemeProvider>
-					<div className="form-group row">
-						<Button primary type="submit" onClick={this.validation}>
-							Save
+				<div className="form-group row">
+					<Button primary type="submit" onClick={this.validation}>
+						Save
                         </Button>
-						<Button danger onClick={() => this.handleCancel()}>
-							Cancel
+					<Button danger onClick={() => this.handleCancel()}>
+						Cancel
                         </Button>
-					</div>
+				</div>
 			</Highlight>
 		)
 	}

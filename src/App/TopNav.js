@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Auth } from '../Utils/Auth';
 import Logo from '../UI/Logo';
+import Dialog from '../Utils/Dialog';
 
 export default class TopNav extends Component {
 	constructor(props) {
@@ -14,6 +15,7 @@ export default class TopNav extends Component {
 	logOut = () => {
 		window.sessionStorage.clear();
 		this.setState({ isLogin: false });
+		Dialog(true, "You have been logged out");
 	}
 	loggedIn = () => {
 		let greeting = "";
@@ -27,15 +29,17 @@ export default class TopNav extends Component {
 			greeting = "Evening, "
 		}
 		return (
-			<li className="nav-item dropdown">
+			<div className="nav-item dropdown">
 				<a className="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<i className="fa fa-user" aria-hidden="true" />{greeting}{Auth.getName()}
 				</a>
 				<div className="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
-					<a className="dropdown-item" onClick={this.logOut}><i className="fa fa-sign-out" aria-hidden="true" /> Logout</a>
+					<li className="nav-item" onClick={this.logOut}>
+						<Link className="nav-link" to="/login"><i className="fa fa-sign-out" aria-hidden="true" /> Logout</Link>
+					</li>
 					{/*<div className="dropdown-divider"></div>*/}
 				</div>
-			</li>
+			</div>
 		)
 	}
 
@@ -61,10 +65,10 @@ export default class TopNav extends Component {
 	render() {
 		return (
 			<nav className="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-				<Link className="navbar-brand" to="/"><Logo/> McDowall State Primary School</Link>
+				<Link className="navbar-brand" to="/"><Logo /> McDowall</Link>
 				<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
 					aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-					<span className="navbar-toggler-icon"></span>
+					<span className="navbar-toggler-icon"/>
 				</button>
 				<div id="navbarNavDropdown" className="navbar-collapse collapse">
 					<ul className="navbar-nav mr-auto">

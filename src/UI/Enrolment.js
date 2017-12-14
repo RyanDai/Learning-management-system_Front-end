@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import Button from './Button';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { Spinner } from '../UI/Spinner';
-import ErrorMsg from '../Utils/ErrorMsg';
+// import ErrorMsg from '../Utils/ErrorMsg';
 import Request from '../Utils/Request';
 
 function Course(props) {
@@ -48,7 +48,7 @@ export default class Enrolment extends Component {
 	loadCourse = () => {
 		this.setState({ isLoading: true });
 		Request("GET", `/api/course`, null)
-		// axios.get(`/api/course`)
+			// axios.get(`/api/course`)
 			.then(response => {
 				console.log(response.data);
 				this.setState({
@@ -74,7 +74,7 @@ export default class Enrolment extends Component {
 		url += `${this.props.id}/${this.state.courseID}`;
 		// console.log(url);
 		Request("POST", url, null)
-		// axios.post(url)
+			// axios.post(url)
 			.then(response => {
 				this.setState({
 					isLoading: false

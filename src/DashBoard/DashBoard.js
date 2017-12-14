@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Row, Col, Clearfix } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 import Todo from "./Todo";
 import Calendar from 'rc-calendar';
 import PieChart from '../UI/PieChart';
@@ -44,9 +44,9 @@ export default class DashBoard extends React.Component {
 			<div className={"page-wrapper"} id={"dash-wrapper"}>
 				<Grid>
 					<Row className="show-grid">
-						<Col xs={12} md={4}><DashCard number={courses.length} /></Col>
-						<Col xs={12} md={4}><DashCard student number={students.length} /></Col>
-						<Col xs={12} md={4}><DashCard lecturer number={lecturers.length} /></Col>
+						<Col sm={12} lg={4}><DashCard number={courses.length} /></Col>
+						<Col sm={12} lg={4}><DashCard student number={students.length} /></Col>
+						<Col sm={12} lg={4}><DashCard lecturer number={lecturers.length} /></Col>
 					</Row>
 
 					<Row className="show-grid">
@@ -69,11 +69,11 @@ export default class DashBoard extends React.Component {
 						</Col>
 					</Row>
 					{/*<Row className="show-grid">*/}
-						{/*<Col xs={12} lg={12}>*/}
-							{/*<div className="dash-component-wrapper" >*/}
-								{/*<img src={require('../img/school-pic.png')} height="100%" width="100%" />*/}
-							{/*</div>*/}
-						{/*</Col>*/}
+					{/*<Col xs={12} lg={12}>*/}
+					{/*<div className="dash-component-wrapper" >*/}
+					{/*<img src={require('../img/school-pic.png')} height="100%" width="100%" />*/}
+					{/*</div>*/}
+					{/*</Col>*/}
 					{/*</Row>*/}
 				</Grid>
 			</div>

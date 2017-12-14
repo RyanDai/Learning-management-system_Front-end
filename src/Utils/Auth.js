@@ -1,11 +1,11 @@
 export const Auth = {
-    loggedIn(){
-        return window.sessionStorage.token != null && window.sessionStorage.exp > Date.now()/1000;
+    loggedIn() {
+        return window.sessionStorage.token != null && window.sessionStorage.exp > Date.now() / 1000;
     },
-    getToken(){
+    getToken() {
         return window.sessionStorage.token;
     },
-    getName(){
+    getName() {
         return window.sessionStorage.name;
     }
 }

@@ -6,14 +6,14 @@ import axios from 'axios';
 
 
 export default class PieChart extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-      isLoading:false,
-      students:[],
-      sexArray:[],
-      total:0,
-      male:0
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: false,
+      students: [],
+      sexArray: [],
+      total: 0,
+      male: 0
     }
   }
 
@@ -33,25 +33,25 @@ export default class PieChart extends Component {
       });
   }
 
-  calculateSexRate(){
-    const {sexArray} = this.state;
+  calculateSexRate() {
+    const { sexArray } = this.state;
     var length = sexArray.length;
     var male = 0;
-    sexArray.map(function(sex, i){
-      if(sex === 'M'){
+    sexArray.map(function (sex, i) {
+      if (sex === 'M') {
         male++;
       }
     });
     this.setState({
-      total:length,
-      male:male
+      total: length,
+      male: male
     });
   }
 
-  calculateSexArray(){
+  calculateSexArray() {
     const { students, sexArray } = this.state;
-    students.map(function(student, i){
-      if(student.Sex === 'Female'){
+    students.map(function (student, i) {
+      if (student.Sex === 'Female') {
         sexArray.push('F');
       } else {
         sexArray.push('M');
@@ -65,30 +65,32 @@ export default class PieChart extends Component {
 
   }
 
-  render(){
+  render() {
     const { total, male } = this.state;
-    const maleRate = male/total*100;
+    const maleRate = male / total * 100;
     const female = total - male;
-    const femaleRate = (total - male)/total*100;
+    const femaleRate = (total - male) / total * 100;
 
     const publicChart = {
-        type: "Pie",
-        data: {
-            labels: ['Male: ' + maleRate+'%', 'Famale: ' + femaleRate+'%'],
-            series: [male, female]
-        }
+      type: "Pie",
+      data: {
+        labels: ['Male: ' + maleRate + '%', 'Famale: ' + femaleRate + '%'],
+        series: [male, female]
+      }
     }
 
-    return(
-      <Card
+    return (
+      <div className={"dash-component-wrapper"}>
+        <Card
           title="Sex Rate Chart"
           content={
-              <ChartistGraph
-                  data={publicChart.data}
-                  type="Pie"
-              />
+            <ChartistGraph
+              data={publicChart.data}
+              type="Pie"
+            />
           }
-      />
+        />
+      </div>
     )
   }
 }
