@@ -86,7 +86,7 @@ export default class CountClock extends Component {
             <div>
                 {showToaster && <ErrorToast Msg={toaster} onKill={this.handleToaster} />}
                 <div style={{textAlign:"right"}}>
-                <a  onClick={this.changeTime}><i className="fa fa-clock-o" aria-hidden="true" /></a>
+                <a  onClick={this.changeTime}><i className="fa fa-clock-o" aria-hidden="true" />Setting</a>
                 </div>
                 <div className="countdown" id="js-countdown">
                     <div className="countdown__item countdown__item--large">
