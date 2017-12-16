@@ -137,7 +137,7 @@ export default class StudentDetailView extends Component {
   }
 
     handleEnrolResponse=(enrol)=>{
-        this.loadLecturer();
+        this.loadStudent();
         this.setState({
             isLoading: false,
             showToaster: true,
