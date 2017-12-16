@@ -156,8 +156,8 @@ export default class StudentDetailView extends Component {
 
 
     handleSexChange = (event, index, value) => this.setState({
-        lecturer: {
-            ...this.state.lecturer,
+        student: {
+            ...this.state.student,
             ["Sex"]: value
         }
     });
@@ -336,9 +336,9 @@ export default class StudentDetailView extends Component {
 	};
 
     validation = () => {
-        const { Email, Phone, FirstName, LastName } = this.state.lecturer;
+        const { Email, Phone, FirstName, LastName } = this.state.student;
 
-        const { Line1, State, City, PostCode, Country } = this.state.lecturer.Address;
+        const { Line1, State, City, PostCode, Country } = this.state.student.Address;
 
         const email = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         email.test(Email) === false ? this.setState({ EmailError: (<p>Email is required and format should be john@doe.com</p>) }) : this.setState({ EmailError: null });
